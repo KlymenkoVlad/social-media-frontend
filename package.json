@@ -9,9 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.17",
+    "dayjs": "^1.11.11",
     "next": "14.2.3",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.51.4",
+    "sass": "^1.77.1",
+    "sonner": "^1.4.41"
   },
   "devDependencies": {
     "@types/node": "^20.12.12",
