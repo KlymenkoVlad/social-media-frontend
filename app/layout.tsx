@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/layout/header/Header";
 import LeftSidebar from "@/components/layout/leftsidebar/LeftSidebar";
 import RightSidebar from "@/components/layout/rightsidebar/RightSidebar";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,12 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header />
-        <div className="flex justify-center mx-auto w-[1150px] mt-6">
-          <LeftSidebar />
-          {children}
-          <RightSidebar />
-        </div>
+        {children} <Toaster />
       </body>
     </html>
   );

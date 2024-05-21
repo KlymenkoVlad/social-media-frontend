@@ -1,16 +1,29 @@
-import React from "react";
-import { Search, KeyboardArrowDown, Clear } from "@mui/icons-material";
+"use client";
+
+import React, { useState } from "react";
+import {
+  Search,
+  KeyboardArrowDown,
+  Clear,
+  Settings,
+  Logout,
+  HelpOutline,
+} from "@mui/icons-material";
 import Logo from "../../common/Logo";
 import styles from "./header.module.scss";
 import BlankAvatar from "@/components/common/BlankAvatar";
-
+import Link from "next/link";
+import cookies from "js-cookie";
+import { redirect } from "next/navigation";
 const Header = () => {
+  const [showModal, setShowModal] = useState(false);
+
   return (
-    <header className="h-14 shadow-md flex justify-around items-center bg-gray-50">
-      <div className="flex items-center">
+    <header className="relative h-14 shadow-md flex justify-around items-center bg-gray-50">
+      <Link href={"/feed"} className="flex items-center">
         <Logo />
         <h1 className="ml-2 text-2xl font-bold">ewmedia</h1>
-      </div>
+      </Link>
 
       <div className="relative w-60 h-8 flex ">
         <Search className={`${styles.logo} left-2`} />
@@ -22,9 +35,55 @@ const Header = () => {
         />
       </div>
 
-      <div className="hover:bg-gray-300 h-full w-24 flex justify-center items-center cursor-pointer transition-colors">
+      <div
+        onClick={() => setShowModal(!showModal)}
+        className="hover:bg-gray-300 h-full w-24 flex justify-center items-center cursor-pointer transition-colors"
+      >
         <BlankAvatar />
-        <KeyboardArrowDown className="text-gray-500" />
+        <KeyboardArrowDown
+          className={` ${
+            showModal ? "rotate-180 text-gray-500" : "text-gray-400"
+          }`}
+        />
+      </div>
+
+      <div
+        className={`space-y-6  absolute right-[160px] z-10 top-16 w-[250px] h-[300px] bg-white rounded-md shadow-md transform transition-opacity duration-300 ease-in-out ${
+          showModal ? "opacity-100 " : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <div className="p-3 flex items-center w-full ">
+          <BlankAvatar />
+          <div className="ml-3">
+            <p className="">name</p>
+            <p className=" text-xs text-gray-400">username</p>
+          </div>
+        </div>
+
+        <Link
+          className="p-3 flex items-center w-full transition-colors hover:bg-gray-200 "
+          href={"/profile/settings"}
+        >
+          <Settings />
+          <p className="ml-2">Settings</p>
+        </Link>
+        <Link
+          className="p-3 flex items-center w-full transition-colors hover:bg-gray-200 "
+          href={"/profile/help"}
+        >
+          <HelpOutline />
+          <p className="ml-2">Help</p>
+        </Link>
+        <button
+          onClick={() => {
+            cookies.remove("token");
+            redirect("/signin");
+          }}
+          className="p-3 flex items-center w-full transition-colors hover:bg-gray-200 "
+        >
+          <Logout />
+          <p className="ml-2">Sign out</p>
+        </button>
       </div>
     </header>
   );

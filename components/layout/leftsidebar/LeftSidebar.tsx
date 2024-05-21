@@ -7,6 +7,8 @@ import {
 } from "@mui/icons-material";
 
 import styles from "./sidebar.module.scss";
+import Link from "next/link";
+import LinkSidebar from "./clientSide/LinkSidebar";
 
 const LeftSidebar = () => {
   return (
@@ -14,7 +16,7 @@ const LeftSidebar = () => {
       <ol className="space-y-6 mb-2 min-w-48">
         <li className={`${styles.nav_link}`}>
           <AccountCircleOutlined className="ml-2" />
-          <p className="ml-2">My Profile</p>
+          <LinkSidebar />
         </li>
         <li className={styles.nav_link}>
           <NewspaperOutlined className="ml-2" />
