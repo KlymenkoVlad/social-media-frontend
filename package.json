@@ -11,16 +11,20 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@hookform/resolvers": "^3.4.0",
     "@mui/icons-material": "^5.15.17",
     "dayjs": "^1.11.11",
+    "js-cookie": "^3.0.5",
     "next": "14.2.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.51.4",
+    "react-hot-toast": "^2.4.1",
     "sass": "^1.77.1",
-    "sonner": "^1.4.41"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20.12.12",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",

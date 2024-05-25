@@ -2,7 +2,12 @@
 const nextConfig = {
   experimental: {},
   images: {
-    domains: ["buffer.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
   },
 };
 
