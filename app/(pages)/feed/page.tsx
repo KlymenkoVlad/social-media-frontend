@@ -4,17 +4,55 @@ import {
   AddPhotoAlternate,
   AttachFile,
   AddLocationAlt,
-  MoreHoriz,
-  Favorite,
-  Reply,
 } from "@mui/icons-material";
 
 import styles from "./feed.module.scss";
-import BlankAvatar from "@/components/common/BlankAvatar";
-import Image from "next/image";
 import Post from "@/components/common/Post";
+import { getDataAuth } from "@/db/fetchData";
+import { Metadata } from "next";
+import { cookies } from "next/headers";
+import { baseUrl } from "@/utils/baseUrl";
 
-const feed = () => {
+export const metadata: Metadata = {
+  title: "Feed",
+  description:
+    "Social media app that helps you connect and share with the people in your life.",
+};
+interface Post {
+  id: number;
+  title: string;
+  text?: string;
+  image_url?: string;
+  user_id: number;
+  created_at: Date;
+  updated_at: Date;
+  likes: [];
+  comments: [];
+  user: {
+    username: string;
+  };
+}
+
+export const getPosts = async (url: string) => {
+  const cookiesStore = cookies();
+  const token = cookiesStore.get("token")?.value;
+
+  const res = await fetch(`${baseUrl}/${url}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    next: { tags: ["posts"] },
+  });
+
+  const data = await res.json();
+  return data;
+};
+
+const feed = async () => {
+  const { posts }: { posts: Post[] } = await getPosts("post");
+
   return (
     <div className="w-full mx-16 ">
       <form>
@@ -29,7 +67,7 @@ const feed = () => {
               className={styles.textarea_post}
               placeholder="What's new"
               required
-            ></textarea>
+            />
           </div>
           <div className="flex items-center justify-between px-3 py-2 border-t ">
             <button
@@ -55,15 +93,26 @@ const feed = () => {
           </div>
         </div>
       </form>
-
-      <Post
-        name="Sergey"
-        date="5 min ago"
-        imageSrc="/free-images.avif"
-        likesCount={10}
-        commentsCount={2}
-        sharedCount={5}
-      />
+      {posts.length > 0 &&
+        posts
+          .sort(
+            (a, b) =>
+              new Date(b.created_at).getTime() -
+              new Date(a.created_at).getTime()
+          )
+          .map((post) => (
+            <Post
+              key={post.id}
+              postId={post.id}
+              likes={post.likes}
+              comments={post.comments}
+              text={post.text}
+              title={post.title}
+              date={post.created_at}
+              imageSrc={post.image_url}
+              username={post.user.username}
+            />
+          ))}
     </div>
   );
 };

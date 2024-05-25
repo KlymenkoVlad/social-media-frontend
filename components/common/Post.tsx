@@ -1,46 +1,61 @@
+"use client";
+
 import {
   ChatBubbleOutlineOutlined,
-  Favorite,
   FavoriteBorderOutlined,
-  FavoriteOutlined,
   MoreHoriz,
-  Reply,
-  ReplyOutlined,
 } from "@mui/icons-material";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BlankAvatar from "./BlankAvatar";
+import { dateFormat } from "@/utils/dateFormat";
+import { getUserId } from "@/utils/getDataFromSessionStorage";
+import { ILike, IComment } from "@/interfaces/post";
+import PostInteractions from "./client/PostInteractions";
 
 interface PostProps {
-  likesCount: number;
-  sharedCount: number;
-  commentsCount: number;
-  name: string;
-  date: string;
+  likes: ILike[] | [];
+  comments: IComment[] | [];
+  title: string;
+  text?: string;
+  date: Date;
   imageSrc?: string;
+  username: string;
+  postId: number;
 }
 
 const Post = ({
-  likesCount,
-  commentsCount,
-  sharedCount,
-  name,
+  likes,
+  comments,
+  title,
+  text,
   date,
   imageSrc,
+  username,
+  postId,
 }: PostProps) => {
+  const formattedDate = dateFormat(date);
+
   return (
-    <div className="w-full overflow-auto bg-white mb-20 p-5 justify-between space-y-4 rounded-md">
-      <div className="flex">
-        <div className="flex items-center w-full">
-          <BlankAvatar />
-          <div className="ml-3">
-            <p className="font-medium ">{name}</p>
-            <p className=" text-xs">{date}</p>
+    <div className="w-full overflow-auto bg-white mb-5 p-5 justify-between space-y-4 rounded-md">
+      <div>
+        <div className="flex">
+          <div className="flex items-center w-full">
+            <BlankAvatar />
+            <div className="ml-3">
+              <p>{username[0].toUpperCase() + username.slice(1)}</p>
+              <p className=" text-xs">{formattedDate}</p>
+            </div>
+          </div>
+
+          <div className="flex justify-center items-center rounded-full hover:bg-gray-200 transition-colors cursor-pointer w-8 h-8">
+            <MoreHoriz />
           </div>
         </div>
 
-        <div className="flex justify-center items-center rounded-full hover:bg-gray-200 transition-colors cursor-pointer w-8 h-8">
-          <MoreHoriz />
+        <div className="mt-3">
+          <p className="font-medium">{title}</p>
+          <p className="mt-3">{text}</p>
         </div>
       </div>
 
@@ -55,24 +70,7 @@ const Post = ({
         />
       )}
 
-      <div className="flex">
-        <div className="bg-gray-100 rounded-2xl w-20 h-8 flex items-center justify-center cursor-pointer hover:bg-gray-300 transition-colors">
-          <FavoriteBorderOutlined className="w-5 h-5" />
-          <p className="ml-1 text-sm text-gray-700 font-medium">{likesCount}</p>
-        </div>
-        <div className="ml-3 bg-gray-100 rounded-2xl w-20 h-8 flex items-center justify-center cursor-pointer hover:bg-gray-300 transition-colors">
-          <ChatBubbleOutlineOutlined className="w-5 h-5" />
-          <p className="ml-1 text-sm text-gray-700 font-medium">
-            {commentsCount}
-          </p>
-        </div>
-        <div className="ml-3 bg-gray-100 rounded-2xl w-20 h-8 flex items-center justify-center cursor-pointer hover:bg-gray-300 transition-colors">
-          <ReplyOutlined className="w-5 h-5 " />
-          <p className="ml-1 text-sm text-gray-700 font-medium">
-            {sharedCount}
-          </p>
-        </div>
-      </div>
+      <PostInteractions likes={likes} comments={comments} postId={postId} />
     </div>
   );
 };

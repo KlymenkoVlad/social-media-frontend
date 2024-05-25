@@ -3,7 +3,7 @@
 //* TODO
 //* Add image upload
 
-import { sendDataSignup } from "@/app/_actions";
+import { sendData } from "@/app/_actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Badge, ContactEmergency, Email, Lock } from "@mui/icons-material";
 import Image from "next/image";
@@ -76,8 +76,10 @@ const Page = () => {
   });
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
-    const { response, user } = await sendDataSignup(data, "auth/signup");
+    toast.loading("Creating your account...");
+    const { response, user } = await sendData(data, "signup");
 
+    toast.remove();
     if (response.error) {
       if (response.statusCode === 409) {
         toast.error("User already exists");

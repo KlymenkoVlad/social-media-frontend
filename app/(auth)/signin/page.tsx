@@ -1,6 +1,6 @@
 "use client";
 
-import { sendDataLogin } from "@/app/_actions";
+import { sendData } from "@/app/_actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Email, Lock } from "@mui/icons-material";
 import Image from "next/image";
@@ -29,8 +29,10 @@ const Page = () => {
   });
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
-    const { response, user } = await sendDataLogin(data, "auth/login");
+    toast.loading("Looking for your account...");
+    const { response, user } = await sendData(data, "login");
 
+    toast.remove();
     if (response.error) {
       toast.error("Wrong credentials");
     } else {
@@ -42,6 +44,7 @@ const Page = () => {
       toast.success("Login successful");
       router.push("/feed");
     }
+
     reset();
   };
 
