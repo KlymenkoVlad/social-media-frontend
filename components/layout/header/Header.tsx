@@ -62,14 +62,14 @@ const Header = () => {
 
         <Link
           className="p-3 flex items-center w-full transition-colors hover:bg-gray-200 "
-          href={"/profile/settings"}
+          href={"/my-profile/settings"}
         >
           <Settings />
           <p className="ml-2">Settings</p>
         </Link>
         <Link
           className="p-3 flex items-center w-full transition-colors hover:bg-gray-200 "
-          href={"/profile/help"}
+          href={"/my-profile/help"}
         >
           <HelpOutline />
           <p className="ml-2">Help</p>

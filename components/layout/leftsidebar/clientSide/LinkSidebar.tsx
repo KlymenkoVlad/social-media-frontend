@@ -6,7 +6,7 @@ const LinkSidebar = () => {
   const [username, setUsername] = useState<string | null>(null);
 
   useEffect(() => {
-    setUsername(sessionStorage.getItem("username"));
+    setUsername(localStorage.getItem("username"));
   }, []);
 
   return (

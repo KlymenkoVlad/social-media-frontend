@@ -15,3 +15,18 @@ export interface IComment {
     username: string;
   };
 }
+
+export interface IPost {
+  id: number;
+  title?: string;
+  text: string;
+  image_url?: string;
+  user_id: number;
+  created_at: Date;
+  updated_at: Date;
+  likes: [];
+  comments: [];
+  user: {
+    username: string;
+  };
+}

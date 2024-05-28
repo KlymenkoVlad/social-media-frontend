@@ -84,3 +84,48 @@ export const sendComment = async (text: string, postId: number) => {
 
   return response;
 };
+
+export const sendPost = async ({
+  text,
+  imageUrl,
+}: {
+  text: string;
+  imageUrl?: string;
+}) => {
+  const token = cookiesStore.get("token")?.value;
+
+  const response = await fetch(`${baseUrl}/post`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ text }),
+  }).then((res) => res.json());
+
+  if (!response.error) {
+    revalidateTag("posts");
+  }
+
+  return response;
+};
+
+export const getPosts = async (cursor?: number, take = 3) => {
+  const cookiesStore = cookies();
+  const token = cookiesStore.get("token")?.value;
+
+  const res = await fetch(`${baseUrl}/post?cursor=${cursor}&take=${take}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    next: { tags: ["posts"] },
+  });
+
+  const data = await res.json();
+
+  console.log(`${baseUrl}/post?cursor=${cursor?.toString()}&take=${take}`);
+  console.log(data);
+  return data;
+};

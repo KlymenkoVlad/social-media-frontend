@@ -6,23 +6,21 @@ import {
   ChatBubbleOutlineOutlined,
   Favorite,
   FavoriteBorderOutlined,
-  Person,
   Send,
 } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import BlankAvatar from "../BlankAvatar";
+import BlankAvatar from "../../common/BlankAvatar";
 import { dateFormat } from "@/utils/dateFormat";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { sendComment, sendData } from "@/app/_actions";
+import { sendComment } from "@/app/_actions";
 import toast from "react-hot-toast";
-import { revalidateTag } from "next/cache";
 
 interface LikeProps {
-  likes: ILike[] | [];
   postId: number;
+  likes: ILike[] | [];
   comments: IComment[] | [];
 }
 
@@ -63,7 +61,9 @@ const PostInteractions = ({ likes, postId, comments }: LikeProps) => {
       window.localStorage &&
       likes.length > 0
     ) {
-      const userId = sessionStorage.getItem("userId") || "";
+      const userId = localStorage.getItem("userId") || "";
+
+      console.log(likes[0].user_id, userId);
 
       const isLiked =
         likes.length > 0 && likes.some((like) => like.user_id === +userId);
