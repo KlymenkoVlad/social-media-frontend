@@ -1,11 +1,8 @@
-"use client";
-
 import React, { useState } from "react";
 import { Metadata } from "next";
-import Form from "@/components/pages/Feed/Form";
 import { IPost } from "@/interfaces/post";
 import { getPosts } from "@/app/_actions";
-import InfiniteScrollPosts from "@/components/pages/Feed/InfiniteScrollPosts";
+import Feed from "@/components/pages/Feed/Feed";
 
 export const metadata: Metadata = {
   title: "Feed",
@@ -20,17 +17,10 @@ interface PostResponse {
   postsLength: number;
 }
 
-const Feed = async () => {
+const page = async () => {
   const data: PostResponse = await getPosts();
 
-  return (
-    <div className="w-full mx-16 ">
-      <Form />
-      <ul role="list">
-        <InfiniteScrollPosts {...data} />
-      </ul>
-    </div>
-  );
+  return <Feed data={data} />;
 };
 
-export default eed;
+export default page;

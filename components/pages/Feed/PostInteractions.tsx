@@ -27,6 +27,7 @@ interface LikeProps {
 const PostInteractions = ({ likes, postId, comments }: LikeProps) => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [likesAmount, setLikesAmount] = useState<number>(likes.length);
+  const [renderComments, setRenderComments] = useState(comments);
 
   const [commentsAmount, setCommentsAmount] = useState(3);
 
@@ -50,6 +51,7 @@ const PostInteractions = ({ likes, postId, comments }: LikeProps) => {
     if (result.error) {
       toast.error("Something went wrong");
     } else {
+      setRenderComments([result, ...renderComments]);
       toast.success("Comment posted");
       reset();
     }
@@ -62,8 +64,6 @@ const PostInteractions = ({ likes, postId, comments }: LikeProps) => {
       likes.length > 0
     ) {
       const userId = localStorage.getItem("userId") || "";
-
-      console.log(likes[0].user_id, userId);
 
       const isLiked =
         likes.length > 0 && likes.some((like) => like.user_id === +userId);
@@ -122,8 +122,8 @@ const PostInteractions = ({ likes, postId, comments }: LikeProps) => {
         <div className="h-px w-full bg-gray-300 mb-3"></div>
 
         <div className="mb-5">
-          {comments.length > 0 &&
-            comments.slice(0, commentsAmount).map((comment) => (
+          {renderComments?.length > 0 &&
+            renderComments.slice(0, commentsAmount).map((comment) => (
               <div key={comment.id}>
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center space-x-5">

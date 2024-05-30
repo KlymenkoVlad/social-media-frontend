@@ -1,5 +1,6 @@
 import Post from "@/components/pages/Feed/Post";
 import { getDataAuth } from "@/db/fetchData";
+import { IPost } from "@/interfaces/post";
 import { User } from "@/interfaces/user";
 import { baseUrl } from "@/utils/baseUrl";
 import { Person } from "@mui/icons-material";
@@ -21,29 +22,17 @@ const getPosts = async (url: string) => {
 
   const data = await res.json();
 
-  console.log(data);
-
   return data;
 };
 
-interface Post {
-  id: number;
-  title?: string;
-  text: string;
-  image_url?: string;
-  user_id: number;
-  created_at: Date;
-  updated_at: Date;
-  likes: [];
-  comments: [];
-  user: {
-    username: string;
-  };
+interface UserResponse {
+  status: string;
+  user: User;
 }
 
 const page = async ({ params }: { params: { username: string } }) => {
-  const data: User = await getDataAuth(`auth/user/${params.username}`);
-  const posts: Post[] = await getPosts("post/myposts");
+  const { user }: UserResponse = await getDataAuth(`user/${params.username}`);
+  const posts: IPost[] = await getPosts("post/myposts");
 
   return (
     <div className="w-full h-full mx-5 space-y-6">
@@ -54,8 +43,8 @@ const page = async ({ params }: { params: { username: string } }) => {
           </div>
           <div className="ml-44 mr-10 flex justify-between items-center mt-5">
             <div>
-              <h1 className="">{data.name}</h1>
-              <h1 className=" ">{data.username}</h1>
+              <h1 className="">{user.name}</h1>
+              <h1 className=" ">{user.username}</h1>
             </div>
 
             <button
@@ -69,15 +58,18 @@ const page = async ({ params }: { params: { username: string } }) => {
       </div>
 
       <div className=" rounded-md w-full min-h-[329px] overflow-hidden">
-        <div className="flex p-4 justify-around">
-          <button
-            type="button"
-            className="transition-colors text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:bg-blue-900 focus:text-white focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+        <div className="flex p-4 justify-around items-center bg-white mb-4">
+          <h1 className="text-lg font-bold">You can sort by:</h1>
+          <select
+            className="bg-gray-50 border border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 "
+            name="sort"
+            id="sort"
           >
-            All Posts
-          </button>
+            <option value="volvo">Date</option>
+            <option value="saab">Likes</option>
+            <option value="mercedes">Comment</option>
+          </select>
         </div>
-        <div className="h-px w-full bg-gray-300"></div>
         {posts?.length > 0 &&
           posts
             .sort(

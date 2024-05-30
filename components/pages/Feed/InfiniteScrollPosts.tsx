@@ -13,6 +13,7 @@ interface PostResponse {
   nextCursor: number;
   hasNextPage: boolean;
   postsLength: number;
+  setPosts: any;
 }
 
 const InfiniteScrollPosts = ({
@@ -20,15 +21,14 @@ const InfiniteScrollPosts = ({
   nextCursor,
   hasNextPage,
   postsLength,
+  setPosts,
 }: PostResponse) => {
-  const [postsRender, setPostsRender] = useState(posts);
   const [cursor, setCursor] = useState<number>(nextCursor);
   const [end, setEnd] = useState(false);
   const [ref, inView] = useInView();
 
   const fetchPosts = async () => {
     if (end) {
-      console.log("end");
       return;
     }
 
@@ -38,7 +38,7 @@ const InfiniteScrollPosts = ({
       setEnd(true);
     }
 
-    setPostsRender([...postsRender, ...data.posts]);
+    setPosts([...posts, ...data.posts]);
 
     setCursor(data.nextCursor);
   };
@@ -51,8 +51,8 @@ const InfiniteScrollPosts = ({
 
   return (
     <div>
-      {postsRender.length > 0 &&
-        postsRender
+      {posts.length > 0 &&
+        posts
           .sort(
             (a, b) =>
               new Date(b.created_at).getTime() -
@@ -79,7 +79,7 @@ const InfiniteScrollPosts = ({
         } w-full text-center text-2xl font-semibold mb-32`}
       >
         <SelfImprovement className="w-32 h-32" />
-        <p>Hmmmm... I think you&apos;ve reached the end</p>
+        <p>Hmmmm... I think there are no more posts</p>
       </div>
     </div>
   );
