@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Metadata } from "next";
 import { IPost } from "@/interfaces/post";
-import { getPosts } from "@/app/_actions";
+import { getAllPosts } from "@/app/_actions";
 import Feed from "@/components/pages/Feed/Feed";
 
 export const metadata: Metadata = {
@@ -18,7 +18,9 @@ interface PostResponse {
 }
 
 const page = async () => {
-  const data: PostResponse = await getPosts();
+  const data: PostResponse = await getAllPosts();
+
+  // console.log(data);
 
   return <Feed data={data} />;
 };

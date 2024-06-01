@@ -10,7 +10,6 @@ import {
   HelpOutline,
 } from "@mui/icons-material";
 import Logo from "../../common/Logo";
-import styles from "./header.module.scss";
 import BlankAvatar from "@/components/common/BlankAvatar";
 import Link from "next/link";
 import cookies from "js-cookie";
@@ -26,10 +25,10 @@ const Header = () => {
       </Link>
 
       <div className="relative w-60 h-8 flex ">
-        <Search className={`${styles.logo} left-2`} />
-        <Clear className={`${styles.logo} right-2`} />
+        <Search className="w-4 h-4 text-gray-500 absolute z-0 top-2 left-2" />
+        <Clear className="w-4 h-4 text-gray-500 absolute z-0 top-2 right-2" />
         <input
-          className={styles.search_input}
+          className="text-sm p-4 focus:outline-none ps-10 w-full rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors ease-in-out"
           type="text"
           placeholder="Search"
         />

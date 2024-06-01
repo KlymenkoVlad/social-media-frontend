@@ -31,13 +31,12 @@ const FormDataSchemaSignup = z.object({
 type InputsLogin = z.infer<typeof FormDataSchemaLogin>;
 type InputsSignup = z.infer<typeof FormDataSchemaSignup>;
 
-const cookiesStore = cookies();
-
 export const sendData = async (
   data: InputsLogin | InputsSignup,
   url: string
 ) => {
   let result;
+  const cookiesStore = cookies();
 
   if ("name" in data) {
     result = await FormDataSchemaSignup.safeParseAsync(data);
@@ -66,18 +65,51 @@ export const sendData = async (
   return { response, user };
 };
 
-export const getPosts = async (cursor?: number, take = 3) => {
+export const getAllPosts = async (
+  cursor?: number,
+  sortBy = "new",
+  take = 3
+) => {
   const cookiesStore = cookies();
   const token = cookiesStore.get("token")?.value;
 
-  const res = await fetch(`${baseUrl}/post?cursor=${cursor}&take=${take}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    next: { tags: ["posts"] },
-  });
+  const res = await fetch(
+    `${baseUrl}/post?sortBy=${sortBy}&cursor=${cursor}&take=${take}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      next: { tags: ["posts"] },
+    }
+  );
+
+  const data = await res.json();
+
+  return data;
+};
+
+export const getPostsByUserId = async (
+  id: number,
+  sortBy = "new",
+  cursor?: number,
+  take = 4
+) => {
+  const cookiesStore = cookies();
+  const token = cookiesStore.get("token")?.value;
+
+  const res = await fetch(
+    `${baseUrl}/post/user/${id}?sortBy=${sortBy}&cursor=${cursor}&take=${take}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      next: { tags: ["posts"] },
+    }
+  );
 
   const data = await res.json();
 
@@ -85,6 +117,7 @@ export const getPosts = async (cursor?: number, take = 3) => {
 };
 
 export const sendComment = async (text: string, postId: number) => {
+  const cookiesStore = cookies();
   const token = cookiesStore.get("token")?.value;
 
   const response = await fetch(`${baseUrl}/post/comment/${postId}`, {
@@ -108,6 +141,7 @@ export const sendPost = async (
   title?: string,
   imageUrl?: string
 ) => {
+  const cookiesStore = cookies();
   const token = cookiesStore.get("token")?.value;
 
   const response = await fetch(`${baseUrl}/post`, {

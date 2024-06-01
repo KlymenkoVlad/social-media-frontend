@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import styles from "./feed.module.scss";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,12 +33,15 @@ const Form = ({ setPosts, posts }: { setPosts: any; posts: IPost[] }) => {
     imageUrl: z
       .any()
       .refine((files) => {
-        return files?.[0]?.size <= MAX_FILE_SIZE;
+        if (!files || files.length === 0) return true;
+        return files[0].size <= MAX_FILE_SIZE;
       }, `Max image size is 5MB.`)
-      .refine(
-        (files) => ACCEPTED_IMAGE_MIME_TYPES.includes(files?.[0]?.type),
-        "Only .jpg, .jpeg, .png and .webp formats are supported."
-      ),
+      .refine((files) => {
+        if (!files || files.length === 0) return true;
+        return ACCEPTED_IMAGE_MIME_TYPES.includes(files[0].type);
+      }, "Only .jpg, .jpeg, .png and .webp formats are supported.")
+      .optional()
+      .nullable(),
   });
 
   type Inputs = z.infer<typeof FormSchema>;
@@ -58,14 +60,18 @@ const Form = ({ setPosts, posts }: { setPosts: any; posts: IPost[] }) => {
   const processForm: SubmitHandler<Inputs> = async (data) => {
     toast.loading("Create your post...");
 
-    const formData = new FormData();
-    formData.append("file", data.imageUrl[0]);
-    const res = await fetch(`${baseUrl}/post/upload`, {
-      method: "POST",
-      body: formData,
-    }).then((res) => res.json());
+    let img: string;
+    if (data.imageUrl.length > 0) {
+      const formData = new FormData();
+      formData.append("file", data.imageUrl[0]);
+      const res = await fetch(`${baseUrl}/post/upload`, {
+        method: "POST",
+        body: formData,
+      }).then((res) => res.json());
 
-    const result = await sendPost(data.text, data.title, res.url);
+      img = res.url;
+    }
+    const result = await sendPost(data.text, data.title, img);
 
     toast.remove();
     if (result.error) {
@@ -83,7 +89,7 @@ const Form = ({ setPosts, posts }: { setPosts: any; posts: IPost[] }) => {
 
   return (
     <form className="mb-4" onSubmit={handleSubmit(processForm)}>
-      <div className={styles.form_container}>
+      <div className="w-full  border border-gray-200 rounded-lg bg-gray-50">
         <div className="px-4 py-2 bg-white rounded-t-lg ">
           <label htmlFor="comment" className="sr-only">
             What&apos;s new
@@ -92,7 +98,7 @@ const Form = ({ setPosts, posts }: { setPosts: any; posts: IPost[] }) => {
             id="comment"
             rows={4}
             onFocus={() => setShowTitleForm(true)}
-            className={styles.textarea_post}
+            className="focus:outline-none w-full px-0 text-sm text-gray-900 bg-white border-0 focus:ring-0"
             placeholder="What's new"
             required
             {...register("text")}
@@ -108,8 +114,8 @@ const Form = ({ setPosts, posts }: { setPosts: any; posts: IPost[] }) => {
           <input
             type="file"
             {...register("imageUrl")}
-            className={styles.btn_attach}
-          ></input>
+            className="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none "
+          />
         </div>
       </div>
       <p className="text-red-500">{errors.text?.message}</p>
@@ -125,7 +131,7 @@ const Form = ({ setPosts, posts }: { setPosts: any; posts: IPost[] }) => {
         </label>
         <input
           id="comment"
-          className={`${styles.textarea_post} `}
+          className=" w-full inline-flex items-center py-2.5 px-4 font-medium text-black rounded-md  focus:outline-none "
           placeholder="Title for your post"
           {...register("title")}
         />

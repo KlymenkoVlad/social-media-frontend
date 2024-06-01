@@ -4,7 +4,7 @@ import { IPost } from "@/interfaces/post";
 import React, { useEffect, useState } from "react";
 import Post from "./Post";
 import { useInView } from "react-intersection-observer";
-import { getAllPosts } from "@/app/_actions";
+import { getPostsByUserId } from "@/app/_actions";
 import PostSkeleton from "./PostSkeleton";
 import { SelfImprovement } from "@mui/icons-material";
 
@@ -13,16 +13,18 @@ interface PostResponse {
   nextCursor: number;
   hasNextPage: boolean;
   postsLength: number;
-  setPosts: React.Dispatch<React.SetStateAction<IPost[]>>;
+  setRenderPosts: React.Dispatch<React.SetStateAction<IPost[]>>;
   sortBy: string;
+  userId: number;
 }
 
-const InfiniteScrollPosts = ({
+const InfiniteScrollPostsProfile = ({
   posts,
   nextCursor,
   hasNextPage,
-  setPosts,
+  setRenderPosts,
   sortBy,
+  userId,
 }: PostResponse) => {
   const [cursor, setCursor] = useState<number>(nextCursor);
   const [end, setEnd] = useState(false);
@@ -32,17 +34,20 @@ const InfiniteScrollPosts = ({
   useEffect(() => {
     const sortUpdating = async () => {
       if (sortBy !== currentSort) {
-        console.log(sortBy, currentSort);
         setEnd(false);
         setCursor(undefined);
-        setPosts([]);
-        const data: PostResponse = await getAllPosts(undefined, sortBy);
+        setRenderPosts([]);
+        const data: PostResponse = await getPostsByUserId(
+          userId,
+          sortBy,
+          undefined
+        );
 
         if (!data.hasNextPage || !hasNextPage) {
           setEnd(true);
         }
 
-        await setPosts([...data.posts]);
+        setRenderPosts([...data.posts]);
 
         setCursor(data.nextCursor);
         setCurrentSort(sortBy);
@@ -57,17 +62,17 @@ const InfiniteScrollPosts = ({
       return;
     }
 
-    console.log(currentSort);
-
-    const data: PostResponse = await getAllPosts(cursor, currentSort);
+    const data: PostResponse = await getPostsByUserId(
+      userId,
+      currentSort,
+      cursor
+    );
 
     if (!data.hasNextPage || !hasNextPage) {
       setEnd(true);
     }
 
-    console.log([...posts, ...data.posts]);
-
-    setPosts([...posts, ...data.posts]);
+    setRenderPosts([...posts, ...data.posts]);
 
     setCursor(data.nextCursor);
   };
@@ -109,4 +114,4 @@ const InfiniteScrollPosts = ({
   );
 };
 
-export default InfiniteScrollPosts;
+export default InfiniteScrollPostsProfile;
