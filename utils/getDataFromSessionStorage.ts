@@ -1,6 +1,6 @@
 "use client";
 
 export const getUserId = () => {
-  const userId = sessionStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
   return userId;
 };

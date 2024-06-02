@@ -6,30 +6,32 @@ import {
   GroupsOutlined,
 } from "@mui/icons-material";
 
-import styles from "./sidebar.module.scss";
-import Link from "next/link";
 import LinkSidebar from "./clientSide/LinkSidebar";
+import Link from "next/link";
 
 const LeftSidebar = () => {
+  const navLinkStyle =
+    "flex items-center justify-start hover:bg-gray-200 cursor-pointer transition-colors ease-in-out h-12 rounded-md w-40";
+
   return (
     <div>
       <ol className="space-y-6 mb-2 min-w-48">
-        <li className={`${styles.nav_link}`}>
+        <li className={navLinkStyle}>
           <AccountCircleOutlined className="ml-2" />
           <LinkSidebar />
         </li>
-        <li className={styles.nav_link}>
+        <Link href="/news" className={navLinkStyle}>
           <NewspaperOutlined className="ml-2" />
           <p className="ml-2">News</p>
-        </li>
-        <li className={styles.nav_link}>
+        </Link>
+        <Link href="/friends" className={navLinkStyle}>
           <PeopleAltOutlined className="ml-2" />
           <p className="ml-2">Friends</p>
-        </li>
-        <li className={styles.nav_link}>
+        </Link>
+        <Link href="/communities" className={navLinkStyle}>
           <GroupsOutlined className="ml-2" />
           <p className="ml-2">Communities</p>
-        </li>
+        </Link>
         <div className="h-px w-full bg-gray-300"></div>
       </ol>
 

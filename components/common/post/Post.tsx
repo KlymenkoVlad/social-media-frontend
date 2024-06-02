@@ -1,23 +1,18 @@
 "use client";
 
-import {
-  ChatBubbleOutlineOutlined,
-  FavoriteBorderOutlined,
-  MoreHoriz,
-} from "@mui/icons-material";
+import { MoreHoriz } from "@mui/icons-material";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import BlankAvatar from "./BlankAvatar";
+import React, { useState } from "react";
+import BlankAvatar from "../BlankAvatar";
 import { dateFormat } from "@/utils/dateFormat";
-import { getUserId } from "@/utils/getDataFromSessionStorage";
 import { ILike, IComment } from "@/interfaces/post";
-import PostInteractions from "./client/PostInteractions";
+import PostInteractions from "./PostInteractions";
 
 interface PostProps {
-  likes: ILike[] | [];
-  comments: IComment[] | [];
-  title: string;
-  text?: string;
+  likes: ILike[];
+  comments: IComment[];
+  title?: string;
+  text: string;
   date: Date;
   imageSrc?: string;
   username: string;
@@ -37,7 +32,7 @@ const Post = ({
   const formattedDate = dateFormat(date);
 
   return (
-    <div className="w-full overflow-auto bg-white mb-5 p-5 justify-between space-y-4 rounded-md">
+    <ul className="w-full overflow-auto bg-white mb-5 p-5 justify-between space-y-4 rounded-md">
       <div>
         <div className="flex">
           <div className="flex items-center w-full">
@@ -71,7 +66,7 @@ const Post = ({
       )}
 
       <PostInteractions likes={likes} comments={comments} postId={postId} />
-    </div>
+    </ul>
   );
 };
 

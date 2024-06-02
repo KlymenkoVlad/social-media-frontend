@@ -37,8 +37,8 @@ const Page = () => {
       toast.error("Wrong credentials");
     } else {
       if (user) {
-        sessionStorage.setItem("userId", user.id);
-        sessionStorage.setItem("username", user.username);
+        localStorage.setItem("userId", user.id);
+        localStorage.setItem("username", user.username);
       }
 
       toast.success("Login successful");

@@ -5,7 +5,7 @@ export interface User {
   username: string;
   surname?: string;
   age?: number;
-  imageUrl?: string;
+  image_url?: string;
   description?: string;
   password: string;
 }

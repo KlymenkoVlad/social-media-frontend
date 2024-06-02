@@ -1,5 +1,7 @@
 "use server";
 
+import { PasswordFormInputs } from "@/components/pages/Settings/PasswordForm";
+import { ProfileFormInputs } from "@/components/pages/Settings/ProfileForm";
 import { baseUrl } from "@/utils/baseUrl";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
@@ -31,13 +33,12 @@ const FormDataSchemaSignup = z.object({
 type InputsLogin = z.infer<typeof FormDataSchemaLogin>;
 type InputsSignup = z.infer<typeof FormDataSchemaSignup>;
 
-const cookiesStore = cookies();
-
 export const sendData = async (
   data: InputsLogin | InputsSignup,
   url: string
 ) => {
   let result;
+  const cookiesStore = cookies();
 
   if ("name" in data) {
     result = await FormDataSchemaSignup.safeParseAsync(data);
@@ -66,7 +67,59 @@ export const sendData = async (
   return { response, user };
 };
 
+export const getAllPosts = async (
+  cursor?: number,
+  sortBy = "new",
+  take = 3
+) => {
+  const cookiesStore = cookies();
+  const token = cookiesStore.get("token")?.value;
+
+  const res = await fetch(
+    `${baseUrl}/post?sortBy=${sortBy}&cursor=${cursor}&take=${take}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      next: { tags: ["posts"] },
+    }
+  );
+
+  const data = await res.json();
+
+  return data;
+};
+
+export const getPostsByUserId = async (
+  id: number,
+  sortBy = "new",
+  cursor?: number,
+  take = 4
+) => {
+  const cookiesStore = cookies();
+  const token = cookiesStore.get("token")?.value;
+
+  const res = await fetch(
+    `${baseUrl}/post/user/${id}?sortBy=${sortBy}&cursor=${cursor}&take=${take}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      next: { tags: ["posts"] },
+    }
+  );
+
+  const data = await res.json();
+
+  return data;
+};
+
 export const sendComment = async (text: string, postId: number) => {
+  const cookiesStore = cookies();
   const token = cookiesStore.get("token")?.value;
 
   const response = await fetch(`${baseUrl}/post/comment/${postId}`, {
@@ -83,4 +136,105 @@ export const sendComment = async (text: string, postId: number) => {
   }
 
   return response;
+};
+
+export const sendPost = async (
+  text: string,
+  title?: string,
+  imageUrl?: string
+) => {
+  const cookiesStore = cookies();
+  const token = cookiesStore.get("token")?.value;
+
+  const response = await fetch(`${baseUrl}/post`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ text, title, imageUrl }),
+  }).then((res) => res.json());
+
+  if (!response.error) {
+    revalidateTag("posts");
+  }
+
+  return response;
+};
+
+export const getUser = async (id: number) => {
+  const token = cookies().get("token")?.value;
+  const res = await fetch(`${baseUrl}/user/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+
+  return res.user;
+};
+
+export const updateUserProfile = async (data: ProfileFormInputs) => {
+  (Object.keys(data) as (keyof typeof data)[]).forEach((key) => {
+    if (data[key] === undefined) {
+      delete data[key];
+    }
+  });
+
+  if (Object.keys(data).length === 0 && data.constructor === Object) {
+    return {
+      statusCode: 304,
+      message: "No changes were made",
+    };
+  }
+
+  console.log(data);
+
+  const token = cookies().get("token")?.value;
+  const res = await fetch(`${baseUrl}/user`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (res.status === 409) {
+    const data: {
+      message: string;
+      error: string;
+      statusCode: 409;
+    } = await res.json();
+    return data;
+  }
+  return {
+    statusCode: res.status,
+    message: "Profile updated successfully",
+  };
+};
+
+export const updatePassword = async (data: PasswordFormInputs) => {
+  const token = cookies().get("token")?.value;
+  const res = await fetch(`${baseUrl}/user/password`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (res.status === 400) {
+    const data: { message: string; error: string; statusCode: 400 } =
+      await res.json();
+
+    return data;
+  }
+
+  return {
+    statusCode: res.status,
+    message: "Password updated successfully",
+  };
 };
