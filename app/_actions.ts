@@ -1,5 +1,7 @@
 "use server";
 
+import { PasswordFormInputs } from "@/components/pages/Settings/PasswordForm";
+import { ProfileFormInputs } from "@/components/pages/Settings/ProfileForm";
 import { baseUrl } from "@/utils/baseUrl";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
@@ -160,23 +162,79 @@ export const sendPost = async (
   return response;
 };
 
-// export const createImage = async (file: File) => {
-//   console.log(file);
-// };
+export const getUser = async (id: number) => {
+  const token = cookies().get("token")?.value;
+  const res = await fetch(`${baseUrl}/user/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
 
-// export const getPosts = async (url: string) => {
-//   const cookiesStore = cookies();
-//   const token = cookiesStore.get("token")?.value;
+  return res.user;
+};
 
-//   const res = await fetch(`${baseUrl}/${url}`, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer ${token}`,
-//     },
-//     next: { tags: ["posts"] },
-//   });
+export const updateUserProfile = async (data: ProfileFormInputs) => {
+  (Object.keys(data) as (keyof typeof data)[]).forEach((key) => {
+    if (data[key] === undefined) {
+      delete data[key];
+    }
+  });
 
-//   const data = await res.json();
-//   return data;
-// };
+  if (Object.keys(data).length === 0 && data.constructor === Object) {
+    return {
+      statusCode: 304,
+      message: "No changes were made",
+    };
+  }
+
+  console.log(data);
+
+  const token = cookies().get("token")?.value;
+  const res = await fetch(`${baseUrl}/user`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (res.status === 409) {
+    const data: {
+      message: string;
+      error: string;
+      statusCode: 409;
+    } = await res.json();
+    return data;
+  }
+  return {
+    statusCode: res.status,
+    message: "Profile updated successfully",
+  };
+};
+
+export const updatePassword = async (data: PasswordFormInputs) => {
+  const token = cookies().get("token")?.value;
+  const res = await fetch(`${baseUrl}/user/password`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (res.status === 400) {
+    const data: { message: string; error: string; statusCode: 400 } =
+      await res.json();
+
+    return data;
+  }
+
+  return {
+    statusCode: res.status,
+    message: "Password updated successfully",
+  };
+};

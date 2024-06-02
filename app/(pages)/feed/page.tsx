@@ -20,8 +20,6 @@ interface PostResponse {
 const page = async () => {
   const data: PostResponse = await getAllPosts();
 
-  // console.log(data);
-
   return <Feed data={data} />;
 };
 

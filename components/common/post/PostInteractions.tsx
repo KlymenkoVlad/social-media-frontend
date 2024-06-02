@@ -10,7 +10,7 @@ import {
 } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import BlankAvatar from "../../common/BlankAvatar";
+import BlankAvatar from "../BlankAvatar";
 import { dateFormat } from "@/utils/dateFormat";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";

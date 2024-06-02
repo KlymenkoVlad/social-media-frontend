@@ -21,7 +21,7 @@ const Feed = ({ data }: { data: PostResponse }) => {
   const sortBy = watch("sortBy") || "new";
 
   return (
-    <div className="w-full mx-16 ">
+    <section className="w-full mx-16 ">
       <Form setPosts={setPosts} posts={posts} />
 
       <div className="flex p-4 justify-around items-center bg-white mb-4">
@@ -48,7 +48,7 @@ const Feed = ({ data }: { data: PostResponse }) => {
           sortBy={sortBy}
         />
       </ul>
-    </div>
+    </section>
   );
 };
 

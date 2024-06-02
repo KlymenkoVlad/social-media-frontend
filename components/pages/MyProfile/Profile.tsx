@@ -1,10 +1,12 @@
 "use client";
 
 import Form from "@/components/pages/Feed/Form";
-import InfiniteScrollPostsProfile from "@/components/pages/Feed/InfiniteScrollPostsProfile";
+import InfiniteScrollPostsProfile from "@/components/pages/MyProfile/InfiniteScrollPostsProfile";
 import { IPost } from "@/interfaces/post";
 import { User } from "@/interfaces/user";
 import { Person } from "@mui/icons-material";
+import Image from "next/image";
+import Link from "next/link";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -31,24 +33,45 @@ const Profile = ({
 
   return (
     <div className="w-full h-full mx-5 space-y-6">
-      <div className="bg-gray-300  rounded-md w-full relative h-[329px] overflow-hidden">
-        <div className="absolute w-full bg-white h-28 bottom-0 rounded-md">
-          <div className="rounded-full bg-gray-200 h-36 w-36 absolute left-5 bottom-9 overflow-hidden justify-center items-start flex">
-            <Person className=" w-40 h-40 text-gray-400" />
-          </div>
+      <div className="bg-gray-300  rounded-md w-full relative h-[300px] overflow-hidden">
+        <div className="absolute w-full bg-white h-36 bottom-0 rounded-md">
+          {user.image_url ? (
+            <div className="border-4 border-white rounded-full bg-gray-200 h-36 w-36 absolute left-5 bottom-12 overflow-hidden justify-center items-start flex">
+              <Image
+                width={100}
+                height={100}
+                alt="Profile Photo"
+                src={user?.image_url}
+                className="w-full h-full rounded-full"
+              />
+            </div>
+          ) : (
+            <div className="rounded-full bg-gray-200 h-36 w-36 absolute left-5 bottom-12 overflow-hidden justify-center items-start flex">
+              <Person className=" w-40 h-40 text-gray-400" />
+            </div>
+          )}
           <div className="ml-44 mr-10 flex justify-between items-center mt-5">
             <div>
-              <h1 className="">{user?.name}</h1>
-              <h1 className=" ">{user?.username}</h1>
+              <h1 className=" font-semibold">
+                {user?.name} {user?.surname} ({user.age} years)
+              </h1>
+              <h2 className="text-gray-500">@{user?.username}</h2>
             </div>
 
-            <button
+            <Link
               type="button"
+              href={`/settings`}
               className="transition-colors text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:bg-blue-900 focus:text-white focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center"
             >
               Edit Profile
-            </button>
+            </Link>
           </div>
+
+          {user?.description ? (
+            <p className="mt-10 mx-4">{user.description}</p>
+          ) : (
+            <p className="mt-10 mx-4 text-gray-500">No description specified</p>
+          )}
         </div>
       </div>
 

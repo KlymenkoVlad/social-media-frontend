@@ -3,7 +3,7 @@
 import { MoreHoriz } from "@mui/icons-material";
 import Image from "next/image";
 import React, { useState } from "react";
-import BlankAvatar from "../../common/BlankAvatar";
+import BlankAvatar from "../BlankAvatar";
 import { dateFormat } from "@/utils/dateFormat";
 import { ILike, IComment } from "@/interfaces/post";
 import PostInteractions from "./PostInteractions";
