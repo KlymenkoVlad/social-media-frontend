@@ -1,5 +1,6 @@
 "use server";
 
+import { FriendRequestStatus } from "@/components/pages/Profile/Profile";
 import { PasswordFormInputs } from "@/components/pages/Settings/PasswordForm";
 import { ProfileFormInputs } from "@/components/pages/Settings/ProfileForm";
 import { baseUrl } from "@/utils/baseUrl";
@@ -35,7 +36,7 @@ type InputsSignup = z.infer<typeof FormDataSchemaSignup>;
 
 export const sendData = async (
   data: InputsLogin | InputsSignup,
-  url: string
+  url: string,
 ) => {
   let result;
   const cookiesStore = cookies();
@@ -70,7 +71,7 @@ export const sendData = async (
 export const getAllPosts = async (
   cursor?: number,
   sortBy = "new",
-  take = 3
+  take = 3,
 ) => {
   const cookiesStore = cookies();
   const token = cookiesStore.get("token")?.value;
@@ -84,7 +85,7 @@ export const getAllPosts = async (
         Authorization: `Bearer ${token}`,
       },
       next: { tags: ["posts"] },
-    }
+    },
   );
 
   const data = await res.json();
@@ -96,7 +97,7 @@ export const getPostsByUserId = async (
   id: number,
   sortBy = "new",
   cursor?: number,
-  take = 4
+  take = 4,
 ) => {
   const cookiesStore = cookies();
   const token = cookiesStore.get("token")?.value;
@@ -110,7 +111,7 @@ export const getPostsByUserId = async (
         Authorization: `Bearer ${token}`,
       },
       next: { tags: ["posts"] },
-    }
+    },
   );
 
   const data = await res.json();
@@ -141,7 +142,7 @@ export const sendComment = async (text: string, postId: number) => {
 export const sendPost = async (
   text: string,
   title?: string,
-  imageUrl?: string
+  imageUrl?: string,
 ) => {
   const cookiesStore = cookies();
   const token = cookiesStore.get("token")?.value;
@@ -237,4 +238,104 @@ export const updatePassword = async (data: PasswordFormInputs) => {
     statusCode: res.status,
     message: "Password updated successfully",
   };
+};
+
+export const findUserByUsername = async (
+  username: string,
+  cursor?: number,
+  take = 3,
+) => {
+  const token = cookies().get("token")?.value;
+
+  const res = await fetch(
+    `${baseUrl}/user/username/${username}?cursor=${cursor}&take=${take}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  ).then((res) => res.json());
+
+  return res;
+};
+
+export const findPosts = async (text: string, cursor?: number, take = 3) => {
+  const token = cookies().get("token")?.value;
+
+  const res = await fetch(
+    `${baseUrl}/post/search/${text}?cursor=${cursor}&take=${take}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  ).then((res) => res.json());
+
+  return res;
+};
+
+export const getRequestInfo = async (id: number) => {
+  const token = cookies().get("token")?.value;
+
+  const requestInfo = await fetch(`${baseUrl}/friend/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+
+  return requestInfo.status;
+};
+
+export const addFriendRequest = async (id: number) => {
+  const token = cookies().get("token")?.value;
+
+  const friendRequest = await fetch(`${baseUrl}/friend/request/${id}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+  console.log(friendRequest);
+
+  return friendRequest;
+};
+
+export const deleteFriend = async (id: number) => {
+  const token = cookies().get("token")?.value;
+
+  const friendRequest = await fetch(`${baseUrl}/friend/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return friendRequest.status;
+};
+
+export const changeRequestStatus = async (
+  id: number,
+  newStatus: FriendRequestStatus,
+) => {
+  const token = cookies().get("token")?.value;
+  console.log(id);
+
+  const request = await fetch(`${baseUrl}/friend/accept/${id}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json", // Added Content-Type header
+    },
+    body: JSON.stringify({
+      newStatus,
+    }),
+  }).then((res) => res.json());
+
+  console.log(request);
+
+  return request;
 };

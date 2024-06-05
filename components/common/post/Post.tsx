@@ -32,18 +32,18 @@ const Post = ({
   const formattedDate = dateFormat(date);
 
   return (
-    <ul className="w-full overflow-auto bg-white mb-5 p-5 justify-between space-y-4 rounded-md">
+    <ul className="mb-5 w-full justify-between space-y-4 overflow-auto rounded-md bg-white p-5">
       <div>
         <div className="flex">
-          <div className="flex items-center w-full">
+          <div className="flex w-full items-center">
             <BlankAvatar />
             <div className="ml-3">
               <p>{username[0].toUpperCase() + username.slice(1)}</p>
-              <p className=" text-xs">{formattedDate}</p>
+              <p className="text-xs">{formattedDate}</p>
             </div>
           </div>
 
-          <div className="flex justify-center items-center rounded-full hover:bg-gray-200 transition-colors cursor-pointer w-8 h-8">
+          <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-200">
             <MoreHoriz />
           </div>
         </div>
@@ -57,7 +57,7 @@ const Post = ({
       {imageSrc && (
         <Image
           src={imageSrc}
-          className="min-w-full max-w-full h-full rounded-sm"
+          className="h-full min-w-full max-w-full rounded-sm"
           width={100}
           height={100}
           quality={100}

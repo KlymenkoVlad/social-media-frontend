@@ -18,52 +18,52 @@ const PostSkeleton = forwardRef(
         ref={ref}
         className={`${
           props.end ? "hidden" : "block"
-        } w-full overflow-auto bg-white mb-5 p-5 justify-between space-y-4 rounded-md animate-pulse`}
+        } mb-5 w-full animate-pulse justify-between space-y-4 overflow-auto rounded-md bg-white p-5`}
       >
         <div className="">
           <div className="flex">
-            <div className="flex items-center w-full">
-              <div className="rounded-full bg-gray-300 h-10 w-10 relative overflow-hidden justify-center items-start flex"></div>
+            <div className="flex w-full items-center">
+              <div className="relative flex h-10 w-10 items-start justify-center overflow-hidden rounded-full bg-gray-300"></div>
               <div className="ml-3 w-16 space-y-2">
-                <div className="h-2 bg-gray-300 rounded w-full"></div>
-                <div className="h-2 bg-gray-300 rounded w-full"></div>
+                <div className="h-2 w-full rounded bg-gray-300"></div>
+                <div className="h-2 w-full rounded bg-gray-300"></div>
               </div>
             </div>
 
-            <div className="flex justify-center items-center rounded-full transition-colors cursor-pointer w-8 h-8">
+            <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors">
               <MoreHoriz />
             </div>
           </div>
 
           <div className="mt-3">
-            <div className="h-2 bg-gray-300 rounded w-1/2"></div>
+            <div className="h-2 w-1/2 rounded bg-gray-300"></div>
 
             <div className="mt-3 space-y-2">
-              <div className="h-2 bg-gray-300 rounded w-full"></div>
-              <div className="h-2 bg-gray-300 rounded w-full"></div>
-              <div className="h-2 bg-gray-300 rounded w-full"></div>
-              <div className="h-2 bg-gray-300 rounded w-full"></div>
+              <div className="h-2 w-full rounded bg-gray-300"></div>
+              <div className="h-2 w-full rounded bg-gray-300"></div>
+              <div className="h-2 w-full rounded bg-gray-300"></div>
+              <div className="h-2 w-full rounded bg-gray-300"></div>
             </div>
           </div>
         </div>
-        <div className="rounded-md w-full h-80 bg-gray-300"></div>
+        <div className="h-80 w-full rounded-md bg-gray-300"></div>
         <div className="flex">
           <button
             disabled
-            className="bg-gray-100 rounded-2xl w-20 h-8 flex items-center justify-center cursor-pointer transition-colors"
+            className="flex h-8 w-20 cursor-pointer items-center justify-center rounded-2xl bg-gray-100 transition-colors"
           >
-            <FavoriteBorderOutlined className="w-5 h-5" />
+            <FavoriteBorderOutlined className="h-5 w-5" />
           </button>
           <button
             disabled
-            className="ml-3 bg-gray-100 rounded-2xl w-20 h-8 flex items-center justify-center cursor-pointer transition-colors"
+            className="ml-3 flex h-8 w-20 cursor-pointer items-center justify-center rounded-2xl bg-gray-100 transition-colors"
           >
-            <ChatBubbleOutlineOutlined className="w-5 h-5" />
+            <ChatBubbleOutlineOutlined className="h-5 w-5" />
           </button>
         </div>
       </ul>
     );
-  }
+  },
 );
 
 PostSkeleton.displayName = "PostSkeleton";

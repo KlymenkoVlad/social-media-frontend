@@ -4,8 +4,8 @@ export default function Home() {
   redirect("/feed");
 
   return (
-    <main className="flex min-h-screen ">
-      <div className="w-96 h-96 bg-slate-500"></div>
+    <main className="flex min-h-screen">
+      <div className="h-96 w-96 bg-slate-500"></div>
     </main>
   );
 }

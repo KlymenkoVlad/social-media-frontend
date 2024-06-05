@@ -37,16 +37,16 @@ const PasswordForm = () => {
     logo: React.ReactNode;
   }) => {
     return (
-      <div className="relative ">
+      <div className="relative">
         <input
           type={type}
-          className="w-full bg-gray-300 h-12 rounded-md ps-14 focus:outline-none mb-1"
+          className="mb-1 h-12 w-full rounded-md bg-gray-300 ps-14 focus:outline-none"
           placeholder={placeholder}
           {...register(name)}
         />
         {logo}
         {errors[name] && (
-          <p className="text-sm text-red-400 absolute top-full left-0">
+          <p className="absolute left-0 top-full text-sm text-red-400">
             {errors[name]?.message?.toString()}
           </p>
         )}
@@ -76,24 +76,24 @@ const PasswordForm = () => {
         onSubmit={handleSubmit(processForm)}
         className="grid grid-cols-2 items-center gap-6"
       >
-        <h1 className="text-3xl font-bold text-center mb-4 col-span-2">
+        <h1 className="col-span-2 mb-4 text-center text-3xl font-bold">
           Change Your Password
         </h1>
         <InputComponent
           type="password"
           name="oldPassword"
-          logo={<LockOpen className="absolute top-3 left-3" />}
+          logo={<LockOpen className="absolute left-3 top-3" />}
           placeholder="Your old password"
         />
         <InputComponent
           type="password"
           name="newPassword"
-          logo={<LockClock className="absolute top-3 left-3" />}
+          logo={<LockClock className="absolute left-3 top-3" />}
           placeholder="Your new password"
         />
 
         <button
-          className="w-full bg-indigo-600 h-12 rounded-md mt-3 text-white mb-12 col-span-2"
+          className="col-span-2 mb-12 mt-3 h-12 w-full rounded-md bg-indigo-600 text-white"
           type="submit"
         >
           Save

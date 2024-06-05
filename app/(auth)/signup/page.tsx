@@ -47,16 +47,16 @@ const Page = () => {
     logo: React.ReactNode;
   }) => {
     return (
-      <div className="relative ">
+      <div className="relative">
         <input
           type={type}
-          className="w-full bg-gray-300 h-12 rounded-md ps-14 focus:outline-none mb-1"
+          className="mb-1 h-12 w-full rounded-md bg-gray-300 ps-14 focus:outline-none"
           placeholder={placeholder}
           {...register(name)}
         />
         {logo}
         {errors[name] && (
-          <p className="text-sm text-red-400 absolute top-full left-0">
+          <p className="absolute left-0 top-full text-sm text-red-400">
             {errors[name]?.message}
           </p>
         )}
@@ -107,15 +107,12 @@ const Page = () => {
   };
 
   return (
-    <section className="h-dvh w-dvw py-10 px-2">
-      <form
-        onSubmit={handleSubmit(processForm)}
-        className=" h-full w-full flex "
-      >
-        <div className="w-1/2 p-10 md:block hidden ">
+    <section className="h-dvh w-dvw px-2 py-10">
+      <form onSubmit={handleSubmit(processForm)} className="flex h-full w-full">
+        <div className="hidden w-1/2 p-10 md:block">
           <Image
             src={"/signin_illustration.svg"}
-            className="min-w-full max-w-full h-full rounded-sm "
+            className="h-full min-w-full max-w-full rounded-sm"
             width={80}
             height={80}
             quality={100}
@@ -123,47 +120,47 @@ const Page = () => {
           />
         </div>
 
-        <div className=" w-full p-5  place-content-center">
-          <h1 className="text-3xl font-semibold mb-8">
+        <div className="w-full place-content-center p-5">
+          <h1 className="mb-8 text-3xl font-semibold">
             Welcome back to <br />
-            <span className="text-indigo-600 font-extrabold">Newmedia</span>
+            <span className="font-extrabold text-indigo-600">Newmedia</span>
           </h1>
-          <h2 className="text-xl font-semibold mb-5"></h2>
+          <h2 className="mb-5 text-xl font-semibold"></h2>
 
           <div className="grid grid-cols-2 gap-x-10 gap-y-8">
             <InputComponent
               type="email"
               name="email"
-              logo={<Email className="absolute top-3 left-3" />}
+              logo={<Email className="absolute left-3 top-3" />}
               placeholder="example@gmail.com"
             />
             <InputComponent
               type="password"
               name="password"
-              logo={<Lock className="absolute top-3 left-3" />}
+              logo={<Lock className="absolute left-3 top-3" />}
               placeholder="*********"
             />
             <InputComponent
               type="text"
               name="name"
-              logo={<Badge className="absolute top-3 left-3" />}
+              logo={<Badge className="absolute left-3 top-3" />}
               placeholder="Your first name"
             />
             <InputComponent
               type="text"
               name="username"
-              logo={<ContactEmergency className="absolute top-3 left-3" />}
+              logo={<ContactEmergency className="absolute left-3 top-3" />}
               placeholder="Your username"
             />
 
-            <button className="w-full bg-indigo-600 h-12 rounded-md mt-5 text-white mb-12 col-span-2">
+            <button className="col-span-2 mb-12 mt-5 h-12 w-full rounded-md bg-indigo-600 text-white">
               Sign Up
             </button>
           </div>
 
           <div className="flex justify-center">
             <Link
-              className="hover:text-indigo-600 transition-colors"
+              className="transition-colors hover:text-indigo-600"
               href={"/signin"}
             >
               Already have an account? Log in

@@ -3,7 +3,7 @@ import React from "react";
 
 const NotFound = () => {
   return (
-    <div className="text-center font-bold space-y-5">
+    <div className="space-y-5 text-center font-bold">
       <h2>Not Found</h2>
       <p>Could not find requested resource</p>
       <p className="">

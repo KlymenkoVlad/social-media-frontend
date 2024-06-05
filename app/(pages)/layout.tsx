@@ -18,7 +18,7 @@ export default function PageLayout({
   return (
     <div className="">
       <Header />
-      <div className="flex justify-center mx-auto w-[1150px] mt-6">
+      <div className="mx-auto mt-6 flex w-[1150px] justify-center">
         <LeftSidebar />
         {children}
         <RightSidebar />

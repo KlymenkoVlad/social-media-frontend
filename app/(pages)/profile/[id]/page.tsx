@@ -1,5 +1,5 @@
 import { getPostsByUserId } from "@/app/_actions";
-import Profile from "@/components/pages/MyProfile/Profile";
+import Profile from "@/components/pages/Profile/Profile";
 import { getDataAuth } from "@/db/fetchData";
 import { IPost } from "@/interfaces/post";
 import { User } from "@/interfaces/user";

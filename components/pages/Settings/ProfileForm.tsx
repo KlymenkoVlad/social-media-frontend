@@ -24,27 +24,27 @@ const ACCEPTED_IMAGE_MIME_TYPES = [
 const FormDataSchema = z.object({
   email: z.preprocess(
     (value) => (value === "" ? undefined : value),
-    z.string().email("Invalid email").optional()
+    z.string().email("Invalid email").optional(),
   ),
 
   name: z.preprocess(
     (value) => (value === "" ? undefined : value),
-    z.string().min(1, "Name is required").optional()
+    z.string().min(1, "Name is required").optional(),
   ),
 
   username: z.preprocess(
     (value) => (value === "" ? undefined : value),
-    z.string().min(3, "Username must be at least 3 characters").optional()
+    z.string().min(3, "Username must be at least 3 characters").optional(),
   ),
 
   surname: z.preprocess(
     (value) => (value === "" ? undefined : value),
-    z.string().optional()
+    z.string().optional(),
   ),
 
   age: z.preprocess(
     (value) => (value === "" ? undefined : value),
-    z.string().optional()
+    z.string().optional(),
   ),
 
   image_url: z.preprocess(
@@ -60,12 +60,12 @@ const FormDataSchema = z.object({
         return ACCEPTED_IMAGE_MIME_TYPES.includes(files[0].type);
       }, "Only .jpg, .jpeg, .png and .webp formats are supported.")
       .optional()
-      .nullable()
+      .nullable(),
   ),
 
   description: z.preprocess(
     (value) => (value === "" ? undefined : value),
-    z.string().max(40, "Description must be below 40 characters").optional()
+    z.string().max(40, "Description must be below 40 characters").optional(),
   ),
 });
 
@@ -99,16 +99,16 @@ const ProfileForm = () => {
     logo: React.ReactNode;
   }) => {
     return (
-      <div className="relative ">
+      <div className="relative">
         <input
           type={type}
-          className="w-full bg-gray-300 h-12 rounded-md ps-14 focus:outline-none mb-1"
+          className="mb-1 h-12 w-full rounded-md bg-gray-300 ps-14 focus:outline-none"
           placeholder={placeholder}
           {...register(name)}
         />
         {logo}
         {errors[name] && (
-          <p className="text-sm text-red-400 absolute top-full left-0">
+          <p className="absolute left-0 top-full text-sm text-red-400">
             {errors[name]?.message?.toString()}
           </p>
         )}
@@ -166,75 +166,75 @@ const ProfileForm = () => {
       onSubmit={handleSubmit(processForm)}
       className="grid grid-cols-2 items-center gap-6"
     >
-      <h1 className="text-3xl font-bold text-center mb-5 col-span-2">
+      <h1 className="col-span-2 mb-5 text-center text-3xl font-bold">
         Change Your Profile Settings
       </h1>
 
       <InputComponent
         type="email"
         name="email"
-        logo={<Email className="absolute top-3 left-3" />}
+        logo={<Email className="absolute left-3 top-3" />}
         placeholder={user?.email || "Your email(not defined)"}
       />
       <InputComponent
         type="text"
         name="age"
-        logo={<Cake className="absolute top-3 left-3" />}
+        logo={<Cake className="absolute left-3 top-3" />}
         placeholder={user?.age?.toString() || "Your age(not defined)"}
       />
       <InputComponent
         type="text"
         name="name"
-        logo={<Badge className="absolute top-3 left-3" />}
+        logo={<Badge className="absolute left-3 top-3" />}
         placeholder={user?.name || "Your first name(not defined)"}
       />
       <InputComponent
         type="text"
         name="surname"
-        logo={<Badge className="absolute top-3 left-3" />}
+        logo={<Badge className="absolute left-3 top-3" />}
         placeholder={user?.surname || "Your last name(not defined)"}
       />
       <div className="col-span-2">
         <InputComponent
           type="text"
           name="username"
-          logo={<ContactEmergency className="absolute top-3 left-3" />}
+          logo={<ContactEmergency className="absolute left-3 top-3" />}
           placeholder={user?.username || "Your username(not defined)"}
         />
       </div>
 
       <textarea
-        className="w-full bg-gray-300 h-24 rounded-md p-2 focus:outline-none col-span-2 "
+        className="col-span-2 h-24 w-full rounded-md bg-gray-300 p-2 focus:outline-none"
         name="description"
         placeholder={user?.description || "Tell us about yourself"}
         {...register("description")}
       />
       {errors?.description && (
         <div>
-          <p className="text-sm text-red-400  col-span-2 block">
+          <p className="col-span-2 block text-sm text-red-400">
             {errors.description?.message}
           </p>
         </div>
       )}
 
-      <div className=" items-center justify-between px-3 py-2 col-span-2 w-full ">
+      <div className="col-span-2 w-full items-center justify-between px-3 py-2">
         <input
           type="file"
           {...register("image_url")}
-          className="w-full block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none "
+          className="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:text-gray-400"
         />
         <p className="text-red-500">{errors.image_url?.message?.toString()}</p>
       </div>
 
       {imageUrl?.[0] && (
-        <div className="text-center font-semibold bg-white rounded-md p-2 col-span-2">
+        <div className="col-span-2 rounded-md bg-white p-2 text-center font-semibold">
           <h3>Image preview:</h3>
           <ImagePreview file={imageUrl[0]} />
         </div>
       )}
 
       <button
-        className="w-full bg-indigo-600 h-12 rounded-md mt-3 text-white mb-12 col-span-2"
+        className="col-span-2 mb-12 mt-3 h-12 w-full rounded-md bg-indigo-600 text-white"
         type="submit"
       >
         Save
