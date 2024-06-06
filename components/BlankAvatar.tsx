@@ -2,7 +2,7 @@ import { Person } from "@mui/icons-material";
 import Image from "next/image";
 import React from "react";
 
-const BlankAvatar = ({ imageSrc }: { imageSrc?: string | null }) => {
+const BlankAvatar = ({ imageSrc }: { imageSrc?: string | null | null }) => {
   const style = `absolute w-12 h-12 text-gray-400 `;
 
   return (

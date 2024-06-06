@@ -1,4 +1,4 @@
-import Logo from "@/components/common/Logo";
+import Logo from "@/components/Logo";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import React from "react";

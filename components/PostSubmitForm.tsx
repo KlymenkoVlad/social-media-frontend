@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { sendPost } from "@/app/_actions";
 import toast from "react-hot-toast";
 import { IPost } from "@/interfaces/post";
-import ImagePreview from "./ImagePreview";
+import ImageUploadingPreview from "./ImageUploadingPreview";
 import { baseUrl } from "@/utils/baseUrl";
 
 //TODO capability to add image
@@ -21,7 +21,13 @@ const ACCEPTED_IMAGE_MIME_TYPES = [
   "image/webp",
 ];
 
-const Form = ({ setPosts, posts }: { setPosts: any; posts: IPost[] }) => {
+const PostSubmitForm = ({
+  setPosts,
+  posts,
+}: {
+  setPosts: any;
+  posts: IPost[];
+}) => {
   const [showTitleForm, setShowTitleForm] = useState<boolean>(false);
 
   const FormSchema = z.object({
@@ -61,6 +67,7 @@ const Form = ({ setPosts, posts }: { setPosts: any; posts: IPost[] }) => {
     toast.loading("Create your post...");
 
     let img: string;
+
     if (data.imageUrl.length > 0) {
       const formData = new FormData();
       formData.append("file", data.imageUrl[0]);
@@ -71,6 +78,7 @@ const Form = ({ setPosts, posts }: { setPosts: any; posts: IPost[] }) => {
 
       img = res.url;
     }
+
     const result = await sendPost(data.text, data.title, img);
 
     toast.remove();
@@ -141,11 +149,11 @@ const Form = ({ setPosts, posts }: { setPosts: any; posts: IPost[] }) => {
       {imageUrl?.[0] && (
         <div className="rounded-md bg-white p-2 text-center font-semibold">
           <h3>Image preview:</h3>
-          <ImagePreview file={imageUrl[0]} />
+          <ImageUploadingPreview file={imageUrl[0]} />
         </div>
       )}
     </form>
   );
 };
 
-export default Form;
+export default PostSubmitForm;

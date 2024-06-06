@@ -12,7 +12,7 @@ export default function PageLayout({
 }) {
   const token = cookies().get("token");
 
-  if (!token) {
+  if (!token?.value || token.value.length <= 0) {
     redirect("/signin");
   }
   return (

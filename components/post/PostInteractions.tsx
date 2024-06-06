@@ -22,9 +22,15 @@ interface LikeProps {
   postId: number;
   likes: ILike[] | [];
   comments: IComment[] | [];
+  userImage: string | null;
 }
 
-const PostInteractions = ({ likes, postId, comments }: LikeProps) => {
+const PostInteractions = ({
+  likes,
+  postId,
+  comments,
+  userImage,
+}: LikeProps) => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [likesAmount, setLikesAmount] = useState<number>(likes.length);
   const [renderComments, setRenderComments] = useState(comments);
@@ -127,7 +133,7 @@ const PostInteractions = ({ likes, postId, comments }: LikeProps) => {
               <div key={comment.id}>
                 <div className="mb-3 flex items-center justify-between">
                   <div className="flex items-center space-x-5">
-                    <BlankAvatar />
+                    <BlankAvatar imageSrc={userImage} />
                     <div>
                       <p className="font-semibold">{comment.user.username}</p>
                       <p>{comment.text}</p>

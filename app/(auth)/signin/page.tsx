@@ -42,7 +42,7 @@ const Page = () => {
       }
 
       toast.success("Login successful");
-      router.push("/feed");
+      return router.push("/feed");
     }
 
     reset();

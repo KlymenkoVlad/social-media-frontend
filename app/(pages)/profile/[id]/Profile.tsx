@@ -6,7 +6,7 @@ import {
   deleteFriend,
   getRequestInfo,
 } from "@/app/_actions";
-import InfiniteScrollPostsProfile from "@/components/pages/Profile/InfiniteScrollPostsProfile";
+import InfiniteScrollPostsProfile from "./InfiniteScrollPostsProfile";
 import { IPost } from "@/interfaces/post";
 import { User } from "@/interfaces/user";
 import { Person } from "@mui/icons-material";
@@ -26,10 +26,10 @@ interface ProfileProps {
 
 export enum FriendRequestStatus {
   PENDING = "PENDING",
+  ACCEPT = "ACCEPT",
   ACCEPTED = "ACCEPTED",
   DECLINED = "DECLINED",
-  ADD_FRIEND = "ADD_FRIEND",
-  REQUEST_FRIEND = "REQUEST_FRIEND",
+  NO_INTERACTIONS = "NO_INTERACTIONS",
 }
 
 const Button = ({
@@ -37,9 +37,11 @@ const Button = ({
   user,
   setRequestInfo,
 }: {
-  requestInfo: FriendRequestStatus;
+  requestInfo: FriendRequestStatus | undefined;
   user: User;
-  setRequestInfo: React.Dispatch<React.SetStateAction<FriendRequestStatus>>;
+  setRequestInfo: React.Dispatch<
+    React.SetStateAction<FriendRequestStatus | undefined>
+  >;
 }) => {
   if (requestInfo == FriendRequestStatus.PENDING) {
     return (
@@ -51,13 +53,13 @@ const Button = ({
           toast.remove();
           if (status === 200) {
             toast.success("Friend request canceled");
-            setRequestInfo(FriendRequestStatus.REQUEST_FRIEND);
+            setRequestInfo(FriendRequestStatus.NO_INTERACTIONS);
             return;
           }
 
           toast.error("Something went wrong");
         }}
-        className="border-text flex w-full transform cursor-pointer items-center justify-center rounded-sm border-2 border-blue-300 px-4 py-4 text-sm font-bold capitalize leading-6 transition-all duration-100 hover:-translate-y-1 hover:border-red-300 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 sm:w-auto sm:px-6"
+        className="border-text flex w-full transform cursor-pointer items-center justify-center rounded-sm border-2 border-blue-300 px-2 py-2 text-sm font-bold capitalize leading-6 transition-all duration-100 hover:-translate-y-1 hover:border-red-300 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 sm:w-auto"
       >
         <span>Cancel request</span>
       </button>
@@ -74,7 +76,7 @@ const Button = ({
           toast.remove();
           if (status === 200) {
             toast.success("Friend deleted");
-            setRequestInfo(FriendRequestStatus.REQUEST_FRIEND);
+            setRequestInfo(FriendRequestStatus.NO_INTERACTIONS);
             return;
           }
 
@@ -91,7 +93,7 @@ const Button = ({
     return;
   }
 
-  if (requestInfo == FriendRequestStatus.ADD_FRIEND) {
+  if (requestInfo == FriendRequestStatus.ACCEPT) {
     return (
       <div className="flex space-x-3">
         <button
@@ -123,7 +125,7 @@ const Button = ({
             toast.remove();
             if (status === 200) {
               toast.success("Friend request declined");
-              setRequestInfo(FriendRequestStatus.REQUEST_FRIEND);
+              setRequestInfo(FriendRequestStatus.NO_INTERACTIONS);
               return;
             }
 
@@ -137,7 +139,7 @@ const Button = ({
     );
   }
 
-  if (requestInfo == FriendRequestStatus.REQUEST_FRIEND) {
+  if (requestInfo == FriendRequestStatus.NO_INTERACTIONS) {
     return (
       <button
         type="button"
@@ -168,9 +170,10 @@ const Profile = ({
   postsLength,
 }: ProfileProps) => {
   const [renderPosts, setRenderPosts] = useState(posts);
-  const [userId, setUserId] = useState<string | undefined>();
-  const [requestInfo, setRequestInfo] =
-    useState<FriendRequestStatus>(undefined);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [requestInfo, setRequestInfo] = useState<
+    FriendRequestStatus | undefined
+  >();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -218,7 +221,7 @@ const Profile = ({
               <h2 className="text-gray-500">@{user?.username}</h2>
             </div>
 
-            {!loading ? (
+            {userId && !loading ? (
               +userId === user?.id ? (
                 <Link
                   type="button"
@@ -258,7 +261,6 @@ const Profile = ({
           <h1 className="text-lg font-bold">You can sort by:</h1>
           <select
             className="block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-            name="sort"
             id="sort"
             defaultValue="new"
             {...register("sortBy")}
@@ -269,15 +271,17 @@ const Profile = ({
         </div>
 
         <ul role="list">
-          <InfiniteScrollPostsProfile
-            posts={renderPosts}
-            setRenderPosts={setRenderPosts}
-            hasNextPage={hasNextPage}
-            nextCursor={nextCursor}
-            postsLength={postsLength}
-            sortBy={sortBy}
-            userId={user.id}
-          />
+          {user && (
+            <InfiniteScrollPostsProfile
+              posts={renderPosts}
+              setRenderPosts={setRenderPosts}
+              hasNextPage={hasNextPage}
+              nextCursor={nextCursor}
+              postsLength={postsLength}
+              sortBy={sortBy}
+              userId={user.id}
+            />
+          )}
         </ul>
       </div>
     </section>

@@ -1,4 +1,4 @@
-import BlankAvatar from "@/components/common/BlankAvatar";
+import BlankAvatar from "@/components/BlankAvatar";
 import {
   ChatBubbleOutlineOutlined,
   FavoriteBorderOutlined,

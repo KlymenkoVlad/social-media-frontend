@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
-import ImagePreview from "../Feed/ImagePreview";
+import ImagePreview from "../../../components/ImageUploadingPreview";
 import { baseUrl } from "@/utils/baseUrl";
 
 const MAX_FILE_SIZE = 1024 * 1024 * 5;

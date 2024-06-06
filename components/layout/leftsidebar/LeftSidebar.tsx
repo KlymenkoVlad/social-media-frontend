@@ -6,7 +6,7 @@ import {
   GroupsOutlined,
 } from "@mui/icons-material";
 
-import LinkSidebar from "./clientSide/LinkSidebar";
+import LinkSidebar from "./LinkSidebar";
 import Link from "next/link";
 
 const LeftSidebar = () => {

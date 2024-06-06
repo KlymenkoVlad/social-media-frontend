@@ -25,35 +25,6 @@ const PasswordForm = () => {
     resolver: zodResolver(FormDataSchema),
   });
 
-  const InputComponent = ({
-    type,
-    placeholder,
-    name,
-    logo,
-  }: {
-    type: string;
-    placeholder: string;
-    name: keyof PasswordFormInputs;
-    logo: React.ReactNode;
-  }) => {
-    return (
-      <div className="relative">
-        <input
-          type={type}
-          className="mb-1 h-12 w-full rounded-md bg-gray-300 ps-14 focus:outline-none"
-          placeholder={placeholder}
-          {...register(name)}
-        />
-        {logo}
-        {errors[name] && (
-          <p className="absolute left-0 top-full text-sm text-red-400">
-            {errors[name]?.message?.toString()}
-          </p>
-        )}
-      </div>
-    );
-  };
-
   const processForm = async (data: PasswordFormInputs) => {
     toast.loading("Updating your password...");
     const res = await updatePassword(data);

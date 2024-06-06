@@ -13,6 +13,7 @@ export interface IComment {
   updated_at: Date;
   user: {
     username: string;
+    image_url: string;
   };
 }
 
@@ -24,9 +25,10 @@ export interface IPost {
   user_id: number;
   created_at: Date;
   updated_at: Date;
-  likes: [];
-  comments: [];
+  likes: ILike[];
+  comments: IComment[];
   user: {
     username: string;
+    image_url: string;
   };
 }

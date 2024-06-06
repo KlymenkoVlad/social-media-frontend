@@ -1,5 +1,5 @@
-import PasswordForm from "@/components/pages/Settings/PasswordForm";
-import ProfileForm from "@/components/pages/Settings/ProfileForm";
+import PasswordForm from "@/app/(pages)/settings/PasswordForm";
+import ProfileForm from "@/app/(pages)/settings/ProfileForm";
 
 import React from "react";
 

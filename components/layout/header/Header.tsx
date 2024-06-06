@@ -1,23 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
-import {
-  Search,
-  KeyboardArrowDown,
-  Clear,
-  Settings,
-  Logout,
-  HelpOutline,
-  Notifications,
-} from "@mui/icons-material";
-import Logo from "../../common/Logo";
-import BlankAvatar from "@/components/common/BlankAvatar";
+import React from "react";
+import { Search, Clear } from "@mui/icons-material";
+import Logo from "../../Logo";
 import Link from "next/link";
-import cookies from "js-cookie";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { stringCut } from "@/utils/stringCut";
+import Modals from "./Modals";
 
 const FormSchema = z.object({
   text: z.string().min(1, "Text is required"),
@@ -26,26 +17,9 @@ const FormSchema = z.object({
 type Inputs = z.infer<typeof FormSchema>;
 
 const Header = () => {
-  const [showModal, setShowModal] = useState(false);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    watch,
-  } = useForm<Inputs>({
+  const { register, handleSubmit, reset, watch } = useForm<Inputs>({
     resolver: zodResolver(FormSchema),
   });
-
-  // const processForm = async (data: Inputs) => {};
-
-  const trunculateString = (str: string, maxLength = 20) => {
-    if (str && str.length > maxLength) {
-      return str.slice(0, maxLength) + "...";
-    }
-    return str;
-  };
 
   const text = watch("text");
 
@@ -79,75 +53,21 @@ const Header = () => {
             href={`/search/posts/${text}`}
             onClick={() => reset()}
           >
-            Find <span className="font-bold">{trunculateString(text, 26)}</span>{" "}
-            in <span className="font-bold">posts</span>
+            Find <span className="font-bold">{stringCut(text, 26)}</span> in{" "}
+            <span className="font-bold">posts</span>
           </Link>
           <Link
             className="block h-12 rounded-md p-2 transition-colors hover:bg-gray-200"
             href={`/search/users/${text}`}
             onClick={() => reset()}
           >
-            Find <span className="font-bold">{trunculateString(text, 26)}</span>{" "}
-            in <span className="font-bold">users</span>
+            Find <span className="font-bold">{stringCut(text, 26)}</span> in{" "}
+            <span className="font-bold">users</span>
           </Link>
         </div>
       </form>
 
-      <div className="flex h-full items-center space-x-3">
-        <div className="flex h-full w-12 cursor-pointer items-center justify-center transition-colors hover:bg-gray-300">
-          <Notifications />
-        </div>
-        <div
-          onClick={() => setShowModal(!showModal)}
-          className="flex h-full w-24 cursor-pointer items-center justify-center transition-colors hover:bg-gray-300"
-        >
-          <BlankAvatar />
-          <KeyboardArrowDown
-            className={` ${
-              showModal ? "rotate-180 text-gray-500" : "text-gray-400"
-            }`}
-          />
-        </div>
-      </div>
-
-      <div
-        className={`absolute right-[160px] top-16 z-10 h-[300px] w-[250px] transform space-y-6 rounded-md bg-white shadow-md transition-opacity duration-300 ease-in-out ${
-          showModal ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
-      >
-        <div className="flex w-full items-center p-3">
-          <BlankAvatar imageSrc="" />
-          <div className="ml-3">
-            <p className="">name</p>
-            <p className="text-xs text-gray-400">username</p>
-          </div>
-        </div>
-
-        <Link
-          className="flex w-full items-center p-3 transition-colors hover:bg-gray-200"
-          href={"/my-profile/settings"}
-        >
-          <Settings />
-          <p className="ml-2">Settings</p>
-        </Link>
-        <Link
-          className="flex w-full items-center p-3 transition-colors hover:bg-gray-200"
-          href={"/my-profile/help"}
-        >
-          <HelpOutline />
-          <p className="ml-2">Help</p>
-        </Link>
-        <button
-          onClick={() => {
-            cookies.remove("token");
-            redirect("/signin");
-          }}
-          className="flex w-full items-center p-3 transition-colors hover:bg-gray-200"
-        >
-          <Logout />
-          <p className="ml-2">Sign out</p>
-        </button>
-      </div>
+      <Modals />
     </header>
   );
 };

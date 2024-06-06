@@ -2,10 +2,10 @@
 
 import { IPost } from "@/interfaces/post";
 import React, { useEffect, useState } from "react";
-import Post from "../../common/post/Post";
+import Post from "../../../../components/post/Post";
 import { useInView } from "react-intersection-observer";
 import { getPostsByUserId } from "@/app/_actions";
-import PostSkeleton from "../../common/post/PostSkeleton";
+import PostSkeleton from "../../../../components/post/PostSkeleton";
 import { SelfImprovement } from "@mui/icons-material";
 
 interface PostResponse {
@@ -26,7 +26,7 @@ const InfiniteScrollPostsProfile = ({
   sortBy,
   userId,
 }: PostResponse) => {
-  const [cursor, setCursor] = useState<number>(nextCursor);
+  const [cursor, setCursor] = useState<number | null>(nextCursor);
   const [end, setEnd] = useState(!hasNextPage);
   const [ref, inView] = useInView();
   const [currentSort, setCurrentSort] = useState<string>(sortBy);
@@ -35,7 +35,7 @@ const InfiniteScrollPostsProfile = ({
     const sortUpdating = async () => {
       if (sortBy !== currentSort) {
         setEnd(false);
-        setCursor(undefined);
+        setCursor(null);
         setRenderPosts([]);
         const data: PostResponse = await getPostsByUserId(
           userId,
@@ -92,6 +92,7 @@ const InfiniteScrollPostsProfile = ({
             key={post.id}
             postId={post.id}
             likes={post.likes}
+            userImage={post.user.image_url}
             comments={post.comments}
             text={post.text}
             title={post.title}

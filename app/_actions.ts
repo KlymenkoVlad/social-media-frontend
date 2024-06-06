@@ -1,8 +1,8 @@
 "use server";
 
-import { FriendRequestStatus } from "@/components/pages/Profile/Profile";
-import { PasswordFormInputs } from "@/components/pages/Settings/PasswordForm";
-import { ProfileFormInputs } from "@/components/pages/Settings/ProfileForm";
+import { FriendRequestStatus } from "@/app/(pages)/profile/[id]/Profile";
+import { PasswordFormInputs } from "@/app/(pages)/settings/PasswordForm";
+import { ProfileFormInputs } from "@/app/(pages)/settings/ProfileForm";
 import { baseUrl } from "@/utils/baseUrl";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
@@ -63,7 +63,9 @@ export const sendData = async (
     },
   }).then((res) => res.json());
 
-  cookiesStore.set("token", response.token);
+  if (response.token.length > 0) {
+    cookiesStore.set("token", response.token);
+  }
 
   return { response, user };
 };
@@ -96,7 +98,7 @@ export const getAllPosts = async (
 export const getPostsByUserId = async (
   id: number,
   sortBy = "new",
-  cursor?: number,
+  cursor?: number | null,
   take = 4,
 ) => {
   const cookiesStore = cookies();
@@ -281,7 +283,8 @@ export const findPosts = async (text: string, cursor?: number, take = 3) => {
 export const getRequestInfo = async (id: number) => {
   const token = cookies().get("token")?.value;
 
-  const requestInfo = await fetch(`${baseUrl}/friend/${id}`, {
+  const requestInfo = await fetch(`${baseUrl}/request/status/${id}`, {
+    method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -293,7 +296,7 @@ export const getRequestInfo = async (id: number) => {
 export const addFriendRequest = async (id: number) => {
   const token = cookies().get("token")?.value;
 
-  const friendRequest = await fetch(`${baseUrl}/friend/request/${id}`, {
+  const friendRequest = await fetch(`${baseUrl}/request/send${id}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -324,7 +327,7 @@ export const changeRequestStatus = async (
   const token = cookies().get("token")?.value;
   console.log(id);
 
-  const request = await fetch(`${baseUrl}/friend/accept/${id}`, {
+  const request = await fetch(`${baseUrl}/request/accept/${id}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -338,4 +341,30 @@ export const changeRequestStatus = async (
   console.log(request);
 
   return request;
+};
+
+export const getFriendsList = async (userId: string) => {
+  const token = cookies().get("token")?.value;
+
+  const res = await fetch(`${baseUrl}/friend/${userId}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+
+  return res;
+};
+
+export const getAllRequestsToMe = async () => {
+  const token = cookies().get("token")?.value;
+
+  const res = await fetch(`${baseUrl}/request`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+
+  return res;
 };

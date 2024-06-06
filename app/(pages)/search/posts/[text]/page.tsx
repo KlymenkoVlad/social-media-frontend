@@ -1,13 +1,13 @@
 import { findPosts } from "@/app/_actions";
-import InfiniteScrollPosts from "@/components/pages/Feed/InfiniteScrollPosts";
-import InfiniteScrollPostsSearch from "@/components/pages/PostsSearch/InfiniteScrollPostsSearch";
+import InfiniteScrollPosts from "@/app/(pages)/feed/InfiniteScrollPosts";
+import InfiniteScrollPostsSearch from "@/app/(pages)/search/posts/[text]/InfiniteScrollPostsSearch";
 import { IPost } from "@/interfaces/post";
 import React from "react";
 
 interface PostsResponse {
   posts: IPost[];
   status: string;
-  nextCursor: number | null;
+  nextCursor: number;
   hasNextPage: boolean;
   postsLength: number;
 }

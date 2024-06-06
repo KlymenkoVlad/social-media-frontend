@@ -1,5 +1,5 @@
 import { findUserByUsername } from "@/app/_actions";
-import InfiniteScrollUsers from "@/components/pages/UsersSearch/InfiniteScrollUsers";
+import InfiniteScrollUsers from "@/app/(pages)/search/users/[username]/InfiniteScrollUsers";
 import { User } from "@/interfaces/user";
 import React from "react";
 

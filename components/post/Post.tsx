@@ -2,7 +2,7 @@
 
 import { MoreHoriz } from "@mui/icons-material";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import BlankAvatar from "../BlankAvatar";
 import { dateFormat } from "@/utils/dateFormat";
 import { ILike, IComment } from "@/interfaces/post";
@@ -17,6 +17,7 @@ interface PostProps {
   imageSrc?: string;
   username: string;
   postId: number;
+  userImage: string | null;
 }
 
 const Post = ({
@@ -28,6 +29,7 @@ const Post = ({
   imageSrc,
   username,
   postId,
+  userImage,
 }: PostProps) => {
   const formattedDate = dateFormat(date);
 
@@ -36,7 +38,7 @@ const Post = ({
       <div>
         <div className="flex">
           <div className="flex w-full items-center">
-            <BlankAvatar />
+            <BlankAvatar imageSrc={userImage} />
             <div className="ml-3">
               <p>{username[0].toUpperCase() + username.slice(1)}</p>
               <p className="text-xs">{formattedDate}</p>
@@ -65,7 +67,12 @@ const Post = ({
         />
       )}
 
-      <PostInteractions likes={likes} comments={comments} postId={postId} />
+      <PostInteractions
+        likes={likes}
+        comments={comments}
+        postId={postId}
+        userImage={userImage}
+      />
     </ul>
   );
 };

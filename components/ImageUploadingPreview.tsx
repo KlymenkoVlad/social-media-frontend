@@ -3,7 +3,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 
-const ImagePreview = ({ file }: { file: File | string }) => {
+const ImageUploadingPreview = ({ file }: { file: File | string }) => {
   const [preview, setPreview] = useState<string | ArrayBuffer | undefined>();
 
   if (file instanceof File) {
@@ -31,4 +31,4 @@ const ImagePreview = ({ file }: { file: File | string }) => {
   );
 };
 
-export default ImagePreview;
+export default ImageUploadingPreview;

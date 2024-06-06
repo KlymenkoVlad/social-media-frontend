@@ -2,19 +2,19 @@
 
 import { IPost } from "@/interfaces/post";
 import React, { useEffect, useState } from "react";
-import Post from "../../common/post/Post";
+import Post from "../../../../../components/post/Post";
 import { useInView } from "react-intersection-observer";
 import { findUserByUsername, getPostsByUserId } from "@/app/_actions";
-import PostSkeleton from "../../common/post/PostSkeleton";
+import PostSkeleton from "../../../../../components/post/PostSkeleton";
 import { SelfImprovement } from "@mui/icons-material";
 import { User } from "@/interfaces/user";
-import BlankAvatar from "@/components/common/BlankAvatar";
+import BlankAvatar from "@/components/BlankAvatar";
 import Link from "next/link";
 
 interface UsersParams {
   users: User[];
   status: string;
-  nextCursor: number | null;
+  nextCursor: number;
   hasNextPage: boolean;
   usersLength: number;
   searchSlug: string;

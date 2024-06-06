@@ -2,10 +2,10 @@
 
 import { IPost } from "@/interfaces/post";
 import React, { useEffect, useState } from "react";
-import Post from "../../common/post/Post";
+import Post from "../../../../../components/post/Post";
 import { useInView } from "react-intersection-observer";
-import { getAllPosts } from "@/app/_actions";
-import PostSkeleton from "../../common/post/PostSkeleton";
+import { findPosts, getPostsByUserId } from "@/app/_actions";
+import PostSkeleton from "../../../../../components/post/PostSkeleton";
 import { SelfImprovement } from "@mui/icons-material";
 
 interface PostResponse {
@@ -13,80 +13,54 @@ interface PostResponse {
   nextCursor: number;
   hasNextPage: boolean;
   postsLength: number;
-  setPosts: React.Dispatch<React.SetStateAction<IPost[]>>;
-  sortBy: string;
+  text: string;
 }
 
-const InfiniteScrollPosts = ({
+const InfiniteScrollPostsSearch = ({
   posts,
   nextCursor,
   hasNextPage,
-  setPosts,
-  sortBy,
+  text,
 }: PostResponse) => {
   const [cursor, setCursor] = useState<number>(nextCursor);
   const [end, setEnd] = useState(!hasNextPage);
   const [ref, inView] = useInView();
-  const [currentSort, setCurrentSort] = useState<string>(sortBy);
+  const [renderPosts, setRenderPosts] = useState(posts);
 
-  useEffect(() => {
-    const sortUpdating = async () => {
-      if (sortBy !== currentSort) {
-        console.log(sortBy, currentSort);
-        setEnd(false);
-        setCursor(undefined);
-        setPosts([]);
-        const data: PostResponse = await getAllPosts(undefined, sortBy);
-
-        if (!data.hasNextPage || !hasNextPage) {
-          setEnd(true);
-        }
-
-        await setPosts([...data.posts]);
-
-        setCursor(data.nextCursor);
-        setCurrentSort(sortBy);
-      }
-    };
-
-    sortUpdating();
-  }, [sortBy]);
+  console.log(renderPosts);
 
   const fetchPosts = async () => {
     if (end) {
       return;
     }
 
-    console.log(currentSort);
-
-    const data: PostResponse = await getAllPosts(cursor, currentSort);
+    const data: PostResponse = await findPosts(text, cursor);
 
     if (!data.hasNextPage || !hasNextPage) {
       setEnd(true);
     }
 
-    console.log([...posts, ...data.posts]);
-
-    setPosts([...posts, ...data.posts]);
+    setRenderPosts([...renderPosts, ...data.posts]);
 
     setCursor(data.nextCursor);
   };
 
   useEffect(() => {
-    if (inView && sortBy === currentSort && !end) {
+    if (inView && !end) {
       fetchPosts();
     }
   }, [inView]);
 
   return (
     <div>
-      {posts &&
-        posts?.length > 0 &&
-        posts.map((post) => (
+      {renderPosts &&
+        renderPosts?.length > 0 &&
+        renderPosts.map((post) => (
           <Post
             key={post.id}
             postId={post.id}
             likes={post.likes}
+            userImage={post.user.image_url}
             comments={post.comments}
             text={post.text}
             title={post.title}
@@ -109,4 +83,4 @@ const InfiniteScrollPosts = ({
   );
 };
 
-export default InfiniteScrollPosts;
+export default InfiniteScrollPostsSearch;
