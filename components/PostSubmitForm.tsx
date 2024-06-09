@@ -66,7 +66,7 @@ const PostSubmitForm = ({
   const processForm: SubmitHandler<Inputs> = async (data) => {
     toast.loading("Create your post...");
 
-    let img: string;
+    let img: string | undefined;
 
     if (data.imageUrl.length > 0) {
       const formData = new FormData();

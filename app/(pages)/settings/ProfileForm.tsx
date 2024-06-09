@@ -9,8 +9,8 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
-import ImagePreview from "../../../components/ImageUploadingPreview";
 import { baseUrl } from "@/utils/baseUrl";
+import ImageUploadingPreview from "@/components/ImageUploadingPreview";
 
 const MAX_FILE_SIZE = 1024 * 1024 * 5;
 const ACCEPTED_IMAGE_MIME_TYPES = [
@@ -79,6 +79,7 @@ const ProfileForm = () => {
   useEffect(() => {
     const userFetching = async () => {
       const userId = localStorage.getItem("userId");
+      if (!userId) return;
       const user = await getUser(+userId);
 
       setUser(user);
@@ -205,7 +206,6 @@ const ProfileForm = () => {
 
       <textarea
         className="col-span-2 h-24 w-full rounded-md bg-gray-300 p-2 focus:outline-none"
-        name="description"
         placeholder={user?.description || "Tell us about yourself"}
         {...register("description")}
       />
@@ -229,7 +229,7 @@ const ProfileForm = () => {
       {imageUrl?.[0] && (
         <div className="col-span-2 rounded-md bg-white p-2 text-center font-semibold">
           <h3>Image preview:</h3>
-          <ImagePreview file={imageUrl[0]} />
+          <ImageUploadingPreview file={imageUrl[0]} />
         </div>
       )}
 

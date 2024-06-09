@@ -41,12 +41,17 @@ const PostInteractions = ({
   const token = Cookies.get("token");
 
   const FormDataSchema = z.object({
-    text: z.string().min(1, "Comment cannot be empty"),
+    text: z.string().min(1, "Comment cannot be empty").max(500),
   });
 
   type Inputs = z.infer<typeof FormDataSchema>;
 
-  const { register, handleSubmit, reset } = useForm<Inputs>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<Inputs>({
     resolver: zodResolver(FormDataSchema),
   });
 
@@ -104,11 +109,7 @@ const PostInteractions = ({
           }}
           className="flex h-8 w-20 cursor-pointer items-center justify-center rounded-2xl bg-gray-100 transition-colors hover:bg-gray-300"
         >
-          {isLiked ? (
-            <Favorite className="h-5 w-5" />
-          ) : (
-            <FavoriteBorderOutlined className="h-5 w-5" />
-          )}
+          {isLiked ? <Favorite /> : <FavoriteBorderOutlined />}
           <p className="ml-1 text-sm font-medium text-gray-700">
             {likesAmount}
           </p>
@@ -117,7 +118,7 @@ const PostInteractions = ({
           onClick={() => setShowComments(!showComments)}
           className="ml-3 flex h-8 w-20 cursor-pointer items-center justify-center rounded-2xl bg-gray-100 transition-colors hover:bg-gray-300"
         >
-          <ChatBubbleOutlineOutlined className="h-5 w-5" />
+          <ChatBubbleOutlineOutlined />
           <p className="ml-1 text-sm font-medium text-gray-700">
             {comments.length}
           </p>
@@ -161,14 +162,13 @@ const PostInteractions = ({
           onSubmit={handleSubmit(processForm)}
           className="h-15 flex items-center space-x-5"
         >
-          <div>
+          <div className="self-start">
             <BlankAvatar />
           </div>
-          <input
-            type="text"
+          <textarea
             {...register("text")}
             placeholder="Write a comment..."
-            className="h-10 w-full rounded-md border-2 p-4 focus:outline-none"
+            className="max-h-72 min-h-24 w-full rounded-md border-2 p-2 focus:outline-none"
           />
           <button
             type="submit"
@@ -177,6 +177,9 @@ const PostInteractions = ({
             <Send />
           </button>
         </form>
+        {errors.text && (
+          <p className="mt-2 text-red-500">{errors.text.message}</p>
+        )}
       </div>
     </div>
   );

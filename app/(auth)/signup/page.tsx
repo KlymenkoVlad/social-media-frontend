@@ -16,10 +16,14 @@ import toast from "react-hot-toast";
 
 const FormDataSchemaSignup = z.object({
   email: z.string().email("Invalid email"),
-  name: z.string().min(1, "Name is required"),
+  name: z
+    .string()
+    .min(1, "Name is required")
+    .max(30, "Look's like you have a very long name"),
   username: z
     .string()
     .min(3, "Username must be at least 3 characters")
+    .max(15, "Username must be at most 15 characters")
     .toLowerCase(),
   password: z.string().min(5, "Password must be at least 5 characters"),
 

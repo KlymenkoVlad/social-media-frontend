@@ -1,12 +1,12 @@
 "use server";
 
-import { FriendRequestStatus } from "@/app/(pages)/profile/[id]/Profile";
 import { PasswordFormInputs } from "@/app/(pages)/settings/PasswordForm";
 import { ProfileFormInputs } from "@/app/(pages)/settings/ProfileForm";
 import { baseUrl } from "@/utils/baseUrl";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { z } from "zod";
+import { FriendRequestStatus } from "./profile/[id]/_components/Profile";
 
 const FormDataSchemaLogin = z.object({
   email: z.string().email("Invalid email"),
@@ -70,13 +70,26 @@ export const sendData = async (
   return { response, user };
 };
 
+export const getMe = async () => {
+  const token = cookies().get("token")?.value;
+
+  const res = await fetch(`${baseUrl}/user/me`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+
+  return res;
+};
+
 export const getAllPosts = async (
   cursor?: number,
   sortBy = "new",
   take = 3,
 ) => {
-  const cookiesStore = cookies();
-  const token = cookiesStore.get("token")?.value;
+  const token = cookies().get("token")?.value;
 
   const res = await fetch(
     `${baseUrl}/post?sortBy=${sortBy}&cursor=${cursor}&take=${take}`,
@@ -101,8 +114,7 @@ export const getPostsByUserId = async (
   cursor?: number | null,
   take = 4,
 ) => {
-  const cookiesStore = cookies();
-  const token = cookiesStore.get("token")?.value;
+  const token = cookies().get("token")?.value;
 
   const res = await fetch(
     `${baseUrl}/post/user/${id}?sortBy=${sortBy}&cursor=${cursor}&take=${take}`,
@@ -296,7 +308,7 @@ export const getRequestInfo = async (id: number) => {
 export const addFriendRequest = async (id: number) => {
   const token = cookies().get("token")?.value;
 
-  const friendRequest = await fetch(`${baseUrl}/request/send${id}`, {
+  const friendRequest = await fetch(`${baseUrl}/request/send/${id}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -343,19 +355,6 @@ export const changeRequestStatus = async (
   return request;
 };
 
-export const getFriendsList = async (userId: string) => {
-  const token = cookies().get("token")?.value;
-
-  const res = await fetch(`${baseUrl}/friend/${userId}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).then((res) => res.json());
-
-  return res;
-};
-
 export const getAllRequestsToMe = async () => {
   const token = cookies().get("token")?.value;
 
@@ -367,4 +366,22 @@ export const getAllRequestsToMe = async () => {
   }).then((res) => res.json());
 
   return res;
+};
+
+export const getFriendsRecommendations = async () => {
+  const token = cookies().get("token")?.value;
+
+  const res = await fetch(`${baseUrl}/user/recommendations`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    next: { tags: ["friendsRecommendations"] },
+  }).then((res) => res.json());
+
+  return res;
+};
+
+export const revalidateFriendsRecommendations = () => {
+  revalidateTag("friendsRecommendations");
 };
