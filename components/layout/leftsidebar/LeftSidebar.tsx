@@ -6,7 +6,7 @@ import {
   GroupsOutlined,
 } from "@mui/icons-material";
 
-import LinkSidebar from "./clientSide/LinkSidebar";
+import LinkSidebar from "./LinkSidebar";
 import Link from "next/link";
 
 const LeftSidebar = () => {
@@ -15,7 +15,7 @@ const LeftSidebar = () => {
 
   return (
     <div>
-      <ol className="space-y-6 mb-2 min-w-48">
+      <ol className="mb-2 min-w-48 space-y-6">
         <li className={navLinkStyle}>
           <AccountCircleOutlined className="ml-2" />
           <LinkSidebar />

@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { sendPost } from "@/app/_actions";
 import toast from "react-hot-toast";
 import { IPost } from "@/interfaces/post";
-import ImagePreview from "./ImagePreview";
+import ImageUploadingPreview from "./ImageUploadingPreview";
 import { baseUrl } from "@/utils/baseUrl";
 
 //TODO capability to add image
@@ -21,7 +21,13 @@ const ACCEPTED_IMAGE_MIME_TYPES = [
   "image/webp",
 ];
 
-const Form = ({ setPosts, posts }: { setPosts: any; posts: IPost[] }) => {
+const PostSubmitForm = ({
+  setPosts,
+  posts,
+}: {
+  setPosts: any;
+  posts: IPost[];
+}) => {
   const [showTitleForm, setShowTitleForm] = useState<boolean>(false);
 
   const FormSchema = z.object({
@@ -60,7 +66,8 @@ const Form = ({ setPosts, posts }: { setPosts: any; posts: IPost[] }) => {
   const processForm: SubmitHandler<Inputs> = async (data) => {
     toast.loading("Create your post...");
 
-    let img: string;
+    let img: string | undefined;
+
     if (data.imageUrl.length > 0) {
       const formData = new FormData();
       formData.append("file", data.imageUrl[0]);
@@ -71,6 +78,7 @@ const Form = ({ setPosts, posts }: { setPosts: any; posts: IPost[] }) => {
 
       img = res.url;
     }
+
     const result = await sendPost(data.text, data.title, img);
 
     toast.remove();
@@ -89,8 +97,8 @@ const Form = ({ setPosts, posts }: { setPosts: any; posts: IPost[] }) => {
 
   return (
     <form className="mb-4" onSubmit={handleSubmit(processForm)}>
-      <div className="w-full  border border-gray-200 rounded-lg bg-gray-50">
-        <div className="px-4 py-2 bg-white rounded-t-lg ">
+      <div className="w-full rounded-lg border border-gray-200 bg-gray-50">
+        <div className="rounded-t-lg bg-white px-4 py-2">
           <label htmlFor="comment" className="sr-only">
             What&apos;s new
           </label>
@@ -98,23 +106,23 @@ const Form = ({ setPosts, posts }: { setPosts: any; posts: IPost[] }) => {
             id="comment"
             rows={4}
             onFocus={() => setShowTitleForm(true)}
-            className="focus:outline-none w-full px-0 text-sm text-gray-900 bg-white border-0 focus:ring-0"
+            className="w-full border-0 bg-white px-0 text-sm text-gray-900 focus:outline-none focus:ring-0"
             placeholder="What's new"
             required
             {...register("text")}
           />
         </div>
-        <div className="flex items-center justify-between px-3 py-2 border-t ">
+        <div className="flex items-center justify-between border-t px-3 py-2">
           <button
             type="submit"
-            className="px-4 transition-colors text-center h-7 align-middle  text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-4 focus:ring-blue-300 font-semibold rounded-full text-sm"
+            className="h-7 rounded-full bg-blue-100 px-4 text-center align-middle text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-200 focus:outline-none focus:ring-4 focus:ring-blue-300"
           >
             Post
           </button>
           <input
             type="file"
             {...register("imageUrl")}
-            className="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none "
+            className="block cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:text-gray-400"
           />
         </div>
       </div>
@@ -122,7 +130,7 @@ const Form = ({ setPosts, posts }: { setPosts: any; posts: IPost[] }) => {
       <p className="text-red-500">{errors.imageUrl?.message?.toString()}</p>
 
       <div
-        className={`px-4 py-2 bg-white rounded-t-lg mt-3 ${
+        className={`mt-3 rounded-t-lg bg-white px-4 py-2 ${
           showTitleForm ? "block" : "hidden"
         }`}
       >
@@ -131,21 +139,21 @@ const Form = ({ setPosts, posts }: { setPosts: any; posts: IPost[] }) => {
         </label>
         <input
           id="comment"
-          className=" w-full inline-flex items-center py-2.5 px-4 font-medium text-black rounded-md  focus:outline-none "
+          className="inline-flex w-full items-center rounded-md px-4 py-2.5 font-medium text-black focus:outline-none"
           placeholder="Title for your post"
           {...register("title")}
         />
       </div>
-      <p className="text-red-500 mb-4">{errors.title?.message}</p>
+      <p className="mb-4 text-red-500">{errors.title?.message}</p>
 
       {imageUrl?.[0] && (
-        <div className="text-center font-semibold bg-white rounded-md p-2">
+        <div className="rounded-md bg-white p-2 text-center font-semibold">
           <h3>Image preview:</h3>
-          <ImagePreview file={imageUrl[0]} />
+          <ImageUploadingPreview file={imageUrl[0]} />
         </div>
       )}
     </form>
   );
 };
 
-export default Form;
+export default PostSubmitForm;

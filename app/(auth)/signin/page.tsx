@@ -42,45 +42,45 @@ const Page = () => {
       }
 
       toast.success("Login successful");
-      router.push("/feed");
+      return router.push("/feed");
     }
 
     reset();
   };
 
   return (
-    <section className="h-dvh w-dvw py-12 ms:px-12 px-4  ">
+    <section className="h-dvh w-dvw px-4 py-12 ms:px-12">
       <form
         onSubmit={handleSubmit(processForm)}
-        className="mx-auto max-w-[1100px] h-full w-full flex shadow-lg"
+        className="mx-auto flex h-full w-full max-w-[1100px] shadow-lg"
       >
-        <div className="w-1/2 p-10 md:block hidden">
+        <div className="hidden w-1/2 p-10 md:block">
           <Image
             src={"/signin_illustration.svg"}
-            className="min-w-full max-w-full h-full rounded-sm "
+            className="h-full min-w-full max-w-full rounded-sm"
             width={80}
             height={80}
             quality={100}
             alt="image"
           />
         </div>
-        <div className="md:w-1/2 w-full ms:p-12 p-4  place-content-center">
-          <h1 className="text-3xl font-semibold mb-8">
+        <div className="w-full place-content-center p-4 ms:p-12 md:w-1/2">
+          <h1 className="mb-8 text-3xl font-semibold">
             Welcome back to <br />
-            <span className="text-indigo-600 font-extrabold">Newmedia</span>
+            <span className="font-extrabold text-indigo-600">Newmedia</span>
           </h1>
-          <h2 className="text-xl font-semibold mb-5"></h2>
+          <h2 className="mb-5 text-xl font-semibold"></h2>
 
-          <div className="relative mb-10 ">
+          <div className="relative mb-10">
             <input
               type="text"
-              className="w-full bg-gray-300 h-12 rounded-md ps-14 focus:outline-none mb-1"
+              className="mb-1 h-12 w-full rounded-md bg-gray-300 ps-14 focus:outline-none"
               placeholder="example@gmail.com"
               {...register("email")}
             />
-            <Email className="absolute top-3 left-3" />
+            <Email className="absolute left-3 top-3" />
             {errors.email && (
-              <p className="text-sm text-red-400 absolute top-full left-0">
+              <p className="absolute left-0 top-full text-sm text-red-400">
                 {errors.email.message}
               </p>
             )}
@@ -89,25 +89,25 @@ const Page = () => {
           <div className="relative mb-8">
             <input
               type="password"
-              className="w-full bg-gray-300 h-12 rounded-md ps-14 focus:outline-none mb-1"
+              className="mb-1 h-12 w-full rounded-md bg-gray-300 ps-14 focus:outline-none"
               placeholder="*********"
               {...register("password")}
             />
-            <Lock className="absolute top-3 left-3" />
+            <Lock className="absolute left-3 top-3" />
             {errors.password && (
-              <p className="text-sm text-red-400 absolute top-full left-0">
+              <p className="absolute left-0 top-full text-sm text-red-400">
                 {errors.password.message}
               </p>
             )}
           </div>
 
-          <button className="w-full bg-indigo-600 h-12 rounded-md mt-5 text-white mb-12">
+          <button className="mb-12 mt-5 h-12 w-full rounded-md bg-indigo-600 text-white">
             Sign in
           </button>
 
           <div className="flex justify-center">
             <Link
-              className="hover:text-indigo-600 transition-colors"
+              className="transition-colors hover:text-indigo-600"
               href={"/signup"}
             >
               Don’t have an account? Register

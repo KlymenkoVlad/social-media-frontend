@@ -1,9 +1,9 @@
 import { getPostsByUserId } from "@/app/_actions";
-import Profile from "@/components/pages/MyProfile/Profile";
-import { getDataAuth } from "@/db/fetchData";
 import { IPost } from "@/interfaces/post";
 import { User } from "@/interfaces/user";
 import React from "react";
+import { getDataAuth } from "./actions";
+import Profile from "./_components/Profile";
 
 interface UserResponse {
   status: string;

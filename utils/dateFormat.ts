@@ -10,6 +10,6 @@ export const dateFormat = (date: Date): string => {
   return isToday
     ? `Today, ${postDate.format("HH:mm")}`
     : isSameWeek
-    ? `${postDate.format("dddd, HH:mm")}`
-    : postDate.format("DD.MM.YYYY");
+      ? `${postDate.format("dddd, HH:mm")}`
+      : postDate.format("DD.MM.YYYY");
 };

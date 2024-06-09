@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Form from "./Form";
+import PostSubmitForm from "../../../components/PostSubmitForm";
 import InfiniteScrollPosts from "./InfiniteScrollPosts";
 import { IPost } from "@/interfaces/post";
 import { useForm } from "react-hook-form";
@@ -21,14 +21,13 @@ const Feed = ({ data }: { data: PostResponse }) => {
   const sortBy = watch("sortBy") || "new";
 
   return (
-    <section className="w-full mx-16 ">
-      <Form setPosts={setPosts} posts={posts} />
+    <section className="mx-16 w-full">
+      <PostSubmitForm setPosts={setPosts} posts={posts} />
 
-      <div className="flex p-4 justify-around items-center bg-white mb-4">
+      <div className="mb-4 flex items-center justify-around bg-white p-4">
         <h1 className="text-lg font-bold">You can sort by:</h1>
         <select
-          className="bg-gray-50 border border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 "
-          name="sort"
+          className="block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
           id="sort"
           defaultValue="new"
           {...register("sortBy")}

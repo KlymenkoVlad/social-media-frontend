@@ -2,10 +2,10 @@
 
 import { IPost } from "@/interfaces/post";
 import React, { useEffect, useState } from "react";
-import Post from "../../common/post/Post";
+import Post from "../../../components/post/Post";
 import { useInView } from "react-intersection-observer";
-import { getPostsByUserId } from "@/app/_actions";
-import PostSkeleton from "../../common/post/PostSkeleton";
+import { getAllPosts } from "@/app/_actions";
+import PostSkeleton from "../../../components/post/PostSkeleton";
 import { SelfImprovement } from "@mui/icons-material";
 
 interface PostResponse {
@@ -13,41 +13,36 @@ interface PostResponse {
   nextCursor: number;
   hasNextPage: boolean;
   postsLength: number;
-  setRenderPosts: React.Dispatch<React.SetStateAction<IPost[]>>;
+  setPosts: React.Dispatch<React.SetStateAction<IPost[]>>;
   sortBy: string;
-  userId: number;
 }
 
-const InfiniteScrollPostsProfile = ({
+const InfiniteScrollPosts = ({
   posts,
   nextCursor,
   hasNextPage,
-  setRenderPosts,
+  setPosts,
   sortBy,
-  userId,
 }: PostResponse) => {
-  const [cursor, setCursor] = useState<number>(nextCursor);
-  const [end, setEnd] = useState(false);
+  const [cursor, setCursor] = useState<number | undefined>(nextCursor);
+  const [end, setEnd] = useState(!hasNextPage);
   const [ref, inView] = useInView();
   const [currentSort, setCurrentSort] = useState<string>(sortBy);
 
   useEffect(() => {
     const sortUpdating = async () => {
       if (sortBy !== currentSort) {
+        console.log(sortBy, currentSort);
         setEnd(false);
         setCursor(undefined);
-        setRenderPosts([]);
-        const data: PostResponse = await getPostsByUserId(
-          userId,
-          sortBy,
-          undefined
-        );
+        setPosts([]);
+        const data: PostResponse = await getAllPosts(undefined, sortBy);
 
         if (!data.hasNextPage || !hasNextPage) {
           setEnd(true);
         }
 
-        setRenderPosts([...data.posts]);
+        await setPosts([...data.posts]);
 
         setCursor(data.nextCursor);
         setCurrentSort(sortBy);
@@ -62,17 +57,17 @@ const InfiniteScrollPostsProfile = ({
       return;
     }
 
-    const data: PostResponse = await getPostsByUserId(
-      userId,
-      currentSort,
-      cursor
-    );
+    console.log(currentSort);
+
+    const data: PostResponse = await getAllPosts(cursor, currentSort);
 
     if (!data.hasNextPage || !hasNextPage) {
       setEnd(true);
     }
 
-    setRenderPosts([...posts, ...data.posts]);
+    console.log([...posts, ...data.posts]);
+
+    setPosts([...posts, ...data.posts]);
 
     setCursor(data.nextCursor);
   };
@@ -97,6 +92,7 @@ const InfiniteScrollPostsProfile = ({
             title={post.title}
             date={post.created_at}
             imageSrc={post.image_url}
+            userImage={post.user.image_url}
             username={post.user.username}
           />
         ))}
@@ -105,13 +101,13 @@ const InfiniteScrollPostsProfile = ({
       <div
         className={`${
           end ? "block" : "hidden"
-        } w-full text-center text-2xl font-semibold mb-32`}
+        } mb-32 w-full text-center text-2xl font-semibold`}
       >
-        <SelfImprovement className="w-32 h-32" />
+        <SelfImprovement className="h-32 w-32" />
         <p>Hmmmm... I think there are no more posts</p>
       </div>
     </div>
   );
 };
 
-export default InfiniteScrollPostsProfile;
+export default InfiniteScrollPosts;

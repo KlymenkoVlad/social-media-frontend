@@ -3,7 +3,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 
-const ImagePreview = ({ file }: { file: File | string }) => {
+const ImageUploadingPreview = ({ file }: { file: File | string }) => {
   const [preview, setPreview] = useState<string | ArrayBuffer | undefined>();
 
   if (file instanceof File) {
@@ -19,11 +19,11 @@ const ImagePreview = ({ file }: { file: File | string }) => {
   }
 
   return (
-    <div className="p-2 w-full h-full ">
+    <div className="h-full w-full p-2">
       <Image
         width={100}
         height={100}
-        className="border rounded-md w-full h-full"
+        className="h-full w-full rounded-md border"
         src={preview?.toString() || ""}
         alt=""
       />
@@ -31,4 +31,4 @@ const ImagePreview = ({ file }: { file: File | string }) => {
   );
 };
 
-export default ImagePreview;
+export default ImageUploadingPreview;

@@ -1,11 +1,12 @@
 "use server";
 
-import { PasswordFormInputs } from "@/components/pages/Settings/PasswordForm";
-import { ProfileFormInputs } from "@/components/pages/Settings/ProfileForm";
+import { PasswordFormInputs } from "@/app/(pages)/settings/PasswordForm";
+import { ProfileFormInputs } from "@/app/(pages)/settings/ProfileForm";
 import { baseUrl } from "@/utils/baseUrl";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { z } from "zod";
+import { FriendRequestStatus } from "./profile/[id]/_components/Profile";
 
 const FormDataSchemaLogin = z.object({
   email: z.string().email("Invalid email"),
@@ -35,7 +36,7 @@ type InputsSignup = z.infer<typeof FormDataSchemaSignup>;
 
 export const sendData = async (
   data: InputsLogin | InputsSignup,
-  url: string
+  url: string,
 ) => {
   let result;
   const cookiesStore = cookies();
@@ -62,18 +63,33 @@ export const sendData = async (
     },
   }).then((res) => res.json());
 
-  cookiesStore.set("token", response.token);
+  if (response.token.length > 0) {
+    cookiesStore.set("token", response.token);
+  }
 
   return { response, user };
+};
+
+export const getMe = async () => {
+  const token = cookies().get("token")?.value;
+
+  const res = await fetch(`${baseUrl}/user/me`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+
+  return res;
 };
 
 export const getAllPosts = async (
   cursor?: number,
   sortBy = "new",
-  take = 3
+  take = 3,
 ) => {
-  const cookiesStore = cookies();
-  const token = cookiesStore.get("token")?.value;
+  const token = cookies().get("token")?.value;
 
   const res = await fetch(
     `${baseUrl}/post?sortBy=${sortBy}&cursor=${cursor}&take=${take}`,
@@ -84,7 +100,7 @@ export const getAllPosts = async (
         Authorization: `Bearer ${token}`,
       },
       next: { tags: ["posts"] },
-    }
+    },
   );
 
   const data = await res.json();
@@ -95,11 +111,10 @@ export const getAllPosts = async (
 export const getPostsByUserId = async (
   id: number,
   sortBy = "new",
-  cursor?: number,
-  take = 4
+  cursor?: number | null,
+  take = 4,
 ) => {
-  const cookiesStore = cookies();
-  const token = cookiesStore.get("token")?.value;
+  const token = cookies().get("token")?.value;
 
   const res = await fetch(
     `${baseUrl}/post/user/${id}?sortBy=${sortBy}&cursor=${cursor}&take=${take}`,
@@ -110,7 +125,7 @@ export const getPostsByUserId = async (
         Authorization: `Bearer ${token}`,
       },
       next: { tags: ["posts"] },
-    }
+    },
   );
 
   const data = await res.json();
@@ -141,7 +156,7 @@ export const sendComment = async (text: string, postId: number) => {
 export const sendPost = async (
   text: string,
   title?: string,
-  imageUrl?: string
+  imageUrl?: string,
 ) => {
   const cookiesStore = cookies();
   const token = cookiesStore.get("token")?.value;
@@ -237,4 +252,136 @@ export const updatePassword = async (data: PasswordFormInputs) => {
     statusCode: res.status,
     message: "Password updated successfully",
   };
+};
+
+export const findUserByUsername = async (
+  username: string,
+  cursor?: number,
+  take = 3,
+) => {
+  const token = cookies().get("token")?.value;
+
+  const res = await fetch(
+    `${baseUrl}/user/username/${username}?cursor=${cursor}&take=${take}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  ).then((res) => res.json());
+
+  return res;
+};
+
+export const findPosts = async (text: string, cursor?: number, take = 3) => {
+  const token = cookies().get("token")?.value;
+
+  const res = await fetch(
+    `${baseUrl}/post/search/${text}?cursor=${cursor}&take=${take}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  ).then((res) => res.json());
+
+  return res;
+};
+
+export const getRequestInfo = async (id: number) => {
+  const token = cookies().get("token")?.value;
+
+  const requestInfo = await fetch(`${baseUrl}/request/status/${id}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+
+  return requestInfo.status;
+};
+
+export const addFriendRequest = async (id: number) => {
+  const token = cookies().get("token")?.value;
+
+  const friendRequest = await fetch(`${baseUrl}/request/send/${id}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+  console.log(friendRequest);
+
+  return friendRequest;
+};
+
+export const deleteFriend = async (id: number) => {
+  const token = cookies().get("token")?.value;
+
+  const friendRequest = await fetch(`${baseUrl}/friend/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return friendRequest.status;
+};
+
+export const changeRequestStatus = async (
+  id: number,
+  newStatus: FriendRequestStatus,
+) => {
+  const token = cookies().get("token")?.value;
+  console.log(id);
+
+  const request = await fetch(`${baseUrl}/request/accept/${id}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json", // Added Content-Type header
+    },
+    body: JSON.stringify({
+      newStatus,
+    }),
+  }).then((res) => res.json());
+
+  console.log(request);
+
+  return request;
+};
+
+export const getAllRequestsToMe = async () => {
+  const token = cookies().get("token")?.value;
+
+  const res = await fetch(`${baseUrl}/request`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+
+  return res;
+};
+
+export const getFriendsRecommendations = async () => {
+  const token = cookies().get("token")?.value;
+
+  const res = await fetch(`${baseUrl}/user/recommendations`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    next: { tags: ["friendsRecommendations"] },
+  }).then((res) => res.json());
+
+  return res;
+};
+
+export const revalidateFriendsRecommendations = () => {
+  revalidateTag("friendsRecommendations");
 };
