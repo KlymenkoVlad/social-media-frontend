@@ -5,7 +5,7 @@ import React from "react";
 
 const Page = () => {
   return (
-    <section className="w-full space-y-4 px-8 py-4">
+    <section className="w-full space-y-4 px-5 py-4">
       <ProfileForm />
 
       <PasswordForm />

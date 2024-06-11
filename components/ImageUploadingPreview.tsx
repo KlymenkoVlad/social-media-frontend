@@ -12,8 +12,6 @@ const ImageUploadingPreview = ({ file }: { file: File | string }) => {
     reader.onload = () => {
       setPreview(reader.result?.toString());
     };
-
-    console.log(reader.result?.toString());
   } else if (typeof file === "string") {
     setPreview(file);
   }

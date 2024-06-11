@@ -115,7 +115,7 @@ const PostSubmitForm = ({
         <div className="flex items-center justify-between border-t px-3 py-2">
           <button
             type="submit"
-            className="h-7 rounded-full bg-blue-100 px-4 text-center align-middle text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-200 focus:outline-none focus:ring-4 focus:ring-blue-300"
+            className="border-text flex w-16 cursor-pointer items-center justify-center rounded-sm border-2 border-blue-300 p-1 text-sm font-bold capitalize leading-6 transition-colors hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-10"
           >
             Post
           </button>

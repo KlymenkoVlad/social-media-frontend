@@ -204,8 +204,6 @@ export const updateUserProfile = async (data: ProfileFormInputs) => {
     };
   }
 
-  console.log(data);
-
   const token = cookies().get("token")?.value;
   const res = await fetch(`${baseUrl}/user`, {
     method: "PATCH",
@@ -314,7 +312,6 @@ export const addFriendRequest = async (id: number) => {
       Authorization: `Bearer ${token}`,
     },
   }).then((res) => res.json());
-  console.log(friendRequest);
 
   return friendRequest;
 };
@@ -337,7 +334,6 @@ export const changeRequestStatus = async (
   newStatus: FriendRequestStatus,
 ) => {
   const token = cookies().get("token")?.value;
-  console.log(id);
 
   const request = await fetch(`${baseUrl}/request/accept/${id}`, {
     method: "POST",
@@ -349,8 +345,6 @@ export const changeRequestStatus = async (
       newStatus,
     }),
   }).then((res) => res.json());
-
-  console.log(request);
 
   return request;
 };

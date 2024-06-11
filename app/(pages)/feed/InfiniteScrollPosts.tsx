@@ -32,7 +32,6 @@ const InfiniteScrollPosts = ({
   useEffect(() => {
     const sortUpdating = async () => {
       if (sortBy !== currentSort) {
-        console.log(sortBy, currentSort);
         setEnd(false);
         setCursor(undefined);
         setPosts([]);
@@ -57,15 +56,11 @@ const InfiniteScrollPosts = ({
       return;
     }
 
-    console.log(currentSort);
-
     const data: PostResponse = await getAllPosts(cursor, currentSort);
 
     if (!data.hasNextPage || !hasNextPage) {
       setEnd(true);
     }
-
-    console.log([...posts, ...data.posts]);
 
     setPosts([...posts, ...data.posts]);
 

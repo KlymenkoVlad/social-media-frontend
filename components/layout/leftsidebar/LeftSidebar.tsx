@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import {
   AccountCircleOutlined,
   PeopleAltOutlined,
@@ -6,34 +8,36 @@ import {
   GroupsOutlined,
 } from "@mui/icons-material";
 
-import LinkSidebar from "./LinkSidebar";
 import Link from "next/link";
 
 const LeftSidebar = () => {
   const navLinkStyle =
     "flex items-center justify-start hover:bg-gray-200 cursor-pointer transition-colors ease-in-out h-12 rounded-md w-40";
 
+  const [id, setId] = useState<string | null>(null);
+
+  useEffect(() => {
+    setId(localStorage.getItem("userId"));
+  }, []);
+
   return (
     <div>
-      <ol className="mb-2 min-w-48 space-y-6">
-        <li className={navLinkStyle}>
+      <nav className="mb-2 min-w-48 space-y-6">
+        <Link href={`/profile/${id}`} className={navLinkStyle}>
           <AccountCircleOutlined className="ml-2" />
-          <LinkSidebar />
-        </li>
-        <Link href="/news" className={navLinkStyle}>
-          <NewspaperOutlined className="ml-2" />
-          <p className="ml-2">News</p>
+          <span className="ml-2">My Profile</span>
         </Link>
-        <Link href="/friends" className={navLinkStyle}>
+        <Link href={`/friends/${id}`} className={navLinkStyle}>
           <PeopleAltOutlined className="ml-2" />
-          <p className="ml-2">Friends</p>
+          <span className="ml-2">Friends</span>
         </Link>
         <Link href="/communities" className={navLinkStyle}>
           <GroupsOutlined className="ml-2" />
-          <p className="ml-2">Communities</p>
+          <span className="ml-2">Communities</span>
         </Link>
+
         <div className="h-px w-full bg-gray-300"></div>
-      </ol>
+      </nav>
 
       <footer className="mt-6 text-xs text-gray-500">
         <p>© 2023 Newmedia™.</p>

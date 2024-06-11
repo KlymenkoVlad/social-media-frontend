@@ -149,17 +149,25 @@ const Modals = ({ user }: { user: User }) => {
   useEffect(() => {
     function handleClickOutside(event: any) {
       if (!showUserModal && !showNotificationModal) return;
+
       if (
-        (wrapperRefNotification.current &&
-          !wrapperRefNotification.current?.contains(event.target)) ||
-        (wrapperRefUser.current &&
-          !wrapperRefUser.current?.contains(event.target))
+        wrapperRefNotification.current &&
+        wrapperRefNotification.current.contains(event.target)
       ) {
-        console.log("You clicked outside of me 😀");
-        setShowUserModal(false);
-        setShowNotificationModal(false);
+        return;
       }
+
+      if (
+        wrapperRefUser.current &&
+        wrapperRefUser.current.contains(event.target)
+      ) {
+        return;
+      }
+
+      setShowUserModal(false);
+      setShowNotificationModal(false);
     }
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
