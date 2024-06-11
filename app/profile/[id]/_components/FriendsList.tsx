@@ -2,21 +2,10 @@ import React from "react";
 import Link from "next/link";
 import { getFriendsList } from "../actions";
 import Person from "./Person";
-
-interface Friend {
-  friend: {
-    id: number;
-    image_url: string | null;
-    name: string;
-    username: string;
-  };
-  friendId: number;
-  id: number;
-  userId: number;
-}
+import { IFriend } from "@/interfaces/friend";
 
 const FriendsList = async ({ id }: { id: string }) => {
-  const friends: Friend[] = await getFriendsList(id);
+  const friends: IFriend[] = await getFriendsList(id);
 
   return (
     <div className="block h-full min-w-60 rounded-md bg-white p-5 shadow-md">
@@ -45,7 +34,7 @@ const FriendsList = async ({ id }: { id: string }) => {
       {friends?.length > 6 && (
         <Link
           type="button"
-          href={`/profile/friends/${id}`}
+          href={`/friends/${id}`}
           className="grid h-7 w-full items-center rounded-full bg-blue-100 text-center text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-200 focus:outline-none focus:ring-4 focus:ring-blue-300"
         >
           Show all

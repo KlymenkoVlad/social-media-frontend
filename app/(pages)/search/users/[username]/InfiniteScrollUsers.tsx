@@ -14,7 +14,7 @@ import Link from "next/link";
 interface UsersParams {
   users: User[];
   status: string;
-  nextCursor: number;
+  nextCursor: number | null;
   hasNextPage: boolean;
   usersLength: number;
   searchSlug: string;
@@ -26,13 +26,13 @@ const InfiniteScrollUsers = ({
   hasNextPage,
   searchSlug,
 }: UsersParams) => {
-  const [cursor, setCursor] = useState<number>(nextCursor);
+  const [cursor, setCursor] = useState<number | null>(nextCursor);
   const [end, setEnd] = useState(!hasNextPage);
   const [ref, inView] = useInView();
   const [renderUsers, setRenderUsers] = useState<User[]>(users);
 
   const fetchPosts = async () => {
-    if (end) {
+    if (end || !cursor) {
       return;
     }
 

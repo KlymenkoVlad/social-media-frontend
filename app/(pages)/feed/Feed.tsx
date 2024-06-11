@@ -21,7 +21,7 @@ const Feed = ({ data }: { data: PostResponse }) => {
   const sortBy = watch("sortBy") || "new";
 
   return (
-    <section className="mx-16 w-full">
+    <section className="w-full px-5">
       <PostSubmitForm setPosts={setPosts} posts={posts} />
 
       <div className="mb-4 flex items-center justify-around bg-white p-4">

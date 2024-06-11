@@ -27,8 +27,6 @@ const InfiniteScrollPostsSearch = ({
   const [ref, inView] = useInView();
   const [renderPosts, setRenderPosts] = useState(posts);
 
-  console.log(renderPosts);
-
   const fetchPosts = async () => {
     if (end) {
       return;

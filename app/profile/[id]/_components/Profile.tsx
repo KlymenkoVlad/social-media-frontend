@@ -33,6 +33,21 @@ export enum FriendRequestStatus {
 }
 
 const Button = ({
+  handleSubmit,
+  text,
+}: {
+  handleSubmit: () => void;
+  text: string;
+}) => (
+  <button
+    onClick={handleSubmit}
+    className="border-text flex w-auto cursor-pointer items-center justify-center rounded-sm border-2 border-blue-300 p-1 text-sm font-bold capitalize leading-6 transition-colors hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-10"
+  >
+    <span>{text}</span>
+  </button>
+);
+
+const ButtonLogic = ({
   requestInfo,
   user,
   setRequestInfo,
@@ -44,49 +59,35 @@ const Button = ({
   >;
 }) => {
   if (requestInfo == FriendRequestStatus.PENDING) {
-    return (
-      <button
-        type="button"
-        onClick={async () => {
-          toast.loading("Cancelling friend request...");
-          const status = await deleteFriend(user.id);
-          toast.remove();
-          if (status === 200) {
-            toast.success("Friend request canceled");
-            setRequestInfo(FriendRequestStatus.NO_INTERACTIONS);
-            return;
-          }
+    const handleSubmit = async () => {
+      toast.loading("Cancelling friend request...");
+      const status = await deleteFriend(user.id);
+      toast.remove();
+      if (status === 200) {
+        toast.success("Friend request canceled");
+        setRequestInfo(FriendRequestStatus.NO_INTERACTIONS);
+        return;
+      }
 
-          toast.error("Something went wrong");
-        }}
-        className="border-text flex w-full transform cursor-pointer items-center justify-center rounded-sm border-2 border-blue-300 px-2 py-2 text-sm font-bold capitalize leading-6 transition-all duration-100 hover:-translate-y-1 hover:border-red-300 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 sm:w-auto"
-      >
-        <span>Cancel request</span>
-      </button>
-    );
+      toast.error("Something went wrong");
+    };
+    return <Button handleSubmit={handleSubmit} text={"Cancel request"} />;
   }
 
   if (requestInfo == FriendRequestStatus.ACCEPTED) {
-    return (
-      <button
-        type="button"
-        onClick={async () => {
-          toast.loading("Deleting friend...");
-          const status = await deleteFriend(user.id);
-          toast.remove();
-          if (status === 200) {
-            toast.success("Friend deleted");
-            setRequestInfo(FriendRequestStatus.NO_INTERACTIONS);
-            return;
-          }
+    const handleSubmit = async () => {
+      toast.loading("Deleting friend...");
+      const status = await deleteFriend(user.id);
+      toast.remove();
+      if (status === 200) {
+        toast.success("Friend deleted");
+        setRequestInfo(FriendRequestStatus.NO_INTERACTIONS);
+        return;
+      }
 
-          toast.error("Something went wrong");
-        }}
-        className="rounded-lg border border-blue-700 px-5 py-2.5 text-center text-sm font-medium text-blue-700 transition-colors hover:bg-blue-800 hover:text-white focus:bg-blue-900 focus:text-white focus:outline-none"
-      >
-        Remove friend
-      </button>
-    );
+      toast.error("Something went wrong");
+    };
+    return <Button handleSubmit={handleSubmit} text={"Remove friend"} />;
   }
 
   if (requestInfo == FriendRequestStatus.DECLINED) {
@@ -94,71 +95,55 @@ const Button = ({
   }
 
   if (requestInfo == FriendRequestStatus.ACCEPT) {
+    const handleAccept = async () => {
+      toast.loading("Accepting friend request...");
+      const status = await changeRequestStatus(
+        user.id,
+        FriendRequestStatus.ACCEPTED,
+      );
+      toast.remove();
+      if (!status.error) {
+        toast.success("Now you are friends");
+        setRequestInfo(FriendRequestStatus.ACCEPTED);
+        return;
+      }
+
+      toast.error("Something went wrong");
+    };
+
+    const handleDecline = async () => {
+      toast.loading("Declining friend request...");
+      const status = await deleteFriend(user.id);
+      toast.remove();
+      if (status === 200) {
+        toast.success("Friend request declined");
+        setRequestInfo(FriendRequestStatus.NO_INTERACTIONS);
+        return;
+      }
+
+      toast.error("Something went wrong");
+    };
     return (
       <div className="flex space-x-3">
-        <button
-          type="button"
-          onClick={async () => {
-            toast.loading("Accepting friend request...");
-            const status = await changeRequestStatus(
-              user.id,
-              FriendRequestStatus.ACCEPTED,
-            );
-            toast.remove();
-            if (!status.error) {
-              toast.success("Now you are friends");
-              setRequestInfo(FriendRequestStatus.ACCEPTED);
-              return;
-            }
-
-            toast.error("Something went wrong");
-          }}
-          className="border-text flex w-full transform cursor-pointer items-center justify-center rounded-sm border-2 border-green-300 px-2 py-2 text-sm font-bold capitalize leading-6 transition-all duration-100 hover:-translate-y-1 hover:border-green-300 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50 sm:w-auto"
-        >
-          Accept
-        </button>
-        <button
-          type="button"
-          onClick={async () => {
-            toast.loading("Declining friend request...");
-            const status = await deleteFriend(user.id);
-            toast.remove();
-            if (status === 200) {
-              toast.success("Friend request declined");
-              setRequestInfo(FriendRequestStatus.NO_INTERACTIONS);
-              return;
-            }
-
-            toast.error("Something went wrong");
-          }}
-          className="border-text flex w-full transform cursor-pointer items-center justify-center rounded-sm border-2 border-red-300 px-2 py-2 text-sm font-bold capitalize leading-6 transition-all duration-100 hover:-translate-y-1 hover:border-red-300 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-opacity-50 sm:w-auto"
-        >
-          Decline
-        </button>
+        <Button handleSubmit={handleAccept} text={"Accept"} />
+        <Button handleSubmit={handleDecline} text={"Decline"} />
       </div>
     );
   }
 
   if (requestInfo == FriendRequestStatus.NO_INTERACTIONS) {
-    return (
-      <button
-        type="button"
-        onClick={async () => {
-          toast.loading("Adding friend...");
-          const res = await addFriendRequest(user.id);
-          toast.remove();
-          if (!res.error) {
-            toast.success("Friend request sent");
-            setRequestInfo(FriendRequestStatus.PENDING);
-            return;
-          }
-          toast.error(res.message);
-        }}
-        className="border-text flex transform cursor-pointer items-center justify-center rounded-sm border-2 border-blue-300 px-4 py-4 text-sm font-bold capitalize leading-6 duration-100 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 sm:w-auto sm:px-6"
-      >
-        Add friend
-      </button>
-    );
+    const handleAddFriend = async () => {
+      toast.loading("Adding friend...");
+      const res = await addFriendRequest(user.id);
+      toast.remove();
+      if (!res.error) {
+        toast.success("Friend request sent");
+        setRequestInfo(FriendRequestStatus.PENDING);
+        return;
+      }
+      toast.error(res.message);
+    };
+    return <Button handleSubmit={handleAddFriend} text={"Add friend"} />;
   }
 };
 
@@ -226,12 +211,12 @@ const Profile = ({
                 <Link
                   type="button"
                   href={`/settings`}
-                  className="rounded-lg border border-blue-700 px-5 py-2.5 text-center text-sm font-medium text-blue-700 transition-colors hover:bg-blue-800 hover:text-white focus:bg-blue-900 focus:text-white focus:outline-none"
+                  className="border-text h-23 flex w-auto cursor-pointer items-center justify-center rounded-sm border-2 border-blue-300 px-2 py-2 text-sm font-bold capitalize leading-6 transition-colors hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-10"
                 >
                   Edit Profile
                 </Link>
               ) : (
-                <Button
+                <ButtonLogic
                   requestInfo={requestInfo}
                   user={user}
                   setRequestInfo={setRequestInfo}
@@ -241,7 +226,7 @@ const Profile = ({
               <button
                 type="button"
                 disabled
-                className="rounded-lg border border-blue-700 px-5 py-2.5 text-center text-sm font-medium text-blue-700 transition-colors hover:bg-blue-800 hover:text-white focus:bg-blue-900 focus:text-white focus:outline-none"
+                className="border-text h-23 flex w-auto cursor-pointer items-center justify-center rounded-sm border-2 border-blue-300 px-2 py-2 text-sm font-bold capitalize leading-6"
               >
                 Loading...
               </button>
