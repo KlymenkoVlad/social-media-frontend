@@ -55,7 +55,7 @@ export const sendData = async (
     body: JSON.stringify(result.data),
   }).then((res) => res.json());
 
-  const { user } = await fetch(`${baseUrl}/user/me`, {
+  const user = await fetch(`${baseUrl}/user/me`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -63,7 +63,7 @@ export const sendData = async (
     },
   }).then((res) => res.json());
 
-  if (response.token.length > 0) {
+  if (response?.token?.length > 0) {
     cookiesStore.set("token", response.token);
   }
 

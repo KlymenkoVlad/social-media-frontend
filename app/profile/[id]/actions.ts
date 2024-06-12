@@ -14,10 +14,9 @@ export const getDataAuth = async (url: string) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-  });
+  }).then((res) => res.json());
 
-  const data = await res.json();
-  return data;
+  return res;
 };
 
 export const getFriendsList = async (userId: string) => {
