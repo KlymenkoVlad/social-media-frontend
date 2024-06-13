@@ -64,7 +64,12 @@ export const sendData = async (
   }).then((res) => res.json());
 
   if (response?.token?.length > 0) {
-    cookiesStore.set("token", response.token);
+    cookiesStore.set("token", response.token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      maxAge: 14 * 24 * 60 * 60 * 1000,
+    });
   }
 
   return { response, user };
