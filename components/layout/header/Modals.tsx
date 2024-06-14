@@ -14,8 +14,7 @@ import {
 } from "@mui/icons-material";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
-import cookies from "js-cookie";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import {
   changeRequestStatus,
   deleteFriend,
@@ -24,6 +23,8 @@ import {
 import toast from "react-hot-toast";
 import { FriendRequestStatus } from "@/app/profile/[id]/_components/Profile";
 import { User } from "@/interfaces/user";
+import Cookies from "js-cookie";
+import { logout } from "./logout";
 
 interface RequestsProps {
   id: number;
@@ -138,6 +139,7 @@ const Person = ({
 };
 
 const Modals = ({ user }: { user: User }) => {
+  const router = useRouter();
   const wrapperRefNotification = useRef<HTMLDivElement>(null);
   const wrapperRefUser = useRef<HTMLDivElement>(null);
 
@@ -198,7 +200,7 @@ const Modals = ({ user }: { user: User }) => {
             setShowUserModal(false);
             setShowNotificationModal(!showNotificationModal);
           }}
-          className="flex h-full w-12 cursor-pointer items-center justify-center transition-colors hover:bg-gray-300"
+          className="flex h-full w-12 cursor-pointer items-center justify-center transition-colors hover:bg-gray-200"
         >
           {requests && showNotificationModal ? (
             <div className="relative">
@@ -227,7 +229,7 @@ const Modals = ({ user }: { user: User }) => {
             setShowNotificationModal(false);
             setShowUserModal(!showUserModal);
           }}
-          className="flex h-full w-24 cursor-pointer items-center justify-center transition-colors hover:bg-gray-300"
+          className={`flex h-full w-24 cursor-pointer ${showUserModal ? "bg-gray-100" : "bg-white"} items-center justify-center transition-colors hover:bg-gray-200`}
         >
           <BlankAvatar imageSrc={user.image_url} />
           <KeyboardArrowDown
@@ -272,8 +274,8 @@ const Modals = ({ user }: { user: User }) => {
         </Link>
         <button
           onClick={() => {
-            cookies.remove("token");
-            return redirect("/signin");
+            localStorage.clear();
+            logout();
           }}
           className="flex w-full items-center rounded-md p-3 transition-colors hover:bg-gray-200"
         >

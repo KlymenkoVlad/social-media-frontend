@@ -10,8 +10,11 @@ import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { z } from "zod";
+import { redirectToFeed } from "../redirectToFeed";
+
 const Page = () => {
   const router = useRouter();
+
   const FormDataSchema = z.object({
     email: z.string().email("Invalid email"),
     password: z.string().min(5, "Password must be at least 5 characters"),
@@ -42,17 +45,18 @@ const Page = () => {
       }
 
       toast.success("Login successful");
-      return router.push("/feed");
+
+      redirectToFeed();
     }
 
     reset();
   };
 
   return (
-    <section className="h-dvh w-dvw px-4 py-12 ms:px-12">
+    <section className="h-dvh w-dvw p-0 ms:p-8">
       <form
         onSubmit={handleSubmit(processForm)}
-        className="mx-auto flex h-full w-full max-w-[1100px] shadow-lg"
+        className="mx-auto flex h-full w-full max-w-[1300px]"
       >
         <div className="hidden w-1/2 p-10 md:block">
           <Image
@@ -64,7 +68,7 @@ const Page = () => {
             alt="image"
           />
         </div>
-        <div className="w-full place-content-center p-4 ms:p-12 md:w-1/2">
+        <div className="w-full place-content-center rounded-md bg-white p-3 ms:p-8 md:w-1/2">
           <h1 className="mb-8 text-3xl font-semibold">
             Welcome back to <br />
             <span className="font-extrabold text-indigo-600">Newmedia</span>
@@ -101,7 +105,7 @@ const Page = () => {
             )}
           </div>
 
-          <button className="mb-12 mt-5 h-12 w-full rounded-md bg-indigo-600 text-white">
+          <button className="mb-12 mt-5 h-12 w-full rounded-md bg-indigo-600 text-white transition-colors hover:bg-indigo-700">
             Sign in
           </button>
 
