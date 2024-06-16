@@ -14,8 +14,7 @@ import {
 } from "@mui/icons-material";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
-import cookies from "js-cookie";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import {
   changeRequestStatus,
   deleteFriend,
@@ -24,6 +23,8 @@ import {
 import toast from "react-hot-toast";
 import { FriendRequestStatus } from "@/app/profile/[id]/_components/Profile";
 import { User } from "@/interfaces/user";
+import Cookies from "js-cookie";
+import { logout } from "./logout";
 
 interface RequestsProps {
   id: number;
@@ -138,6 +139,7 @@ const Person = ({
 };
 
 const Modals = ({ user }: { user: User }) => {
+  const router = useRouter();
   const wrapperRefNotification = useRef<HTMLDivElement>(null);
   const wrapperRefUser = useRef<HTMLDivElement>(null);
 
@@ -191,18 +193,24 @@ const Modals = ({ user }: { user: User }) => {
   }, []);
 
   return (
-    <div className="h-full">
+    <div className="relative h-full">
       <div className="flex h-full items-center space-x-3">
         <button
           onClick={() => {
             setShowUserModal(false);
             setShowNotificationModal(!showNotificationModal);
           }}
-          className="flex h-full w-12 cursor-pointer items-center justify-center transition-colors hover:bg-gray-300"
+          className="flex h-full w-12 cursor-pointer items-center justify-center transition-colors hover:bg-gray-200"
         >
           {requests && showNotificationModal ? (
             <div className="relative">
-              <Notifications style={{ height: "30px", width: "30px" }} />
+              <Notifications
+                style={{
+                  height: "30px",
+                  width: "30px",
+                  color: "#949ba6",
+                }}
+              />
               {requests && requests?.length > 0 && (
                 <div className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-500">
                   <p className="text-xs text-white">{requests?.length}</p>
@@ -212,7 +220,7 @@ const Modals = ({ user }: { user: User }) => {
           ) : (
             <div className="relative">
               <NotificationsOutlined
-                style={{ height: "30px", width: "30px" }}
+                style={{ height: "30px", width: "30px", color: "#949ba6" }}
               />
               {requests && requests?.length > 0 && (
                 <div className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-500">
@@ -227,7 +235,7 @@ const Modals = ({ user }: { user: User }) => {
             setShowNotificationModal(false);
             setShowUserModal(!showUserModal);
           }}
-          className="flex h-full w-24 cursor-pointer items-center justify-center transition-colors hover:bg-gray-300"
+          className={`flex h-full w-24 cursor-pointer ${showUserModal && "bg-gray-300"} items-center justify-center transition-colors hover:bg-gray-200`}
         >
           <BlankAvatar imageSrc={user.image_url} />
           <KeyboardArrowDown
@@ -240,7 +248,7 @@ const Modals = ({ user }: { user: User }) => {
 
       <div
         ref={wrapperRefUser}
-        className={`absolute right-[160px] top-16 z-10 h-[300px] w-[250px] transform space-y-6 rounded-md bg-white p-2 shadow-md transition-opacity duration-300 ease-in-out ${
+        className={`absolute right-1 top-16 z-10 h-[300px] w-[250px] transform space-y-6 rounded-md bg-white p-2 shadow-md transition-opacity duration-300 ease-in-out ${
           showUserModal ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
@@ -272,8 +280,8 @@ const Modals = ({ user }: { user: User }) => {
         </Link>
         <button
           onClick={() => {
-            cookies.remove("token");
-            return redirect("/signin");
+            localStorage.clear();
+            logout();
           }}
           className="flex w-full items-center rounded-md p-3 transition-colors hover:bg-gray-200"
         >
@@ -284,7 +292,7 @@ const Modals = ({ user }: { user: User }) => {
 
       <div
         ref={wrapperRefNotification}
-        className={`absolute right-[160px] top-16 z-10 h-[300px] w-[350px] transform space-y-6 rounded-md bg-white shadow-md transition-opacity duration-300 ease-in-out ${
+        className={`absolute right-1 top-16 z-10 h-[300px] w-[350px] transform space-y-6 rounded-md bg-white shadow-md transition-opacity duration-300 ease-in-out ${
           showNotificationModal
             ? "opacity-100"
             : "pointer-events-none opacity-0"

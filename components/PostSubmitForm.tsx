@@ -31,7 +31,7 @@ const PostSubmitForm = ({
   const [showTitleForm, setShowTitleForm] = useState<boolean>(false);
 
   const FormSchema = z.object({
-    text: z.string().min(1, "Text is required"),
+    text: z.string().min(1, "Text is required").max(3000, "Text is too long"),
     title: z
       .string()
       .max(50, "Title is too long(above 50 characters)")
@@ -99,31 +99,31 @@ const PostSubmitForm = ({
     <form className="mb-4" onSubmit={handleSubmit(processForm)}>
       <div className="w-full rounded-lg border border-gray-200 bg-gray-50">
         <div className="rounded-t-lg bg-white px-4 py-2">
-          <label htmlFor="comment" className="sr-only">
+          <label htmlFor="text" className="sr-only">
             What&apos;s new
           </label>
           <textarea
-            id="comment"
+            id="text"
             rows={4}
             onFocus={() => setShowTitleForm(true)}
-            className="w-full border-0 bg-white px-0 text-sm text-gray-900 focus:outline-none focus:ring-0"
+            className="max-h-[1000px] min-h-24 w-full border-0 bg-white px-0 text-sm text-gray-900 focus:outline-none focus:ring-0"
             placeholder="What's new"
             required
             {...register("text")}
           />
         </div>
-        <div className="flex items-center justify-between border-t px-3 py-2">
+        <div className="items-center justify-between border-t px-3 py-2">
+          <input
+            type="file"
+            {...register("imageUrl")}
+            className="mb-3 w-full border-2 border-blue-300 text-sm text-black transition-colors file:m-1 file:mr-3 file:cursor-pointer file:border-2 file:border-blue-300 file:bg-stone-50 file:px-3 file:py-1 file:text-xs file:font-medium file:text-black file:transition-colors hover:cursor-pointer hover:border-blue-700 hover:file:border-blue-700 hover:file:bg-blue-50"
+          />
           <button
             type="submit"
             className="border-text flex w-16 cursor-pointer items-center justify-center rounded-sm border-2 border-blue-300 p-1 text-sm font-bold capitalize leading-6 transition-colors hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-10"
           >
             Post
           </button>
-          <input
-            type="file"
-            {...register("imageUrl")}
-            className="block cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:text-gray-400"
-          />
         </div>
       </div>
       <p className="text-red-500">{errors.text?.message}</p>
@@ -134,11 +134,11 @@ const PostSubmitForm = ({
           showTitleForm ? "block" : "hidden"
         }`}
       >
-        <label htmlFor="comment" className="sr-only">
+        <label htmlFor="title" className="sr-only">
           What&apos;s new
         </label>
         <input
-          id="comment"
+          id="title"
           className="inline-flex w-full items-center rounded-md px-4 py-2.5 font-medium text-black focus:outline-none"
           placeholder="Title for your post"
           {...register("title")}

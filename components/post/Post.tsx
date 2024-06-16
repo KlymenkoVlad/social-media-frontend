@@ -60,9 +60,8 @@ const Post = ({
         <Image
           src={imageSrc}
           className="h-full min-w-full max-w-full rounded-sm"
-          width={100}
-          height={100}
-          quality={100}
+          width={500000}
+          height={500000}
           alt="image"
         />
       )}

@@ -44,7 +44,13 @@ const FormDataSchema = z.object({
 
   age: z.preprocess(
     (value) => (value === "" ? undefined : value),
-    z.string().optional(),
+    z
+      .string()
+      .refine(
+        (value) => typeof +value === "number" && +value >= 18,
+        "You must be at least 18 years old",
+      )
+      .optional(),
   ),
 
   image_url: z.preprocess(
@@ -103,6 +109,7 @@ const ProfileForm = () => {
       <div className="relative">
         <input
           type={type}
+          autoComplete="on"
           className="mb-1 h-12 w-full rounded-md bg-gray-300 ps-14 focus:outline-none"
           placeholder={placeholder}
           {...register(name)}
@@ -165,7 +172,7 @@ const ProfileForm = () => {
   return (
     <form
       onSubmit={handleSubmit(processForm)}
-      className="grid grid-cols-2 items-center gap-6"
+      className="grid grid-cols-2 items-center gap-2 md:gap-6"
     >
       <h1 className="col-span-2 mb-5 text-center text-3xl font-bold">
         Change Your Profile Settings
@@ -178,7 +185,7 @@ const ProfileForm = () => {
         placeholder={user?.email || "Your email(not defined)"}
       />
       <InputComponent
-        type="text"
+        type="number"
         name="age"
         logo={<Cake className="absolute left-3 top-3" />}
         placeholder={user?.age?.toString() || "Your age(not defined)"}
@@ -221,7 +228,7 @@ const ProfileForm = () => {
         <input
           type="file"
           {...register("image_url")}
-          className="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:text-gray-400"
+          className="mb-3 w-full border-2 border-blue-300 text-sm text-black transition-colors file:m-1 file:mr-3 file:cursor-pointer file:border-2 file:border-blue-300 file:bg-stone-50 file:px-3 file:py-1 file:text-xs file:font-medium file:text-black file:transition-colors hover:cursor-pointer hover:border-blue-700 hover:file:border-blue-700 hover:file:bg-blue-50"
         />
         <p className="text-red-500">{errors.image_url?.message?.toString()}</p>
       </div>

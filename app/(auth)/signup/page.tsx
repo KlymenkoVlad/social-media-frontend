@@ -13,6 +13,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { redirectToFeed } from "../redirectToFeed";
 
 const FormDataSchemaSignup = z.object({
   email: z.string().email("Invalid email"),
@@ -105,15 +106,14 @@ const Page = () => {
     }
 
     toast.success("Your account has been successful created");
-    router.push("/feed");
-
+    redirectToFeed();
     reset();
   };
 
   return (
-    <section className="h-dvh w-dvw px-2 py-10">
+    <section className="h-dvh w-dvw p-0 sm:p-8">
       <form onSubmit={handleSubmit(processForm)} className="flex h-full w-full">
-        <div className="hidden w-1/2 p-10 md:block">
+        <div className="hidden w-2/5 p-10 md:block">
           <Image
             src={"/signin_illustration.svg"}
             className="h-full min-w-full max-w-full rounded-sm"
@@ -124,14 +124,14 @@ const Page = () => {
           />
         </div>
 
-        <div className="w-full place-content-center p-5">
-          <h1 className="mb-8 text-3xl font-semibold">
-            Welcome back to <br />
+        <div className="w-full place-content-center rounded-md bg-white p-4 md:w-3/5">
+          <h1 className="mb-8 text-center text-3xl font-semibold">
+            Welcome to{" "}
             <span className="font-extrabold text-indigo-600">Newmedia</span>
           </h1>
           <h2 className="mb-5 text-xl font-semibold"></h2>
 
-          <div className="grid grid-cols-2 gap-x-10 gap-y-8">
+          <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
             <InputComponent
               type="email"
               name="email"
@@ -157,7 +157,7 @@ const Page = () => {
               placeholder="Your username"
             />
 
-            <button className="col-span-2 mb-12 mt-5 h-12 w-full rounded-md bg-indigo-600 text-white">
+            <button className="col-span-full mb-12 mt-5 h-12 w-full rounded-md bg-indigo-600 text-white">
               Sign Up
             </button>
           </div>

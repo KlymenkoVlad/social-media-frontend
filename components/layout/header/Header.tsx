@@ -11,7 +11,10 @@ const Header = async () => {
 
   return (
     <header className="relative flex h-14 items-center justify-around bg-gray-50 shadow-md">
-      <Link href={"/feed"} className="flex items-center">
+      <Link
+        href={"/feed"}
+        className="ml-2 mr-10 hidden w-fit items-center sm:flex"
+      >
         <Logo />
         <h1 className="ml-2 text-2xl font-bold">ewmedia</h1>
       </Link>

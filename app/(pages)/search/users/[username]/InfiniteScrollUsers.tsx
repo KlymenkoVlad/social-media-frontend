@@ -28,7 +28,7 @@ const InfiniteScrollUsers = ({
 }: UsersParams) => {
   const [cursor, setCursor] = useState<number | null>(nextCursor);
   const [end, setEnd] = useState(!hasNextPage);
-  const [ref, inView] = useInView();
+  const [ref, inView] = useInView({ rootMargin: "0px 0px 700px 0px" });
   const [renderUsers, setRenderUsers] = useState<User[]>(users);
 
   const fetchPosts = async () => {
@@ -57,12 +57,12 @@ const InfiniteScrollUsers = ({
   }, [inView]);
 
   return (
-    <div className="grid grid-cols-2 gap-6">
+    <div className="grid gap-2 lg:grid-cols-2 lg:gap-6">
       {users &&
-        users?.length > 0 &&
+        users.length > 0 &&
         users.map((user) => (
           <div
-            className="flex w-full items-center justify-between bg-gray-50 p-4"
+            className="flex w-full items-center justify-between bg-gray-50 px-2 py-4"
             key={user.id}
           >
             <div className="flex items-center space-x-3">
@@ -77,7 +77,7 @@ const InfiniteScrollUsers = ({
             </div>
 
             <Link
-              className="rounded-md bg-gray-200 p-2 transition-colors hover:bg-gray-300"
+              className="block w-fit rounded-md bg-gray-200 p-2 transition-colors hover:bg-gray-300"
               href={`/profile/${user?.id}`}
             >
               Go to profile
@@ -100,15 +100,18 @@ const InfiniteScrollUsers = ({
           </div>
         </div>
 
-        <p className="rounded-md p-2 transition-colors hover:bg-gray-200">
+        <button
+          disabled
+          className="rounded-md p-1 transition-colors hover:bg-gray-200"
+        >
           Go to profile
-        </p>
+        </button>
       </div>
 
       <div
         className={`${
           end ? "block" : "hidden"
-        } col-span-2 mb-32 w-full text-center text-2xl font-semibold`}
+        } col-span-full mb-32 w-full text-center text-2xl font-semibold`}
       >
         <SelfImprovement className="h-32 w-32" />
         <p>Hmmmm... I think there are no users that match your search</p>

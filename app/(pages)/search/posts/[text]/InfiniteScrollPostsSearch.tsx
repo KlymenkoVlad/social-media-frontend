@@ -24,7 +24,7 @@ const InfiniteScrollPostsSearch = ({
 }: PostResponse) => {
   const [cursor, setCursor] = useState<number>(nextCursor);
   const [end, setEnd] = useState(!hasNextPage);
-  const [ref, inView] = useInView();
+  const [ref, inView] = useInView({ rootMargin: "0px 0px 700px 0px" });
   const [renderPosts, setRenderPosts] = useState(posts);
 
   const fetchPosts = async () => {
