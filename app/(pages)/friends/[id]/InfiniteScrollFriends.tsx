@@ -5,7 +5,6 @@ import { useInView } from "react-intersection-observer";
 import { Person, SelfImprovement } from "@mui/icons-material";
 import { IFriend } from "@/interfaces/friend";
 import { getAllFriends } from "./actions";
-import BlankAvatar from "@/components/BlankAvatar";
 import Image from "next/image";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -28,7 +27,7 @@ const InfiniteScrollFriends = ({
 }: FriendResponse) => {
   const [cursor, setCursor] = useState<number | null>(nextCursor);
   const [end, setEnd] = useState(!hasNextPage);
-  const [ref, inView] = useInView();
+  const [ref, inView] = useInView({ rootMargin: "0px 0px 700px 0px" });
   const [renderFriends, setRenderFriends] = useState(friends);
   const [isCurrentUser, setIsCurrentUser] = useState<undefined | boolean>();
 
@@ -66,7 +65,7 @@ const InfiniteScrollFriends = ({
         renderFriends?.length > 0 &&
         renderFriends.map((friend) => (
           <ul key={friend.id}>
-            <div className="mb-5 flex w-full items-center justify-between">
+            <div className="mb-5 flex w-full items-center justify-between rounded-sm bg-white shadow-md">
               <Link
                 href={`/profile/${friend.friend.id}`}
                 className="flex w-full items-center rounded-md p-3 transition-colors hover:bg-gray-200"

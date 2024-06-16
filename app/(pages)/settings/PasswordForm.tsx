@@ -40,6 +40,7 @@ const PasswordForm = () => {
       <div className="relative">
         <input
           type={type}
+          autoComplete="on"
           className="mb-1 h-12 w-full rounded-md bg-gray-300 ps-14 focus:outline-none"
           placeholder={placeholder}
           {...register(name)}

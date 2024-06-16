@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { stringCut } from "@/utils/stringCut";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,7 +23,7 @@ const SearchForm = () => {
   return (
     <form
       onSubmit={(e) => handleSubmit(() => e.preventDefault())()}
-      className="relative flex h-10 w-96"
+      className="relative flex h-10 w-full max-w-96"
     >
       <Search className="absolute left-2 top-2 z-0 text-gray-500" />
       <Clear
@@ -31,7 +31,7 @@ const SearchForm = () => {
         onClick={() => reset()}
       />
       <input
-        className="w-full rounded-lg bg-gray-100 p-4 ps-10 text-base transition-colors ease-in-out hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
+        className="w-full rounded-lg bg-gray-100 p-4 pe-10 ps-10 text-base transition-colors ease-in-out hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
         type="text"
         placeholder="Search"
         {...register("text")}

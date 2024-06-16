@@ -5,6 +5,7 @@ import {
   revalidateFriendsRecommendations,
 } from "@/app/_actions";
 import BlankAvatar from "@/components/BlankAvatar";
+import { stringCut } from "@/utils/stringCut";
 import { PersonAdd } from "@mui/icons-material";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -28,8 +29,8 @@ const Person = ({
       >
         <BlankAvatar imageSrc={imageSrc} />
         <div className="ml-3">
-          <p className="">{name}</p>
-          <p className="text-xs">{username}</p>
+          <p className="">{stringCut(name, 9)}</p>
+          <p className="text-xs">{stringCut(username, 14)}</p>
         </div>
       </Link>
 

@@ -28,7 +28,7 @@ const InfiniteScrollPostsProfile = ({
 }: PostResponse) => {
   const [cursor, setCursor] = useState<number | null>(nextCursor);
   const [end, setEnd] = useState(!hasNextPage);
-  const [ref, inView] = useInView();
+  const [ref, inView] = useInView({ rootMargin: "0px 0px 700px 0px" });
   const [currentSort, setCurrentSort] = useState<string>(sortBy);
 
   useEffect(() => {

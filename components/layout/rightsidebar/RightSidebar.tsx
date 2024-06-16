@@ -9,11 +9,13 @@ interface Recommendation {
   name: string;
 }
 
-const RightSidebar = async () => {
+const RightSidebar = async ({ inLeftSideBar }: { inLeftSideBar: boolean }) => {
   const recommendations: Recommendation[] = await getFriendsRecommendations();
 
   return (
-    <div className="block h-full min-w-60 rounded-md bg-white p-5 shadow-md">
+    <div
+      className={` ${inLeftSideBar ? "block lg:hidden" : "hidden bg-white p-2 shadow-md lg:block"} h-fit min-w-56 rounded-md`}
+    >
       <h2 className="mb-6 text-center text-xl font-semibold">
         People you may know
       </h2>

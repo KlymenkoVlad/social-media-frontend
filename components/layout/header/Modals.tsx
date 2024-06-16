@@ -193,7 +193,7 @@ const Modals = ({ user }: { user: User }) => {
   }, []);
 
   return (
-    <div className="h-full">
+    <div className="relative h-full">
       <div className="flex h-full items-center space-x-3">
         <button
           onClick={() => {
@@ -204,7 +204,13 @@ const Modals = ({ user }: { user: User }) => {
         >
           {requests && showNotificationModal ? (
             <div className="relative">
-              <Notifications style={{ height: "30px", width: "30px" }} />
+              <Notifications
+                style={{
+                  height: "30px",
+                  width: "30px",
+                  color: "#949ba6",
+                }}
+              />
               {requests && requests?.length > 0 && (
                 <div className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-500">
                   <p className="text-xs text-white">{requests?.length}</p>
@@ -214,7 +220,7 @@ const Modals = ({ user }: { user: User }) => {
           ) : (
             <div className="relative">
               <NotificationsOutlined
-                style={{ height: "30px", width: "30px" }}
+                style={{ height: "30px", width: "30px", color: "#949ba6" }}
               />
               {requests && requests?.length > 0 && (
                 <div className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-500">
@@ -229,7 +235,7 @@ const Modals = ({ user }: { user: User }) => {
             setShowNotificationModal(false);
             setShowUserModal(!showUserModal);
           }}
-          className={`flex h-full w-24 cursor-pointer ${showUserModal ? "bg-gray-100" : "bg-white"} items-center justify-center transition-colors hover:bg-gray-200`}
+          className={`flex h-full w-24 cursor-pointer ${showUserModal && "bg-gray-300"} items-center justify-center transition-colors hover:bg-gray-200`}
         >
           <BlankAvatar imageSrc={user.image_url} />
           <KeyboardArrowDown
@@ -242,7 +248,7 @@ const Modals = ({ user }: { user: User }) => {
 
       <div
         ref={wrapperRefUser}
-        className={`absolute right-[160px] top-16 z-10 h-[300px] w-[250px] transform space-y-6 rounded-md bg-white p-2 shadow-md transition-opacity duration-300 ease-in-out ${
+        className={`absolute right-1 top-16 z-10 h-[300px] w-[250px] transform space-y-6 rounded-md bg-white p-2 shadow-md transition-opacity duration-300 ease-in-out ${
           showUserModal ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
@@ -286,7 +292,7 @@ const Modals = ({ user }: { user: User }) => {
 
       <div
         ref={wrapperRefNotification}
-        className={`absolute right-[160px] top-16 z-10 h-[300px] w-[350px] transform space-y-6 rounded-md bg-white shadow-md transition-opacity duration-300 ease-in-out ${
+        className={`absolute right-1 top-16 z-10 h-[300px] w-[350px] transform space-y-6 rounded-md bg-white shadow-md transition-opacity duration-300 ease-in-out ${
           showNotificationModal
             ? "opacity-100"
             : "pointer-events-none opacity-0"
