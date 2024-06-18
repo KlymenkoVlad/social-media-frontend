@@ -15,6 +15,12 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { IFriend } from "@/interfaces/friend";
+import { getFriendsList } from "../actions";
+import PersonProfile from "./Person";
+
+const btnStyle =
+  "border-text mb-3 flex h-fit min-w-32 cursor-pointer items-center justify-center self-end rounded-sm border-2 border-blue-300 bg-blue-100 px-1 py-2 ms:p-2 text-sm font-bold capitalize leading-6 transition-colors hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-10";
 
 interface ProfileProps {
   user: User;
@@ -39,10 +45,7 @@ const Button = ({
   handleSubmit: () => void;
   text: string;
 }) => (
-  <button
-    onClick={handleSubmit}
-    className="border-text flex w-auto cursor-pointer items-center justify-center rounded-sm border-2 border-blue-300 p-1 text-sm font-bold capitalize leading-6 transition-colors hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-10"
-  >
+  <button onClick={handleSubmit} className={btnStyle}>
     <span>{text}</span>
   </button>
 );
@@ -160,11 +163,29 @@ const Profile = ({
     FriendRequestStatus | undefined
   >();
   const [loading, setLoading] = useState(true);
+  const [friends, setFriends] = useState<IFriend[]>();
+  const [friendsLoading, setFriendsLoading] = useState(true);
+
+  useEffect(() => {
+    const getFriends = async () => {
+      const userId = localStorage.getItem("userId");
+      setFriendsLoading(true);
+      if (!userId) return;
+      const res: IFriend[] = await getFriendsList(userId);
+
+      console.log(res);
+      setFriends(res);
+      setFriendsLoading(false);
+    };
+
+    getFriends();
+  }, []);
 
   useEffect(() => {
     setUserId(localStorage.getItem("userId"));
 
     const fetchCurrentUserInfo = async () => {
+      setLoading(true);
       const res: FriendRequestStatus = await getRequestInfo(user.id);
 
       setRequestInfo(res);
@@ -179,40 +200,42 @@ const Profile = ({
   const sortBy = watch("sortBy") || "new";
 
   return (
-    <section className="h-full w-full space-y-6 px-5">
-      <div className="relative h-[300px] w-full overflow-hidden rounded-md bg-gray-300">
-        <div className="absolute bottom-0 h-36 w-full rounded-md bg-white">
-          {user?.image_url ? (
-            <div className="absolute bottom-12 left-5 flex h-36 w-36 items-start justify-center overflow-hidden rounded-full border-4 border-white bg-gray-200">
-              <Image
-                width={100}
-                height={100}
-                alt="Profile Photo"
-                src={user?.image_url}
-                className="h-full w-full rounded-full"
-              />
-            </div>
-          ) : (
-            <div className="absolute bottom-12 left-5 flex h-36 w-36 items-start justify-center overflow-hidden rounded-full bg-gray-200">
-              <Person className="h-40 w-40 text-gray-400" />
-            </div>
-          )}
-          <div className="ml-44 mr-5 mt-5 flex items-center justify-between">
-            <div>
-              <h1 className="font-semibold">
-                {user?.name} {user?.surname}{" "}
-                {user?.age && `| ${user?.age} years`}
-              </h1>
-              <h2 className="text-gray-500">@{user?.username}</h2>
+    <section className="h-full w-full space-y-5 px-1 md:px-5">
+      <div className="relative flex h-[300px] w-full items-center justify-between overflow-hidden rounded-md bg-gray-300">
+        <div className="absolute bottom-0 z-0 flex h-2/5 w-full rounded-md bg-white">
+          <div className="absolute bottom-[60px] flex w-full justify-between px-1.5 ms:px-4 sm:px-2 md:px-6">
+            <div className="flex w-full space-x-1 sm:space-x-4">
+              <div className="flex h-28 w-28 items-start justify-center overflow-hidden rounded-full border-4 border-white bg-gray-200 ms:h-36 ms:w-36">
+                {user?.image_url ? (
+                  <Image
+                    width={100}
+                    height={100}
+                    alt="Profile Photo"
+                    src={user?.image_url}
+                    className="h-full w-full rounded-full"
+                  />
+                ) : (
+                  <Person
+                    className="text-gray-400 sm:h-44 sm:w-44"
+                    style={{ width: "120%", height: "120%" }}
+                  />
+                )}
+              </div>
+
+              <div className="mb-3 flex items-center justify-between self-end">
+                <div>
+                  <h1 className="font-semibold">
+                    {user?.name} {user?.surname}{" "}
+                    {user?.age && `| ${user?.age} years`}
+                  </h1>
+                  <h2 className="text-gray-500">@{user?.username}</h2>
+                </div>
+              </div>
             </div>
 
             {userId && !loading ? (
               +userId === user?.id ? (
-                <Link
-                  type="button"
-                  href={`/settings`}
-                  className="border-text h-23 flex w-auto cursor-pointer items-center justify-center rounded-sm border-2 border-blue-300 px-2 py-2 text-sm font-bold capitalize leading-6 transition-colors hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-10"
-                >
+                <Link type="button" href={`/settings`} className={btnStyle}>
                   Edit Profile
                 </Link>
               ) : (
@@ -223,22 +246,49 @@ const Profile = ({
                 />
               )
             ) : (
-              <button
-                type="button"
-                disabled
-                className="border-text h-23 flex w-auto cursor-pointer items-center justify-center rounded-sm border-2 border-blue-300 px-2 py-2 text-sm font-bold capitalize leading-6"
-              >
+              <button type="button" disabled className={btnStyle}>
                 Loading...
               </button>
             )}
           </div>
-
-          {user?.description ? (
-            <p className="mx-4 mt-10">{user.description}</p>
-          ) : (
-            <p className="mx-4 mt-10 text-gray-500">No description specified</p>
-          )}
+          <p className="absolute bottom-1 left-1">
+            {user?.description || "No description specified"}
+          </p>
         </div>
+      </div>
+
+      {/* Friends List */}
+
+      <div className="block h-fit min-w-60 rounded-md bg-white p-5 lg:hidden">
+        <h2 className="mb-6 text-center text-xl font-semibold">Friends List</h2>
+        <ul className="mb-8 space-y-4">
+          {friendsLoading ? (
+            <p>loading...</p>
+          ) : friends && friends?.length > 0 ? (
+            friends
+              ?.slice(0, 6)
+              ?.map((friend) => (
+                <PersonProfile
+                  username={friend.friend.username}
+                  name={friend.friend.name}
+                  imageSrc={friend.friend.image_url}
+                  friendId={friend.friendId}
+                  key={friend.id}
+                />
+              ))
+          ) : (
+            <p>No friends</p>
+          )}
+        </ul>
+        {friends && friends?.length > 6 && (
+          <Link
+            type="button"
+            href={`/friends/${userId}`}
+            className="grid h-7 w-full items-center rounded-full bg-blue-100 text-center text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-200 focus:outline-none focus:ring-4 focus:ring-blue-300"
+          >
+            Show all
+          </Link>
+        )}
       </div>
 
       <div className="min-h-[329px] w-full overflow-hidden rounded-md">

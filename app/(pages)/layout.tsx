@@ -15,6 +15,7 @@ export default function PageLayout({
   if (!token?.value || token.value.length <= 0) {
     redirect("/signin");
   }
+
   return (
     <div className="">
       <Header />

@@ -3,6 +3,7 @@
 import BlankAvatar from "@/components/BlankAvatar";
 import {
   Block,
+  Feed,
   HelpOutline,
   KeyboardArrowDown,
   Logout,
@@ -19,12 +20,14 @@ import {
   changeRequestStatus,
   deleteFriend,
   getAllRequestsToMe,
+  getMe,
 } from "@/app/_actions";
 import toast from "react-hot-toast";
 import { FriendRequestStatus } from "@/app/profile/[id]/_components/Profile";
 import { User } from "@/interfaces/user";
 import Cookies from "js-cookie";
 import { logout } from "./logout";
+import NavBar from "../leftsidebar/NavBar";
 
 interface RequestsProps {
   id: number;
@@ -139,7 +142,6 @@ const Person = ({
 };
 
 const Modals = ({ user }: { user: User }) => {
-  const router = useRouter();
   const wrapperRefNotification = useRef<HTMLDivElement>(null);
   const wrapperRefUser = useRef<HTMLDivElement>(null);
 
@@ -149,9 +151,25 @@ const Modals = ({ user }: { user: User }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const localStorageCheck = async () => {
+      if (
+        !localStorage.getItem("userId") ||
+        !localStorage.getItem("username")
+      ) {
+        const user = await getMe();
+        localStorage.setItem("userId", user.id.toString());
+        localStorage.setItem("username", user.username);
+      }
+
+      return;
+    };
+
+    localStorageCheck();
+  }, []);
+
+  useEffect(() => {
     function handleClickOutside(event: any) {
       if (!showUserModal && !showNotificationModal) return;
-
       if (
         wrapperRefNotification.current &&
         wrapperRefNotification.current.contains(event.target)
@@ -194,7 +212,7 @@ const Modals = ({ user }: { user: User }) => {
 
   return (
     <div className="relative h-full">
-      <div className="flex h-full items-center space-x-3">
+      <div className="flex h-full items-center">
         <button
           onClick={() => {
             setShowUserModal(false);
@@ -248,7 +266,7 @@ const Modals = ({ user }: { user: User }) => {
 
       <div
         ref={wrapperRefUser}
-        className={`absolute right-1 top-16 z-10 h-[300px] w-[250px] transform space-y-6 rounded-md bg-white p-2 shadow-md transition-opacity duration-300 ease-in-out ${
+        className={`absolute right-1 top-16 z-10 h-fit w-[200px] transform space-y-6 rounded-md bg-white p-2 shadow-md transition-opacity duration-300 ease-in-out ${
           showUserModal ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
@@ -264,18 +282,31 @@ const Modals = ({ user }: { user: User }) => {
         </Link>
 
         <Link
-          className="flex w-full items-center rounded-md p-3 transition-colors hover:bg-gray-200"
+          className="flex h-12 w-full cursor-pointer items-center justify-start rounded-md transition-colors ease-in-out hover:bg-gray-200 sm:hidden"
+          onClick={() => setShowUserModal(!showUserModal)}
+          href={"/"}
+        >
+          <Feed className="ml-2" />
+          <p className="ml-2">Main Page</p>
+        </Link>
+
+        <div className="block w-full sm:hidden">
+          <NavBar />
+        </div>
+
+        <Link
+          className="flex h-12 w-full cursor-pointer items-center justify-start rounded-md transition-colors ease-in-out hover:bg-gray-200"
           onClick={() => setShowUserModal(!showUserModal)}
           href={"/settings"}
         >
-          <Settings />
+          <Settings className="ml-2" />
           <p className="ml-2">Settings</p>
         </Link>
         <Link
-          className="flex w-full items-center rounded-md p-3 transition-colors hover:bg-gray-200"
+          className="flex h-12 w-full cursor-pointer items-center justify-start rounded-md transition-colors ease-in-out hover:bg-gray-200"
           href={"/help"}
         >
-          <HelpOutline />
+          <HelpOutline className="ml-2" />
           <p className="ml-2">Help</p>
         </Link>
         <button
@@ -283,9 +314,9 @@ const Modals = ({ user }: { user: User }) => {
             localStorage.clear();
             logout();
           }}
-          className="flex w-full items-center rounded-md p-3 transition-colors hover:bg-gray-200"
+          className="flex h-12 w-full cursor-pointer items-center justify-start rounded-md transition-colors ease-in-out hover:bg-gray-200"
         >
-          <Logout />
+          <Logout className="ml-2" />
           <p className="ml-2">Sign out</p>
         </button>
       </div>

@@ -8,7 +8,9 @@ const FriendsList = async ({ id }: { id: string }) => {
   const friends: IFriend[] = await getFriendsList(id);
 
   return (
-    <div className="block h-full min-w-60 rounded-md bg-white p-5 shadow-md">
+    <div
+      className={`hidden h-fit min-w-60 rounded-md bg-white p-5 shadow-md lg:block`}
+    >
       <h2 className="mb-6 text-center text-xl font-semibold">Friends List</h2>
       <ul className="mb-8 space-y-4">
         {friends ? (
