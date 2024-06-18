@@ -12,7 +12,7 @@ const NavBar = () => {
   const [id, setId] = useState<string | null>(null);
 
   const navLinkStyle =
-    "flex items-center justify-start hover:bg-gray-200 cursor-pointer transition-colors ease-in-out h-12 rounded-md w-40";
+    "flex items-center justify-start hover:bg-gray-200 cursor-pointer transition-colors ease-in-out h-12 rounded-md w-full";
 
   useEffect(() => {
     setId(localStorage.getItem("userId"));

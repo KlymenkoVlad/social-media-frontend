@@ -10,18 +10,20 @@ const Header = async () => {
   const user = await getMe();
 
   return (
-    <header className="relative flex h-14 items-center justify-around bg-gray-50 shadow-md">
-      <Link
-        href={"/feed"}
-        className="ml-2 mr-10 hidden w-fit items-center sm:flex"
-      >
-        <Logo />
-        <h1 className="ml-2 text-2xl font-bold">ewmedia</h1>
-      </Link>
+    <header className="flex h-14 w-full items-center justify-around bg-gray-50 shadow-md">
+      <div className="relative flex h-full w-[1150px] items-center justify-between">
+        <Link
+          href={"/feed"}
+          className="ml-2 mr-10 hidden w-fit items-center sm:flex"
+        >
+          <Logo />
+          <h1 className="ml-2 text-2xl font-bold">ewmedia</h1>
+        </Link>
 
-      <SearchForm />
+        <SearchForm />
 
-      <Modals user={user} />
+        <Modals user={user} />
+      </div>
     </header>
   );
 };

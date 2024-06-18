@@ -13,7 +13,7 @@ const RightSidebar = async ({ inLeftSideBar }: { inLeftSideBar: boolean }) => {
   const recommendations: Recommendation[] = await getFriendsRecommendations();
 
   return (
-    <div
+    <aside
       className={` ${inLeftSideBar ? "block lg:hidden" : "hidden bg-white p-2 shadow-md lg:block"} h-fit min-w-56 rounded-md`}
     >
       <h2 className="mb-6 text-center text-xl font-semibold">
@@ -38,7 +38,7 @@ const RightSidebar = async ({ inLeftSideBar }: { inLeftSideBar: boolean }) => {
           <p>No recommendations</p>
         )}
       </ul>
-    </div>
+    </aside>
   );
 };
 
