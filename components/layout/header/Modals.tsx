@@ -144,6 +144,8 @@ const Person = ({
 const Modals = ({ user }: { user: User }) => {
   const wrapperRefNotification = useRef<HTMLDivElement>(null);
   const wrapperRefUser = useRef<HTMLDivElement>(null);
+  const wrapperRefUserBtn = useRef<HTMLButtonElement>(null);
+  const wrapperRefNotificationBtn = useRef<HTMLButtonElement>(null);
 
   const [showUserModal, setShowUserModal] = useState(false);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
@@ -173,6 +175,20 @@ const Modals = ({ user }: { user: User }) => {
       if (
         wrapperRefNotification.current &&
         wrapperRefNotification.current.contains(event.target)
+      ) {
+        return;
+      }
+
+      if (
+        wrapperRefNotificationBtn.current &&
+        wrapperRefNotificationBtn.current.contains(event.target)
+      ) {
+        return;
+      }
+
+      if (
+        wrapperRefUserBtn.current &&
+        wrapperRefUserBtn.current.contains(event.target)
       ) {
         return;
       }
@@ -218,6 +234,7 @@ const Modals = ({ user }: { user: User }) => {
             setShowUserModal(false);
             setShowNotificationModal(!showNotificationModal);
           }}
+          ref={wrapperRefNotificationBtn}
           className="flex h-full w-12 cursor-pointer items-center justify-center transition-colors hover:bg-gray-200"
         >
           {requests && showNotificationModal ? (
@@ -253,6 +270,7 @@ const Modals = ({ user }: { user: User }) => {
             setShowNotificationModal(false);
             setShowUserModal(!showUserModal);
           }}
+          ref={wrapperRefUserBtn}
           className={`flex h-full w-24 cursor-pointer ${showUserModal && "bg-gray-300"} items-center justify-center transition-colors hover:bg-gray-200`}
         >
           <BlankAvatar imageSrc={user.image_url} />
