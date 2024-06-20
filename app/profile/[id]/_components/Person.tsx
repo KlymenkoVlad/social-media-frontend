@@ -27,7 +27,7 @@ const Person = ({
         <BlankAvatar imageSrc={imageSrc} />
         <div className="ml-3">
           <p className="">{name}</p>
-          <p className="text-xs">{username}</p>
+          <p className="text-xs">@{username}</p>
         </div>
       </Link>
 

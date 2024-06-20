@@ -15,7 +15,6 @@ import {
 } from "@mui/icons-material";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
-import { redirect, useRouter } from "next/navigation";
 import {
   changeRequestStatus,
   deleteFriend,
@@ -25,7 +24,6 @@ import {
 import toast from "react-hot-toast";
 import { FriendRequestStatus } from "@/app/profile/[id]/_components/Profile";
 import { User } from "@/interfaces/user";
-import Cookies from "js-cookie";
 import { logout } from "./logout";
 import NavBar from "../leftsidebar/NavBar";
 
@@ -290,7 +288,7 @@ const Modals = ({ user }: { user: User }) => {
       >
         <Link
           href={`/profile/${user.id}`}
-          className="flex w-full items-center rounded-md p-3 transition-colors hover:bg-gray-200"
+          className="flex w-full items-center rounded-md bg-gray-100 p-3 transition-colors hover:bg-gray-200"
         >
           <BlankAvatar imageSrc={user.image_url} />
           <div className="ml-3">

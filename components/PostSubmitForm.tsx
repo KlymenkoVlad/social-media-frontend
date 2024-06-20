@@ -4,12 +4,12 @@ import React, { useState } from "react";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { sendPost } from "@/app/_actions";
+import { revalidatePostsByUserId, sendPost } from "@/app/_actions";
 import toast from "react-hot-toast";
 import { IPost } from "@/interfaces/post";
 import ImageUploadingPreview from "./ImageUploadingPreview";
 import { baseUrl } from "@/utils/baseUrl";
-
+import { useRouter } from "next/router";
 //TODO capability to add image
 //TODO delete any from type
 
