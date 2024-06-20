@@ -9,7 +9,7 @@ const LeftSidebarProfile = ({ id }: { id: string }) => {
       <div className="my-4 h-px w-full bg-gray-300"></div>
 
       <footer className="my-6 text-xs text-gray-500">
-        <p>© 2023 Newmedia™.</p>
+        <p>© {new Date().getFullYear()} Newmedia™.</p>
         <p>All Rights Reserved.</p>
       </footer>
     </aside>

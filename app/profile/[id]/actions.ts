@@ -1,5 +1,6 @@
 "use server";
 
+import { Colors } from "@/interfaces/user";
 import { baseUrl } from "@/utils/baseUrl";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
@@ -35,4 +36,19 @@ export const getFriendsList = async (userId: string) => {
 
 export const revalidateFriendsList = async () => {
   await revalidateTag("friendsList");
+};
+
+export const updateColor = async (color: Colors) => {
+  const token = cookies().get("token")?.value;
+
+  const res = await fetch(`${baseUrl}/user/color`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ color }),
+  });
+
+  return res.status;
 };

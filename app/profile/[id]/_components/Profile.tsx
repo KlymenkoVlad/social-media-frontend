@@ -8,16 +8,18 @@ import {
 } from "@/app/_actions";
 import InfiniteScrollPostsProfile from "./InfiniteScrollPostsProfile";
 import { IPost } from "@/interfaces/post";
-import { User } from "@/interfaces/user";
-import { Person } from "@mui/icons-material";
+import { Colors, User } from "@/interfaces/user";
+import { Close, Done, Edit, Person } from "@mui/icons-material";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IFriend } from "@/interfaces/friend";
-import { getFriendsList } from "../actions";
+import { getFriendsList, updateColor } from "../actions";
 import PersonProfile from "./Person";
+import PersonSkeleton from "./PersonSkeleton";
+import PostSubmitForm from "@/components/PostSubmitForm";
 
 const btnStyle =
   "border-text mb-3 flex h-fit min-w-32 cursor-pointer items-center justify-center self-end rounded-sm border-2 border-blue-300 bg-blue-100 px-1 py-2 ms:p-2 text-sm font-bold capitalize leading-6 transition-colors hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-10";
@@ -166,6 +168,9 @@ const Profile = ({
   const [friends, setFriends] = useState<IFriend[]>();
   const [friendsLoading, setFriendsLoading] = useState(true);
 
+  const [editColor, setEditColor] = useState(false);
+  const [currentColor, setCurrentColor] = useState<Colors>(user.profileColor);
+
   useEffect(() => {
     const getFriends = async () => {
       const userId = localStorage.getItem("userId");
@@ -173,7 +178,6 @@ const Profile = ({
       if (!userId) return;
       const res: IFriend[] = await getFriendsList(userId);
 
-      console.log(res);
       setFriends(res);
       setFriendsLoading(false);
     };
@@ -199,9 +203,110 @@ const Profile = ({
 
   const sortBy = watch("sortBy") || "new";
 
+  const bgColor = () => {
+    switch (currentColor) {
+      case Colors.RED:
+        return "bg-red-400";
+      case Colors.BLUE:
+        return "bg-blue-400";
+      case Colors.GREEN:
+        return "bg-green-400";
+      case Colors.YELLOW:
+        return "bg-yellow-400";
+      case Colors.ORANGE:
+        return "bg-orange-400";
+      case Colors.PURPLE:
+        return "bg-purple-400";
+      case Colors.PINK:
+        return "bg-pink-400";
+      case Colors.GRAY:
+        return "bg-gray-400";
+    }
+  };
+
+  const handleColorChange = async (color: Colors) => {
+    toast.loading("Changing color...");
+    const status = await updateColor(color);
+
+    toast.remove();
+    if (status === 200) {
+      setCurrentColor(color);
+      toast.success("Color changed");
+    } else {
+      toast.error("Something went wrong");
+    }
+    setEditColor(false);
+  };
+
   return (
-    <section className="h-full w-full space-y-5 px-1 md:px-5">
-      <div className="relative flex h-[300px] w-full items-center justify-between overflow-hidden rounded-md bg-gray-300">
+    <main className="h-full w-full space-y-5 px-1 md:px-5">
+      <section
+        className={`relative z-0 flex h-[300px] w-full items-center justify-between overflow-hidden rounded-md ${user && bgColor()}`}
+      >
+        <div
+          className={`absolute right-0 top-4 mr-3 w-[280px] space-y-2 text-right ${userId && +userId === user?.id ? "block" : "hidden"}`}
+        >
+          <div className="flex h-10 justify-end opacity-70">
+            <button
+              onClick={() => setEditColor(true)}
+              className={`${editColor ? "hidden" : "flex items-center justify-center"} h-10 rounded-full border-2 bg-gray-600 p-2 text-white opacity-70 shadow-md transition-colors hover:bg-gray-500`}
+            >
+              <Edit /> <span className="ml-1">Change Color</span>
+            </button>
+            <button
+              onClick={() => {
+                handleColorChange(currentColor);
+              }}
+              className={`${editColor ? "flex items-center justify-center" : "hidden"} h-10 rounded-full border-2 bg-green-600 p-2 text-white opacity-70 shadow-md transition-colors hover:bg-green-700`}
+            >
+              <Done /> <span className="ml-1">Accept</span>
+            </button>
+            <button
+              onClick={() => setEditColor(false)}
+              className={`${editColor ? "flex items-center justify-center" : "hidden"} h-10 rounded-full border-2 bg-red-600 p-2 text-white opacity-70 shadow-md transition-colors hover:bg-red-700`}
+            >
+              <Close /> <span className="ml-1">Back</span>
+            </button>
+          </div>
+
+          <div
+            className={`${editColor ? "flex" : "hidden"} space-x-3 transition-opacity duration-300`}
+          >
+            <div
+              className="h-6 w-6 cursor-pointer rounded-full bg-red-500 shadow-md"
+              onClick={() => setCurrentColor(Colors.RED)}
+            ></div>
+            <div
+              className="h-6 w-6 cursor-pointer rounded-full bg-blue-500 shadow-md"
+              onClick={() => setCurrentColor(Colors.BLUE)}
+            ></div>
+            <div
+              className="h-6 w-6 cursor-pointer rounded-full bg-green-500 shadow-md"
+              onClick={() => setCurrentColor(Colors.GREEN)}
+            ></div>
+            <div
+              className="h-6 w-6 cursor-pointer rounded-full bg-yellow-500 shadow-md"
+              onClick={() => setCurrentColor(Colors.YELLOW)}
+            ></div>
+            <div
+              className="h-6 w-6 cursor-pointer rounded-full bg-orange-500 shadow-md"
+              onClick={() => setCurrentColor(Colors.ORANGE)}
+            ></div>
+            <div
+              className="h-6 w-6 cursor-pointer rounded-full bg-purple-500 shadow-md"
+              onClick={() => setCurrentColor(Colors.PURPLE)}
+            ></div>
+            <div
+              className="h-6 w-6 cursor-pointer rounded-full bg-pink-500 shadow-md"
+              onClick={() => setCurrentColor(Colors.PINK)}
+            ></div>
+            <div
+              className="h-6 w-6 cursor-pointer rounded-full bg-gray-500 shadow-md"
+              onClick={() => setCurrentColor(Colors.GRAY)}
+            ></div>
+          </div>
+        </div>
+
         <div className="absolute bottom-0 z-0 flex h-2/5 w-full rounded-md bg-white">
           <div className="absolute bottom-[60px] flex w-full justify-between px-1.5 ms:px-4 sm:px-2 md:px-6">
             <div className="flex w-full space-x-1 sm:space-x-4">
@@ -216,7 +321,7 @@ const Profile = ({
                   />
                 ) : (
                   <Person
-                    className="text-gray-400 sm:h-44 sm:w-44"
+                    className="border text-gray-400 sm:h-44 sm:w-44"
                     style={{ width: "120%", height: "120%" }}
                   />
                 )}
@@ -246,24 +351,31 @@ const Profile = ({
                 />
               )
             ) : (
-              <button type="button" disabled className={btnStyle}>
+              <button
+                type="button"
+                disabled
+                className="border-text mb-3 flex h-fit min-w-32 animate-pulse cursor-pointer items-center justify-center self-end rounded-sm border-2 border-blue-300 bg-gray-100 px-1 py-2 text-sm font-bold capitalize leading-6 transition-colors ms:p-2"
+              >
                 Loading...
               </button>
             )}
           </div>
-          <p className="absolute bottom-1 left-1">
+          <p className="absolute bottom-1 left-1 text-gray-500">
             {user?.description || "No description specified"}
           </p>
         </div>
-      </div>
+      </section>
 
       {/* Friends List */}
 
-      <div className="block h-fit min-w-60 rounded-md bg-white p-5 lg:hidden">
+      <section className="block h-fit min-w-60 rounded-md bg-white p-5 lg:hidden">
         <h2 className="mb-6 text-center text-xl font-semibold">Friends List</h2>
         <ul className="mb-8 space-y-4">
           {friendsLoading ? (
-            <p>loading...</p>
+            <div>
+              <PersonSkeleton />
+              <PersonSkeleton />
+            </div>
           ) : friends && friends?.length > 0 ? (
             friends
               ?.slice(0, 6)
@@ -289,9 +401,15 @@ const Profile = ({
             Show all
           </Link>
         )}
-      </div>
+      </section>
 
-      <div className="min-h-[329px] w-full overflow-hidden rounded-md">
+      <section className="w-full overflow-hidden rounded-md">
+        <PostSubmitForm setPosts={setRenderPosts} posts={renderPosts} />
+      </section>
+
+      {/* Sorting by */}
+
+      <section className="min-h-[329px] w-full overflow-hidden rounded-md">
         <div className="mb-4 flex items-center justify-around bg-white p-4">
           <h1 className="text-lg font-bold">You can sort by:</h1>
           <select
@@ -304,6 +422,8 @@ const Profile = ({
             <option value="old">Old</option>
           </select>
         </div>
+
+        {/* Posts */}
 
         <ul role="list">
           {user && (
@@ -318,8 +438,8 @@ const Profile = ({
             />
           )}
         </ul>
-      </div>
-    </section>
+      </section>
+    </main>
   );
 };
 

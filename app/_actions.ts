@@ -129,13 +129,17 @@ export const getPostsByUserId = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      next: { tags: ["posts"] },
+      next: { tags: ["postsByUserId"] },
     },
   );
 
   const data = await res.json();
 
   return data;
+};
+
+export const revalidatePostsByUserId = async () => {
+  revalidateTag("postsByUserId");
 };
 
 export const sendComment = async (text: string, postId: number) => {
