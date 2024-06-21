@@ -66,12 +66,12 @@ const Post = ({
         />
       )}
 
-      <PostInteractions
+      {/* <PostInteractions
         likes={likes}
         comments={comments}
         postId={postId}
         userImage={userImage}
-      />
+      /> */}
     </ul>
   );
 };
