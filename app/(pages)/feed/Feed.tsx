@@ -39,16 +39,16 @@ const Feed = ({ data }: { data: PostResponse }) => {
         </select>
       </div>
 
-      <ul role="list">
-        {/* <InfiniteScrollPosts
+      <div>
+        <InfiniteScrollPosts
           setPosts={setPosts}
           posts={posts}
           hasNextPage={data.hasNextPage}
           nextCursor={data.nextCursor}
           postsLength={data.postsLength}
           sortBy={sortBy}
-        /> */}
-      </ul>
+        />
+      </div>
     </section>
   );
 };

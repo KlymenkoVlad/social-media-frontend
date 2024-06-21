@@ -78,21 +78,23 @@ const InfiniteScrollPosts = ({
       {posts &&
         posts?.length > 0 &&
         posts.map((post) => (
-          <Post
-            key={post.id}
-            postId={post.id}
-            likes={post.likes}
-            comments={post.comments}
-            text={post.text}
-            title={post.title}
-            date={post.created_at}
-            imageSrc={post.image_url}
-            userImage={post.user.image_url}
-            username={post.user.username}
-          />
+          // <Post
+          //   key={post.id}
+          //   postId={post.id}
+          //   likes={post.likes}
+          //   comments={post.comments}
+          //   text={post.text}
+          //   title={post.title}
+          //   date={post.created_at}
+          //   imageSrc={post.image_url}
+          //   userImage={post.user.image_url}
+          //   username={post.user.username}
+          // />
+          <p key={post.id}>{post.text}</p>
         ))}
 
-      <PostSkeleton ref={ref} end={end} />
+      {/* <PostSkeleton ref={ref} end={end} /> */}
+      <p ref={ref}>loading</p>
       <div
         className={`${
           end ? "block" : "hidden"
