@@ -128,7 +128,7 @@ const PostInteractions = ({
           {renderComments?.length > 0 &&
             renderComments
               .slice(0, commentsAmount)
-              .map((comment) => <Comment comment={comment} />)}
+              .map((comment) => <Comment key={comment.id} comment={comment} />)}
 
           {comments.length > commentsAmount && (
             <button
