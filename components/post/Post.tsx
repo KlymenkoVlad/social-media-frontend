@@ -45,7 +45,8 @@ const Post = ({
             <div className="ml-3">
               <p>{username && username[0].toUpperCase() + username.slice(1)}</p>
 
-              {/* <p className="text-xs">{formattedDate && formattedDate}</p> */}
+              {/* //Potential Problem */}
+              <p className="text-xs">{formattedDate && formattedDate}</p>
             </div>
           </div>
 
