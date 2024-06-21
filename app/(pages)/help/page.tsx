@@ -47,9 +47,7 @@ const Help = () => {
           </section>
         </main>
         <footer className="mt-auto py-6 text-center text-gray-500">
-          <p>
-            &copy; {new Date().getFullYear()} Newmedia. All rights reserved.
-          </p>
+          <p>&copy; 2024 Newmedia. All rights reserved.</p>
         </footer>
       </div>
     </>

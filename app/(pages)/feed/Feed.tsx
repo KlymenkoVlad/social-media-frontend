@@ -20,6 +20,8 @@ const Feed = ({ data }: { data: PostResponse }) => {
 
   const sortBy = watch("sortBy") || "new";
 
+  console.log(process.env.NODE_ENV);
+
   return (
     <section className="w-full px-1 md:px-5">
       <PostSubmitForm setPosts={setPosts} posts={posts} />
