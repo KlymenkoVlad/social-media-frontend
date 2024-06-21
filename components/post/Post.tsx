@@ -39,9 +39,9 @@ const Post = ({
       className="mb-5 w-full justify-between space-y-4 overflow-auto rounded-md bg-white p-5"
     >
       <div>
-        <div className="flex">
+        {/* <div className="flex">
           <div className="flex w-full items-center">
-            {/* <BlankAvatar imageSrc={userImage} /> */}
+            <BlankAvatar imageSrc={userImage} />
             <div className="ml-3">
               <p>{username && username[0].toUpperCase() + username.slice(1)}</p>
 
@@ -52,7 +52,7 @@ const Post = ({
           <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-200">
             <MdMoreHoriz />
           </div>
-        </div>
+        </div> */}
 
         <div className="mt-3">
           <p className="font-medium">{title && title}</p>
@@ -60,7 +60,7 @@ const Post = ({
         </div>
       </div>
 
-      {imageSrc && (
+      {/* {imageSrc && (
         <Image
           src={imageSrc}
           className="h-full min-w-full max-w-full rounded-sm"
@@ -68,7 +68,7 @@ const Post = ({
           height={500000}
           alt="image"
         />
-      )}
+      )} */}
 
       {/* <PostInteractions
         likes={likes}
