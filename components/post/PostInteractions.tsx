@@ -17,6 +17,7 @@ import {
   MdOutlineFavoriteBorder,
   MdSend,
 } from "react-icons/md";
+import Comment from "./Comment";
 
 interface LikeProps {
   postId: number;
@@ -34,10 +35,9 @@ const PostInteractions = ({
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [likesAmount, setLikesAmount] = useState<number>(likes.length);
   const [renderComments, setRenderComments] = useState(comments);
-
   const [commentsAmount, setCommentsAmount] = useState(3);
-
   const [showComments, setShowComments] = useState(comments.length > 0);
+
   const token = Cookies.get("token");
 
   const FormDataSchema = z.object({
@@ -126,23 +126,9 @@ const PostInteractions = ({
 
         <div className="mb-5">
           {renderComments?.length > 0 &&
-            renderComments.slice(0, commentsAmount).map((comment) => (
-              <div key={comment.id}>
-                <div className="mb-3 flex items-center justify-between">
-                  <div className="flex items-center space-x-5">
-                    <BlankAvatar imageSrc={userImage} />
-                    <div>
-                      <p className="font-semibold">{comment.user.username}</p>
-                      <p>{comment.text}</p>
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-gray-500">
-                    {dateFormat(comment.created_at)}
-                  </p>
-                </div>
-              </div>
-            ))}
+            renderComments
+              .slice(0, commentsAmount)
+              .map((comment) => <Comment comment={comment} />)}
 
           {comments.length > commentsAmount && (
             <button
