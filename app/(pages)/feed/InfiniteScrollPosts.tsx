@@ -6,6 +6,7 @@ import { useInView } from "react-intersection-observer";
 import { getAllPosts } from "@/app/_actions";
 import { MdSelfImprovement } from "react-icons/md";
 import PostSkeleton from "@/components/post/PostSkeleton";
+import Post from "@/components/post/Post";
 
 interface PostResponse {
   posts: IPost[];
@@ -77,19 +78,19 @@ const InfiniteScrollPosts = ({
       {posts &&
         posts?.length > 0 &&
         posts.map((post) => (
-          // <Post
-          //   key={post.id}
-          //   postId={post.id}
-          //   likes={post.likes}
-          //   comments={post.comments}
-          //   text={post.text}
-          //   title={post.title}
-          //   date={post.created_at}
-          //   imageSrc={post.image_url}
-          //   userImage={post.user.image_url}
-          //   username={post.user.username}
-          // />
-          <p key={post.id}>{post.text}</p>
+          <Post
+            key={post.id}
+            postId={post.id}
+            likes={post.likes}
+            comments={post.comments}
+            text={post.text}
+            title={post.title}
+            date={post.created_at}
+            imageSrc={post.image_url}
+            userImage={post.user.image_url}
+            username={post.user.username}
+          />
+          // <p key={post.id}>{post.text}</p>
         ))}
 
       <PostSkeleton ref={ref} end={end} />
