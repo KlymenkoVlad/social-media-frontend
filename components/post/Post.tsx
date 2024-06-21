@@ -60,7 +60,7 @@ const Post = ({
         </div>
       </div>
 
-      {/* {imageSrc && (
+      {imageSrc && (
         <Image
           src={imageSrc}
           className="h-full min-w-full max-w-full rounded-sm"
@@ -68,7 +68,7 @@ const Post = ({
           height={500000}
           alt="image"
         />
-      )} */}
+      )}
 
       {/* <PostInteractions
         likes={likes}
