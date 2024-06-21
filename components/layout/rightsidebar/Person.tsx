@@ -6,9 +6,9 @@ import {
 } from "@/app/_actions";
 import BlankAvatar from "@/components/BlankAvatar";
 import { stringCut } from "@/utils/stringCut";
-import { PersonAdd } from "@mui/icons-material";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { MdPersonAdd } from "react-icons/md";
 
 const Person = ({
   username,
@@ -35,7 +35,7 @@ const Person = ({
       </Link>
 
       <div className="flex h-8 w-10 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-200">
-        <PersonAdd
+        <MdPersonAdd
           onClick={async () => {
             toast.loading("Adding friend...");
             const res = await addFriendRequest(friendId);

@@ -1,12 +1,12 @@
 "use client";
 
-import {
-  AccountCircleOutlined,
-  GroupsOutlined,
-  PeopleAltOutlined,
-} from "@mui/icons-material";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import {
+  MdOutlineAccountCircle,
+  MdOutlineGroups,
+  MdOutlinePeopleAlt,
+} from "react-icons/md";
 
 const NavBar = () => {
   const [id, setId] = useState<string | null>(null);
@@ -20,15 +20,15 @@ const NavBar = () => {
   return (
     <nav className="min-w-48 space-y-6">
       <Link href={`/profile/${id}`} className={navLinkStyle}>
-        <AccountCircleOutlined className="ml-2" />
+        <MdOutlineAccountCircle className="ml-2" />
         <span className="ml-2">My Profile</span>
       </Link>
       <Link href={`/friends/${id}`} className={navLinkStyle}>
-        <PeopleAltOutlined className="ml-2" />
+        <MdOutlinePeopleAlt className="ml-2" />
         <span className="ml-2">Friends</span>
       </Link>
       <Link href="/communities" className={navLinkStyle}>
-        <GroupsOutlined className="ml-2" />
+        <MdOutlineGroups className="ml-2" />
         <span className="ml-2">Communities</span>
       </Link>
     </nav>

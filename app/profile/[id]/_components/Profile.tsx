@@ -9,7 +9,6 @@ import {
 import InfiniteScrollPostsProfile from "./InfiniteScrollPostsProfile";
 import { IPost } from "@/interfaces/post";
 import { Colors, User } from "@/interfaces/user";
-import { Close, Done, Edit, Person } from "@mui/icons-material";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -20,6 +19,7 @@ import { getFriendsList, updateColor } from "../actions";
 import PersonProfile from "./Person";
 import PersonSkeleton from "./PersonSkeleton";
 import PostSubmitForm from "@/components/PostSubmitForm";
+import { MdClose, MdDone, MdEdit, MdPerson } from "react-icons/md";
 
 const btnStyle =
   "border-text mb-3 flex h-fit min-w-32 cursor-pointer items-center justify-center self-end rounded-sm border-2 border-blue-300 bg-blue-100 px-1 py-2 ms:p-2 text-sm font-bold capitalize leading-6 transition-colors hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-10";
@@ -251,7 +251,7 @@ const Profile = ({
               onClick={() => setEditColor(true)}
               className={`${editColor ? "hidden" : "flex items-center justify-center"} h-10 rounded-full border-2 bg-gray-600 p-2 text-white opacity-70 shadow-md transition-colors hover:bg-gray-500`}
             >
-              <Edit /> <span className="ml-1">Change Color</span>
+              <MdEdit /> <span className="ml-1">Change Color</span>
             </button>
             <button
               onClick={() => {
@@ -259,13 +259,13 @@ const Profile = ({
               }}
               className={`${editColor ? "flex items-center justify-center" : "hidden"} h-10 rounded-full border-2 bg-green-600 p-2 text-white opacity-70 shadow-md transition-colors hover:bg-green-700`}
             >
-              <Done /> <span className="ml-1">Accept</span>
+              <MdDone /> <span className="ml-1">Accept</span>
             </button>
             <button
               onClick={() => setEditColor(false)}
               className={`${editColor ? "flex items-center justify-center" : "hidden"} h-10 rounded-full border-2 bg-red-600 p-2 text-white opacity-70 shadow-md transition-colors hover:bg-red-700`}
             >
-              <Close /> <span className="ml-1">Back</span>
+              <MdClose /> <span className="ml-1">Back</span>
             </button>
           </div>
 
@@ -320,7 +320,7 @@ const Profile = ({
                     className="h-full w-full rounded-full"
                   />
                 ) : (
-                  <Person
+                  <MdPerson
                     className="border text-gray-400 sm:h-44 sm:w-44"
                     style={{ width: "120%", height: "120%" }}
                   />

@@ -1,6 +1,5 @@
 import NavBar from "@/components/layout/leftsidebar/NavBar";
 import React from "react";
-import FriendsList from "./FriendsList";
 
 const LeftSidebarProfile = ({ id }: { id: string }) => {
   return (

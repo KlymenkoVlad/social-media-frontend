@@ -1,12 +1,12 @@
 "use client";
 
-import { MoreHoriz } from "@mui/icons-material";
 import Image from "next/image";
 import React from "react";
 import BlankAvatar from "../BlankAvatar";
 import { dateFormat } from "@/utils/dateFormat";
 import { ILike, IComment } from "@/interfaces/post";
 import PostInteractions from "./PostInteractions";
+import { MdMoreHoriz } from "react-icons/md";
 
 interface PostProps {
   likes: ILike[];
@@ -46,7 +46,7 @@ const Post = ({
           </div>
 
           <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-200">
-            <MoreHoriz />
+            <MdMoreHoriz />
           </div>
         </div>
 

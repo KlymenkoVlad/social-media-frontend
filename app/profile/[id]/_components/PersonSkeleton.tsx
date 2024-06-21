@@ -1,6 +1,6 @@
 import BlankAvatar from "@/components/BlankAvatar";
-import { PersonRemove } from "@mui/icons-material";
 import React from "react";
+import { MdPersonRemove } from "react-icons/md";
 
 const PersonSkeleton = () => {
   return (
@@ -14,7 +14,7 @@ const PersonSkeleton = () => {
       </div>
 
       <div className="flex h-8 w-10 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-200">
-        <PersonRemove className="text-gray-500" />
+        <MdPersonRemove className="text-gray-500" />
       </div>
     </div>
   );

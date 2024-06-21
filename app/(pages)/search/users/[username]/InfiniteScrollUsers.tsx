@@ -1,15 +1,12 @@
 "use client";
 
-import { IPost } from "@/interfaces/post";
 import React, { useEffect, useState } from "react";
-import Post from "../../../../../components/post/Post";
 import { useInView } from "react-intersection-observer";
-import { findUserByUsername, getPostsByUserId } from "@/app/_actions";
-import PostSkeleton from "../../../../../components/post/PostSkeleton";
-import { SelfImprovement } from "@mui/icons-material";
+import { findUserByUsername } from "@/app/_actions";
 import { User } from "@/interfaces/user";
 import BlankAvatar from "@/components/BlankAvatar";
 import Link from "next/link";
+import { MdSelfImprovement } from "react-icons/md";
 
 interface UsersParams {
   users: User[];
@@ -113,7 +110,7 @@ const InfiniteScrollUsers = ({
           end ? "block" : "hidden"
         } col-span-full mb-32 w-full text-center text-2xl font-semibold`}
       >
-        <SelfImprovement className="h-32 w-32" />
+        <MdSelfImprovement className="h-32 w-32" />
         <p>Hmmmm... I think there are no users that match your search</p>
       </div>
     </div>

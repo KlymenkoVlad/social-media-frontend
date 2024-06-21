@@ -1,18 +1,7 @@
 "use client";
 
 import BlankAvatar from "@/components/BlankAvatar";
-import {
-  Block,
-  Feed,
-  HelpOutline,
-  KeyboardArrowDown,
-  Logout,
-  Notifications,
-  NotificationsOutlined,
-  PersonAdd,
-  PersonRemove,
-  Settings,
-} from "@mui/icons-material";
+
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -26,6 +15,18 @@ import { FriendRequestStatus } from "@/app/profile/[id]/_components/Profile";
 import { User } from "@/interfaces/user";
 import { logout } from "./logout";
 import NavBar from "../leftsidebar/NavBar";
+import {
+  MdBlock,
+  MdFeed,
+  MdHelpOutline,
+  MdKeyboardArrowDown,
+  MdLogout,
+  MdNotifications,
+  MdOutlineNotifications,
+  MdPersonAdd,
+  MdPersonRemove,
+  MdSettings,
+} from "react-icons/md";
 
 interface RequestsProps {
   id: number;
@@ -91,7 +92,7 @@ const Person = ({
           }}
           className="flex h-8 w-10 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-300"
         >
-          <PersonAdd className="text-black" />
+          <MdPersonAdd className="text-black" />
         </button>
         <button
           onClick={async () => {
@@ -110,7 +111,7 @@ const Person = ({
           }}
           className="flex h-8 w-10 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-300"
         >
-          <PersonRemove className="text-black" />
+          <MdPersonRemove className="text-black" />
         </button>
         <button
           onClick={async () => {
@@ -132,7 +133,7 @@ const Person = ({
           }}
           className="flex h-8 w-10 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-300"
         >
-          <Block className="text-red-500" />
+          <MdBlock className="text-red-500" />
         </button>
       </div>
     </li>
@@ -237,7 +238,7 @@ const Modals = ({ user }: { user: User }) => {
         >
           {requests && showNotificationModal ? (
             <div className="relative">
-              <Notifications
+              <MdNotifications
                 style={{
                   height: "30px",
                   width: "30px",
@@ -252,7 +253,7 @@ const Modals = ({ user }: { user: User }) => {
             </div>
           ) : (
             <div className="relative">
-              <NotificationsOutlined
+              <MdOutlineNotifications
                 style={{ height: "30px", width: "30px", color: "#949ba6" }}
               />
               {requests && requests?.length > 0 && (
@@ -272,7 +273,7 @@ const Modals = ({ user }: { user: User }) => {
           className={`flex h-full w-24 cursor-pointer ${showUserModal && "bg-gray-300"} items-center justify-center transition-colors hover:bg-gray-200`}
         >
           <BlankAvatar imageSrc={user.image_url} />
-          <KeyboardArrowDown
+          <MdKeyboardArrowDown
             className={` ${
               showUserModal ? "rotate-180 text-gray-500" : "text-gray-400"
             }`}
@@ -302,7 +303,7 @@ const Modals = ({ user }: { user: User }) => {
           onClick={() => setShowUserModal(!showUserModal)}
           href={"/"}
         >
-          <Feed className="ml-2" />
+          <MdFeed className="ml-2" />
           <p className="ml-2">Main Page</p>
         </Link>
 
@@ -315,14 +316,14 @@ const Modals = ({ user }: { user: User }) => {
           onClick={() => setShowUserModal(!showUserModal)}
           href={"/settings"}
         >
-          <Settings className="ml-2" />
+          <MdSettings className="ml-2" />
           <p className="ml-2">Settings</p>
         </Link>
         <Link
           className="flex h-12 w-full cursor-pointer items-center justify-start rounded-md transition-colors ease-in-out hover:bg-gray-200"
           href={"/help"}
         >
-          <HelpOutline className="ml-2" />
+          <MdHelpOutline className="ml-2" />
           <p className="ml-2">Help</p>
         </Link>
         <button
@@ -332,7 +333,7 @@ const Modals = ({ user }: { user: User }) => {
           }}
           className="flex h-12 w-full cursor-pointer items-center justify-start rounded-md transition-colors ease-in-out hover:bg-gray-200"
         >
-          <Logout className="ml-2" />
+          <MdLogout className="ml-2" />
           <p className="ml-2">Sign out</p>
         </button>
       </div>

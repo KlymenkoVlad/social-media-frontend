@@ -3,7 +3,6 @@
 import { getUser, updateUserProfile } from "@/app/_actions";
 import { User } from "@/interfaces/user";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Badge, Cake, ContactEmergency, Email } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -11,6 +10,7 @@ import toast from "react-hot-toast";
 import { z } from "zod";
 import { baseUrl } from "@/utils/baseUrl";
 import ImageUploadingPreview from "@/components/ImageUploadingPreview";
+import { MdBadge, MdCake, MdContactEmergency, MdEmail } from "react-icons/md";
 
 const MAX_FILE_SIZE = 1024 * 1024 * 5;
 const ACCEPTED_IMAGE_MIME_TYPES = [
@@ -181,32 +181,34 @@ const ProfileForm = () => {
       <InputComponent
         type="email"
         name="email"
-        logo={<Email className="absolute left-3 top-3" />}
+        logo={<MdEmail className="absolute left-3 top-3 h-6 w-6" />}
         placeholder={user?.email || "Your email(not defined)"}
       />
       <InputComponent
         type="number"
         name="age"
-        logo={<Cake className="absolute left-3 top-3" />}
+        logo={<MdCake className="absolute left-3 top-3 h-6 w-6" />}
         placeholder={user?.age?.toString() || "Your age(not defined)"}
       />
       <InputComponent
         type="text"
         name="name"
-        logo={<Badge className="absolute left-3 top-3" />}
+        logo={<MdBadge className="absolute left-3 top-3 h-6 w-6" />}
         placeholder={user?.name || "Your first name(not defined)"}
       />
       <InputComponent
         type="text"
         name="surname"
-        logo={<Badge className="absolute left-3 top-3" />}
+        logo={<MdBadge className="absolute left-3 top-3 h-6 w-6" />}
         placeholder={user?.surname || "Your last name(not defined)"}
       />
       <div className="col-span-2">
         <InputComponent
           type="text"
           name="username"
-          logo={<ContactEmergency className="absolute left-3 top-3" />}
+          logo={
+            <MdContactEmergency className="absolute left-3 top-3 h-6 w-6" />
+          }
           placeholder={user?.username || "Your username(not defined)"}
         />
       </div>

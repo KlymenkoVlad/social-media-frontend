@@ -2,7 +2,6 @@
 
 import { sendData } from "@/app/_actions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Email, Lock } from "@mui/icons-material";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,6 +10,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { z } from "zod";
 import { redirectToFeed } from "../redirectToFeed";
+import { MdEmail, MdLock } from "react-icons/md";
 
 const Page = () => {
   const router = useRouter();
@@ -82,7 +82,7 @@ const Page = () => {
               placeholder="example@gmail.com"
               {...register("email")}
             />
-            <Email className="absolute left-3 top-3" />
+            <MdEmail className="absolute left-3 top-3 h-6 w-6" />
             {errors.email && (
               <p className="absolute left-0 top-full text-sm text-red-400">
                 {errors.email.message}
@@ -97,7 +97,7 @@ const Page = () => {
               placeholder="*********"
               {...register("password")}
             />
-            <Lock className="absolute left-3 top-3" />
+            <MdLock className="absolute left-3 top-3 h-6 w-6" />
             {errors.password && (
               <p className="absolute left-0 top-full text-sm text-red-400">
                 {errors.password.message}

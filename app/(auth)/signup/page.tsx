@@ -5,7 +5,6 @@
 
 import { sendData } from "@/app/_actions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Badge, ContactEmergency, Email, Lock } from "@mui/icons-material";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -14,6 +13,7 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { redirectToFeed } from "../redirectToFeed";
+import { MdBadge, MdContactEmergency, MdEmail, MdLock } from "react-icons/md";
 
 const FormDataSchemaSignup = z.object({
   email: z.string().email("Invalid email"),
@@ -135,25 +135,27 @@ const Page = () => {
             <InputComponent
               type="email"
               name="email"
-              logo={<Email className="absolute left-3 top-3" />}
+              logo={<MdEmail className="absolute left-3 top-3 h-6 w-6" />}
               placeholder="example@gmail.com"
             />
             <InputComponent
               type="password"
               name="password"
-              logo={<Lock className="absolute left-3 top-3" />}
+              logo={<MdLock className="absolute left-3 top-3 h-6 w-6" />}
               placeholder="*********"
             />
             <InputComponent
               type="text"
               name="name"
-              logo={<Badge className="absolute left-3 top-3" />}
+              logo={<MdBadge className="absolute left-3 top-3 h-6 w-6" />}
               placeholder="Your first name"
             />
             <InputComponent
               type="text"
               name="username"
-              logo={<ContactEmergency className="absolute left-3 top-3" />}
+              logo={
+                <MdContactEmergency className="absolute left-3 top-3 h-6 w-6" />
+              }
               placeholder="Your username"
             />
 

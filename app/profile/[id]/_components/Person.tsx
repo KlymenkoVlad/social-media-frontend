@@ -2,10 +2,10 @@
 
 import { deleteFriend } from "@/app/_actions";
 import BlankAvatar from "@/components/BlankAvatar";
-import { PersonRemove } from "@mui/icons-material";
 import toast from "react-hot-toast";
 import { revalidateFriendsList } from "../actions";
 import Link from "next/link";
+import { MdPersonRemove } from "react-icons/md";
 
 const Person = ({
   username,
@@ -32,7 +32,7 @@ const Person = ({
       </Link>
 
       <div className="flex h-8 w-10 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-200">
-        <PersonRemove
+        <MdPersonRemove
           onClick={async () => {
             toast.loading("Deleting friend...");
             const status = await deleteFriend(friendId);

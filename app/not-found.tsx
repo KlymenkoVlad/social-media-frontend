@@ -1,12 +1,12 @@
-import { WavingHand } from "@mui/icons-material";
 import Link from "next/link";
 import React from "react";
+import { MdWavingHand } from "react-icons/md";
 
 const NotFound = () => {
   return (
     <section className="flex h-dvh w-dvw items-center justify-center text-center font-semibold">
       <div className="space-y-5">
-        <WavingHand className="text-9xl" />
+        <MdWavingHand className="text-9xl" />
 
         <h2 className="text-2xl font-bold">Not Found</h2>
         <p>Could not find requested resource</p>

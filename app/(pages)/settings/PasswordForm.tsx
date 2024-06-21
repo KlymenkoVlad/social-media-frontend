@@ -2,10 +2,10 @@
 
 import { updatePassword } from "@/app/_actions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LockClock, LockOpen, Password } from "@mui/icons-material";
 import React from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { MdLockClock, MdLockOpen } from "react-icons/md";
 import { z } from "zod";
 
 const FormDataSchema = z.object({
@@ -83,13 +83,13 @@ const PasswordForm = () => {
         <InputComponent
           type="password"
           name="oldPassword"
-          logo={<LockOpen className="absolute left-3 top-3" />}
+          logo={<MdLockOpen className="absolute left-3 top-3 h-6 w-6" />}
           placeholder="Your old password"
         />
         <InputComponent
           type="password"
           name="newPassword"
-          logo={<LockClock className="absolute left-3 top-3" />}
+          logo={<MdLockClock className="absolute left-3 top-3 h-6 w-6" />}
           placeholder="Your new password"
         />
 
