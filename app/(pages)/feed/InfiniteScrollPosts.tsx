@@ -2,11 +2,10 @@
 
 import { IPost } from "@/interfaces/post";
 import React, { useEffect, useState } from "react";
-import Post from "../../../components/post/Post";
 import { useInView } from "react-intersection-observer";
 import { getAllPosts } from "@/app/_actions";
-import PostSkeleton from "../../../components/post/PostSkeleton";
 import { MdSelfImprovement } from "react-icons/md";
+import PostSkeleton from "@/components/post/PostSkeleton";
 
 interface PostResponse {
   posts: IPost[];
@@ -93,8 +92,8 @@ const InfiniteScrollPosts = ({
           <p key={post.id}>{post.text}</p>
         ))}
 
-      {/* <PostSkeleton ref={ref} end={end} /> */}
-      <p ref={ref}>loading</p>
+      <PostSkeleton ref={ref} end={end} />
+      {/* <p ref={ref}>loading</p> */}
       <div
         className={`${
           end ? "block" : "hidden"
