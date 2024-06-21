@@ -34,14 +34,18 @@ const Post = ({
   const formattedDate = dateFormat(date);
 
   return (
-    <ul className="mb-5 w-full justify-between space-y-4 overflow-auto rounded-md bg-white p-5">
+    <div
+      key={postId}
+      className="mb-5 w-full justify-between space-y-4 overflow-auto rounded-md bg-white p-5"
+    >
       <div>
         <div className="flex">
           <div className="flex w-full items-center">
-            <BlankAvatar imageSrc={userImage} />
+            {/* <BlankAvatar imageSrc={userImage} /> */}
             <div className="ml-3">
-              <p>{username[0].toUpperCase() + username.slice(1)}</p>
-              <p className="text-xs">{formattedDate}</p>
+              <p>{username && username[0].toUpperCase() + username.slice(1)}</p>
+
+              <p className="text-xs">{formattedDate && formattedDate}</p>
             </div>
           </div>
 
@@ -51,8 +55,8 @@ const Post = ({
         </div>
 
         <div className="mt-3">
-          <p className="font-medium">{title}</p>
-          <p className="mt-3">{text}</p>
+          <p className="font-medium">{title && title}</p>
+          <p className="mt-3">{text && text}</p>
         </div>
       </div>
 
@@ -72,7 +76,7 @@ const Post = ({
         postId={postId}
         userImage={userImage}
       /> */}
-    </ul>
+    </div>
   );
 };
 
