@@ -39,20 +39,20 @@ const Post = ({
       className="mb-5 w-full justify-between space-y-4 overflow-auto rounded-md bg-white p-5"
     >
       <div>
-        {/* <div className="flex">
+        <div className="flex">
           <div className="flex w-full items-center">
             <BlankAvatar imageSrc={userImage} />
             <div className="ml-3">
-              <p>{username && username[0].toUpperCase() + username.slice(1)}</p>
+              {/* <p>{username && username[0].toUpperCase() + username.slice(1)}</p> */}
 
-              <p className="text-xs">{formattedDate && formattedDate}</p>
+              {/* <p className="text-xs">{formattedDate && formattedDate}</p> */}
             </div>
           </div>
 
-          <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-200">
+          {/* <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-200">
             <MdMoreHoriz />
-          </div>
-        </div> */}
+          </div> */}
+        </div>
 
         <div className="mt-3">
           <p className="font-medium">{title && title}</p>
