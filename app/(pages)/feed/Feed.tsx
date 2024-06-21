@@ -40,14 +40,14 @@ const Feed = ({ data }: { data: PostResponse }) => {
       </div>
 
       <ul role="list">
-        <InfiniteScrollPosts
+        {/* <InfiniteScrollPosts
           setPosts={setPosts}
           posts={posts}
           hasNextPage={data.hasNextPage}
           nextCursor={data.nextCursor}
           postsLength={data.postsLength}
           sortBy={sortBy}
-        />
+        /> */}
       </ul>
     </section>
   );
