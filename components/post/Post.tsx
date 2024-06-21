@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BlankAvatar from "../BlankAvatar";
 import { dateFormat } from "@/utils/dateFormat";
 import { ILike, IComment } from "@/interfaces/post";
@@ -31,7 +31,11 @@ const Post = ({
   postId,
   userImage,
 }: PostProps) => {
-  const formattedDate = dateFormat(date);
+  const [formattedDate, setFormattedDate] = useState<string>();
+
+  useEffect(() => {
+    setFormattedDate(dateFormat(date));
+  }, []);
 
   return (
     <div
@@ -45,7 +49,7 @@ const Post = ({
             <div className="ml-3">
               <p>{username && username[0].toUpperCase() + username.slice(1)}</p>
 
-              {/* //Potential Problem */}
+              {/* TODO: Problem */}
               <p className="text-xs">{formattedDate && formattedDate}</p>
             </div>
           </div>
