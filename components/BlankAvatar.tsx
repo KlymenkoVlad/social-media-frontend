@@ -1,6 +1,6 @@
-import { Person } from "@mui/icons-material";
 import Image from "next/image";
 import React from "react";
+import { MdPerson } from "react-icons/md";
 
 const BlankAvatar = ({ imageSrc }: { imageSrc?: string | null }) => {
   const style = `absolute  text-gray-400 `;
@@ -10,7 +10,7 @@ const BlankAvatar = ({ imageSrc }: { imageSrc?: string | null }) => {
       {imageSrc ? (
         <Image width={100} height={100} src={imageSrc} alt="Profile Photo" />
       ) : (
-        <Person className={style} style={{ width: "48px", height: "48px" }} />
+        <MdPerson className={style} style={{ width: "48px", height: "48px" }} />
       )}
     </div>
   );

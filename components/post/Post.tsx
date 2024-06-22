@@ -1,12 +1,12 @@
 "use client";
 
-import { MoreHoriz } from "@mui/icons-material";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BlankAvatar from "../BlankAvatar";
 import { dateFormat } from "@/utils/dateFormat";
 import { ILike, IComment } from "@/interfaces/post";
 import PostInteractions from "./PostInteractions";
+import { MdMoreHoriz } from "react-icons/md";
 
 interface PostProps {
   likes: ILike[];
@@ -31,28 +31,36 @@ const Post = ({
   postId,
   userImage,
 }: PostProps) => {
-  const formattedDate = dateFormat(date);
+  const [formattedDate, setFormattedDate] = useState<string>();
+
+  useEffect(() => {
+    setFormattedDate(dateFormat(date));
+  }, []);
 
   return (
-    <ul className="mb-5 w-full justify-between space-y-4 overflow-auto rounded-md bg-white p-5">
+    <div
+      key={postId}
+      className="mb-5 w-full justify-between space-y-4 overflow-auto rounded-md bg-white p-5"
+    >
       <div>
         <div className="flex">
           <div className="flex w-full items-center">
             <BlankAvatar imageSrc={userImage} />
             <div className="ml-3">
-              <p>{username[0].toUpperCase() + username.slice(1)}</p>
-              <p className="text-xs">{formattedDate}</p>
+              <p>{username && username[0].toUpperCase() + username.slice(1)}</p>
+
+              <p className="text-xs">{formattedDate && formattedDate}</p>
             </div>
           </div>
 
           <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-200">
-            <MoreHoriz />
+            <MdMoreHoriz />
           </div>
         </div>
 
         <div className="mt-3">
-          <p className="font-medium">{title}</p>
-          <p className="mt-3">{text}</p>
+          <p className="font-medium">{title && title}</p>
+          <p className="mt-3">{text && text}</p>
         </div>
       </div>
 
@@ -72,7 +80,7 @@ const Post = ({
         postId={postId}
         userImage={userImage}
       />
-    </ul>
+    </div>
   );
 };
 

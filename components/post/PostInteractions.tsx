@@ -2,12 +2,6 @@
 
 import { IComment, ILike } from "@/interfaces/post";
 import { baseUrl } from "@/utils/baseUrl";
-import {
-  ChatBubbleOutlineOutlined,
-  Favorite,
-  FavoriteBorderOutlined,
-  Send,
-} from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import BlankAvatar from "../BlankAvatar";
@@ -17,6 +11,13 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { sendComment } from "@/app/_actions";
 import toast from "react-hot-toast";
+import {
+  MdFavorite,
+  MdOutlineChatBubbleOutline,
+  MdOutlineFavoriteBorder,
+  MdSend,
+} from "react-icons/md";
+import Comment from "./Comment";
 
 interface LikeProps {
   postId: number;
@@ -34,10 +35,9 @@ const PostInteractions = ({
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [likesAmount, setLikesAmount] = useState<number>(likes.length);
   const [renderComments, setRenderComments] = useState(comments);
-
   const [commentsAmount, setCommentsAmount] = useState(3);
-
   const [showComments, setShowComments] = useState(comments.length > 0);
+
   const token = Cookies.get("token");
 
   const FormDataSchema = z.object({
@@ -69,11 +69,7 @@ const PostInteractions = ({
   };
 
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      window.localStorage &&
-      likes.length > 0
-    ) {
+    if (likes.length > 0) {
       const userId = localStorage.getItem("userId") || "";
 
       const isLiked =
@@ -109,7 +105,7 @@ const PostInteractions = ({
           }}
           className="flex h-8 w-20 cursor-pointer items-center justify-center rounded-2xl bg-gray-100 transition-colors hover:bg-gray-300"
         >
-          {isLiked ? <Favorite /> : <FavoriteBorderOutlined />}
+          {isLiked ? <MdFavorite /> : <MdOutlineFavoriteBorder />}
           <p className="ml-1 text-sm font-medium text-gray-700">
             {likesAmount}
           </p>
@@ -118,7 +114,7 @@ const PostInteractions = ({
           onClick={() => setShowComments(!showComments)}
           className="ml-3 flex h-8 w-20 cursor-pointer items-center justify-center rounded-2xl bg-gray-100 transition-colors hover:bg-gray-300"
         >
-          <ChatBubbleOutlineOutlined />
+          <MdOutlineChatBubbleOutline />
           <p className="ml-1 text-sm font-medium text-gray-700">
             {comments.length}
           </p>
@@ -130,23 +126,9 @@ const PostInteractions = ({
 
         <div className="mb-5">
           {renderComments?.length > 0 &&
-            renderComments.slice(0, commentsAmount).map((comment) => (
-              <div key={comment.id}>
-                <div className="mb-3 flex items-center justify-between">
-                  <div className="flex items-center space-x-5">
-                    <BlankAvatar imageSrc={userImage} />
-                    <div>
-                      <p className="font-semibold">{comment.user.username}</p>
-                      <p>{comment.text}</p>
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-gray-500">
-                    {dateFormat(comment.created_at)}
-                  </p>
-                </div>
-              </div>
-            ))}
+            renderComments
+              .slice(0, commentsAmount)
+              .map((comment) => <Comment key={comment.id} comment={comment} />)}
 
           {comments.length > commentsAmount && (
             <button
@@ -174,7 +156,7 @@ const PostInteractions = ({
             type="submit"
             className="font-semibold text-gray-500 hover:text-gray-700"
           >
-            <Send />
+            <MdSend />
           </button>
         </form>
         {errors.text && (

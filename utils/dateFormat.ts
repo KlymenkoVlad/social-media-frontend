@@ -1,3 +1,5 @@
+"use client";
+
 import dayjs from "dayjs";
 
 export const dateFormat = (date: Date): string => {

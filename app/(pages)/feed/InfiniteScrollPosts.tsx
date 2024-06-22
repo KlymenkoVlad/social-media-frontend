@@ -2,11 +2,11 @@
 
 import { IPost } from "@/interfaces/post";
 import React, { useEffect, useState } from "react";
-import Post from "../../../components/post/Post";
 import { useInView } from "react-intersection-observer";
 import { getAllPosts } from "@/app/_actions";
-import PostSkeleton from "../../../components/post/PostSkeleton";
-import { SelfImprovement } from "@mui/icons-material";
+import { MdSelfImprovement } from "react-icons/md";
+import PostSkeleton from "@/components/post/PostSkeleton";
+import Post from "@/components/post/Post";
 
 interface PostResponse {
   posts: IPost[];
@@ -90,15 +90,17 @@ const InfiniteScrollPosts = ({
             userImage={post.user.image_url}
             username={post.user.username}
           />
+          // <p key={post.id}>{post.text}</p>
         ))}
 
       <PostSkeleton ref={ref} end={end} />
+      {/* <p ref={ref}>loading</p> */}
       <div
         className={`${
           end ? "block" : "hidden"
         } mb-32 w-full text-center text-2xl font-semibold`}
       >
-        <SelfImprovement className="h-32 w-32" />
+        <MdSelfImprovement className="inline h-32 w-32" />
         <p>Hmmmm... I think there are no more posts</p>
       </div>
     </div>

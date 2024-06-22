@@ -1,11 +1,12 @@
 import BlankAvatar from "@/components/BlankAvatar";
-import {
-  ChatBubbleOutlineOutlined,
-  FavoriteBorderOutlined,
-  MoreHoriz,
-} from "@mui/icons-material";
+
 import React, { Ref, forwardRef } from "react";
 import PostInteractions from "./PostInteractions";
+import {
+  MdMoreHoriz,
+  MdOutlineChatBubbleOutline,
+  MdOutlineFavoriteBorder,
+} from "react-icons/md";
 
 type typeRef = Element | null | undefined;
 
@@ -31,7 +32,7 @@ const PostSkeleton = forwardRef(
             </div>
 
             <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors">
-              <MoreHoriz />
+              <MdMoreHoriz />
             </div>
           </div>
 
@@ -52,13 +53,13 @@ const PostSkeleton = forwardRef(
             disabled
             className="flex h-8 w-20 cursor-pointer items-center justify-center rounded-2xl bg-gray-100 transition-colors"
           >
-            <FavoriteBorderOutlined className="h-5 w-5" />
+            <MdOutlineFavoriteBorder className="h-5 w-5" />
           </button>
           <button
             disabled
             className="ml-3 flex h-8 w-20 cursor-pointer items-center justify-center rounded-2xl bg-gray-100 transition-colors"
           >
-            <ChatBubbleOutlineOutlined className="h-5 w-5" />
+            <MdOutlineChatBubbleOutline className="h-5 w-5" />
           </button>
         </div>
       </ul>

@@ -2,10 +2,10 @@
 
 import { stringCut } from "@/utils/stringCut";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Clear, Search } from "@mui/icons-material";
 import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { MdClear, MdSearch } from "react-icons/md";
 import { z } from "zod";
 
 const FormSchema = z.object({
@@ -25,8 +25,8 @@ const SearchForm = () => {
       onSubmit={(e) => handleSubmit(() => e.preventDefault())()}
       className="relative flex h-10 w-full max-w-96"
     >
-      <Search className="absolute left-2 top-2 z-0 text-gray-500" />
-      <Clear
+      <MdSearch className="absolute left-2 top-2 z-0 text-gray-500" />
+      <MdClear
         className="absolute right-2 top-2 z-0 cursor-pointer text-gray-500 transition-colors hover:text-red-500"
         onClick={() => reset()}
       />

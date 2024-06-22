@@ -2,13 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { Person, SelfImprovement } from "@mui/icons-material";
 import { IFriend } from "@/interfaces/friend";
 import { getAllFriends } from "./actions";
 import Image from "next/image";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { deleteFriend } from "@/app/_actions";
+import { MdPerson, MdSelfImprovement } from "react-icons/md";
 
 interface FriendResponse {
   status: string;
@@ -79,7 +79,7 @@ const InfiniteScrollFriends = ({
                       alt="Profile Photo"
                     />
                   ) : (
-                    <Person
+                    <MdPerson
                       className={"absolute text-gray-400"}
                       style={{ width: "120px", height: "120px" }}
                     />
@@ -128,7 +128,10 @@ const InfiniteScrollFriends = ({
           end ? "block" : "hidden"
         } mb-32 w-full text-center text-2xl font-semibold`}
       >
-        <SelfImprovement style={{ width: "8rem", height: "8rem" }} />
+        <MdSelfImprovement
+          style={{ width: "8rem", height: "8rem" }}
+          className="inline"
+        />
         <p>Hmmmm... I think there are no more friends</p>
       </div>
     </div>

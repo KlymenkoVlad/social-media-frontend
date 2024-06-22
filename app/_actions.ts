@@ -92,7 +92,7 @@ export const getMe = async () => {
 export const getAllPosts = async (
   cursor?: number,
   sortBy = "new",
-  take = 3,
+  take = 4,
 ) => {
   const token = cookies().get("token")?.value;
 
@@ -264,7 +264,7 @@ export const updatePassword = async (data: PasswordFormInputs) => {
 export const findUserByUsername = async (
   username: string,
   cursor?: number,
-  take = 3,
+  take = 16,
 ) => {
   const token = cookies().get("token")?.value;
 
@@ -282,7 +282,7 @@ export const findUserByUsername = async (
   return res;
 };
 
-export const findPosts = async (text: string, cursor?: number, take = 3) => {
+export const findPosts = async (text: string, cursor?: number, take = 4) => {
   const token = cookies().get("token")?.value;
 
   const res = await fetch(
