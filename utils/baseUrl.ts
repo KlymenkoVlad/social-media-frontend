@@ -1,4 +1,4 @@
 export const baseUrl =
   process.env.NODE_ENV !== "production"
-    ? "https://social-media-backend-sfke.onrender.com/api"
+    ? "http://localhost:3001/api"
     : "https://social-media-backend-sfke.onrender.com/api";

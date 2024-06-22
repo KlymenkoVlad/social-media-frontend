@@ -110,7 +110,7 @@ const InfiniteScrollUsers = ({
           end ? "block" : "hidden"
         } col-span-full mb-32 w-full text-center text-2xl font-semibold`}
       >
-        <MdSelfImprovement className="h-32 w-32" />
+        <MdSelfImprovement className="inline h-32 w-32" />
         <p>Hmmmm... I think there are no users that match your search</p>
       </div>
     </div>
