@@ -1,15 +1,18 @@
 "use client";
 
+import { updateUserProfile } from "@/app/_actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 import { baseUrl } from "@/utils/baseUrl";
 import ImageUploadingPreview from "@/components/ImageUploadingPreview";
 import { MdBadge } from "react-icons/md";
-import { createCommunity } from "../actions";
+import { getMyCommunity, isCommunityExist } from "../actions";
+import { ICommunity } from "@/interfaces/community";
+import { updateCommunity } from "@/app/profile/[id]/actions";
 
 const MAX_FILE_SIZE = 1024 * 1024 * 5;
 const ACCEPTED_IMAGE_MIME_TYPES = [
@@ -19,6 +22,7 @@ const ACCEPTED_IMAGE_MIME_TYPES = [
   "image/webp",
 ];
 
+//TODO: Image updating, validate case when data are the same as before
 const FormDataSchema = z.object({
   name: z.preprocess(
     (value) => (value === "" ? undefined : value),
@@ -49,8 +53,32 @@ const FormDataSchema = z.object({
 
 export type FormCommunityInputs = z.infer<typeof FormDataSchema>;
 
-const FormCommunity = () => {
+const FormCommunityEdit = () => {
+  const [community, setCommunity] = useState<ICommunity>();
+
+  const [showForm, setShowForm] = useState<boolean>(false);
+
+  useEffect(() => {
+    const getCommunityStatus = async () => {
+      const res = await isCommunityExist();
+      setShowForm(res);
+    };
+
+    getCommunityStatus();
+  }, []);
+
   const router = useRouter();
+
+  useEffect(() => {
+    const userFetching = async () => {
+      const data: { community: ICommunity; status: string } =
+        await getMyCommunity();
+
+      setCommunity(data.community);
+    };
+
+    userFetching();
+  }, []);
 
   const InputComponent = ({
     type,
@@ -97,7 +125,7 @@ const FormCommunity = () => {
     if (data.image_url && data.image_url.length > 0) {
       const formData = new FormData();
       formData.append("file", data.image_url[0]);
-      const res: { url: string } = await fetch(`${baseUrl}/post/upload`, {
+      const res = await fetch(`${baseUrl}/post/upload`, {
         method: "POST",
         body: formData,
       }).then((res) => res.json());
@@ -107,12 +135,19 @@ const FormCommunity = () => {
       delete data.image_url;
     }
 
-    const res = await createCommunity(data);
+    const res = await updateCommunity(data);
 
     toast.remove();
 
-    if (res) {
-      toast.success("community created successfully");
+    if (res.statusCode === 304) {
+      toast.error("No changes were made");
+    } else if (res.statusCode === 200) {
+      toast.success("Community updated successfully");
+      router.refresh();
+    } else if (res.statusCode === 409) {
+      toast.error(res.message);
+    } else {
+      toast.error("Something went wrong");
     }
 
     reset();
@@ -120,22 +155,22 @@ const FormCommunity = () => {
 
   const imageUrl = watch("image_url");
 
-  return (
-    <form onSubmit={handleSubmit(processForm)} className="space-y-5">
+  return showForm ? (
+    <form onSubmit={handleSubmit(processForm)} className="space-y-3">
       <h1 className="col-span-2 mb-5 text-center text-3xl font-bold">
-        Create your community
+        Change Your Community
       </h1>
 
       <InputComponent
         type="text"
         name="name"
         logo={<MdBadge className="absolute left-3 top-3 h-6 w-6" />}
-        placeholder={"Your community name"}
+        placeholder={community?.name || "Your community name(not defined)"}
       />
 
       <textarea
         className="col-span-2 h-24 w-full rounded-md bg-gray-300 p-2 focus:outline-none"
-        placeholder={"Tell us about your community"}
+        placeholder={community?.description || "Tell us about your community"}
         {...register("description")}
       />
       {errors?.description && (
@@ -169,7 +204,11 @@ const FormCommunity = () => {
         Save
       </button>
     </form>
+  ) : (
+    <div className="animate-pulse text-center text-3xl font-semibold">
+      Loading...
+    </div>
   );
 };
 
-export default FormCommunity;
+export default FormCommunityEdit;

@@ -3,7 +3,7 @@
 import { Colors } from "@/interfaces/user";
 import { baseUrl } from "@/utils/baseUrl";
 import { cookies } from "next/headers";
-import { FormCommunityInputs } from "./edit/FormCommunity";
+import { FormCommunityInputs } from "./edit/FormCommunityCreate";
 
 export const getCommunities = async (
   cursor?: number | null,
@@ -30,6 +30,20 @@ export const getCommunity = async (id: number) => {
   const token = cookies().get("token")?.value;
 
   const res = await fetch(`${baseUrl}/community/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+
+  return res;
+};
+
+export const getMyCommunity = async () => {
+  const token = cookies().get("token")?.value;
+
+  const res = await fetch(`${baseUrl}/community/me`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
