@@ -25,9 +25,9 @@ const SearchForm = () => {
       onSubmit={(e) => handleSubmit(() => e.preventDefault())()}
       className="relative flex h-10 w-full max-w-96"
     >
-      <MdSearch className="absolute left-2 top-2 z-0 text-gray-500" />
+      <MdSearch className="absolute left-2 top-2 z-0 text-2xl text-gray-500" />
       <MdClear
-        className="absolute right-2 top-2 z-0 cursor-pointer text-gray-500 transition-colors hover:text-red-500"
+        className="absolute right-2 top-2 z-0 cursor-pointer text-2xl text-gray-500 transition-colors hover:text-red-500"
         onClick={() => reset()}
       />
       <input

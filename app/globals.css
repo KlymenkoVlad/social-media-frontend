@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.btn {
+  @apply mb-3 flex h-fit min-w-32 cursor-pointer items-center justify-center self-end rounded-sm border-2 border-blue-300 bg-blue-100 px-1 py-2 text-sm font-bold capitalize leading-6 transition-colors hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-10 ms:p-2;
+}
+
 html {
   background-color: #f0f2f5;
 }

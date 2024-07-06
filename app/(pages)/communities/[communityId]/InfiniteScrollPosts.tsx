@@ -2,62 +2,96 @@
 
 import { IPost } from "@/interfaces/post";
 import React, { useEffect, useState } from "react";
-import Post from "../../../../../components/post/Post";
 import { useInView } from "react-intersection-observer";
-import { findPosts, getPostsByUserId } from "@/app/_actions";
-import PostSkeleton from "../../../../../components/post/PostSkeleton";
+import PostSkeleton from "@/components/post/PostSkeleton";
+import Post from "@/components/post/Post";
 import { MdSelfImprovement } from "react-icons/md";
+import { getCommunityPosts } from "../actions";
 
 interface PostResponse {
   posts: IPost[];
-  nextCursor: number;
+  nextCursor: number | null;
   hasNextPage: boolean;
   postsLength: number;
-  text: string;
+  setRenderPosts: React.Dispatch<React.SetStateAction<IPost[]>>;
+  sortBy: string;
+  communityId: number;
 }
 
-const InfiniteScrollPostsSearch = ({
+const InfiniteScrollPosts = ({
   posts,
   nextCursor,
   hasNextPage,
-  text,
+  setRenderPosts,
+  sortBy,
+  communityId,
 }: PostResponse) => {
-  const [cursor, setCursor] = useState<number>(nextCursor);
+  const [cursor, setCursor] = useState<number | null>(nextCursor);
   const [end, setEnd] = useState(!hasNextPage);
   const [ref, inView] = useInView({ rootMargin: "0px 0px 700px 0px" });
-  const [renderPosts, setRenderPosts] = useState(posts);
+  const [currentSort, setCurrentSort] = useState<string>(sortBy);
+
+  useEffect(() => {
+    const sortUpdating = async () => {
+      if (sortBy !== currentSort) {
+        setEnd(false);
+        setCursor(null);
+        setRenderPosts([]);
+        const data: PostResponse = await getCommunityPosts(
+          communityId,
+          sortBy,
+          undefined,
+        );
+
+        if (!data.hasNextPage || !hasNextPage) {
+          setEnd(true);
+        }
+
+        setRenderPosts([...data.posts]);
+
+        setCursor(data.nextCursor);
+        setCurrentSort(sortBy);
+      }
+    };
+
+    sortUpdating();
+  }, [sortBy]);
 
   const fetchPosts = async () => {
     if (end) {
       return;
     }
 
-    const data: PostResponse = await findPosts(text, cursor);
+    const data: PostResponse = await getCommunityPosts(
+      communityId,
+      currentSort,
+      cursor,
+    );
 
     if (!data.hasNextPage || !hasNextPage) {
       setEnd(true);
     }
 
-    setRenderPosts([...renderPosts, ...data.posts]);
+    setRenderPosts([...posts, ...data.posts]);
 
     setCursor(data.nextCursor);
   };
 
   useEffect(() => {
-    if (inView && !end) {
+    if (inView && sortBy === currentSort && !end) {
       fetchPosts();
     }
   }, [inView]);
 
   return (
     <div>
-      {renderPosts &&
-        renderPosts?.length > 0 &&
-        renderPosts.map((post) => (
+      {posts &&
+        posts?.length > 0 &&
+        posts.map((post) => (
           <Post
             key={post.id}
-            userId={post.user_id}
             postId={post.id}
+            userId={post.user_id}
             likes={post.likes}
             userImage={post.user.image_url}
             comments={post.comments}
@@ -83,4 +117,4 @@ const InfiniteScrollPostsSearch = ({
   );
 };
 
-export default InfiniteScrollPostsSearch;
+export default InfiniteScrollPosts;

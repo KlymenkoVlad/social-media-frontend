@@ -18,7 +18,7 @@ interface PostResponse {
   userId: number;
 }
 
-const InfiniteScrollPostsProfile = ({
+const InfiniteScrollPosts = ({
   posts,
   nextCursor,
   hasNextPage,
@@ -90,6 +90,7 @@ const InfiniteScrollPostsProfile = ({
         posts.map((post) => (
           <Post
             key={post.id}
+            userId={post.user_id}
             postId={post.id}
             likes={post.likes}
             userImage={post.user.image_url}
@@ -99,6 +100,7 @@ const InfiniteScrollPostsProfile = ({
             date={post.created_at}
             imageSrc={post.image_url}
             username={post.user.username}
+            community={post.community}
           />
         ))}
 
@@ -115,4 +117,4 @@ const InfiniteScrollPostsProfile = ({
   );
 };
 
-export default InfiniteScrollPostsProfile;
+export default InfiniteScrollPosts;

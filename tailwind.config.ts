@@ -22,6 +22,11 @@ const config: Config = {
         xl: "1280px",
         "2xl": "1536px",
       },
+      extend: {
+        btn: {
+          primary: "bg-blue-500 text-white",
+        },
+      },
     },
   },
   plugins: [],

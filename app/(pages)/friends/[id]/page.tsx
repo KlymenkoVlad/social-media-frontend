@@ -1,8 +1,8 @@
-import { getFriendsList } from "@/app/profile/[id]/actions";
 import { IFriend } from "@/interfaces/friend";
 import React from "react";
 import { getAllFriends } from "./actions";
 import InfiniteScrollFriends from "./InfiniteScrollFriends";
+import { Metadata } from "next";
 
 interface FriendResponse {
   status: string;
@@ -11,6 +11,12 @@ interface FriendResponse {
   hasNextPage: boolean;
   postsLength: number;
 }
+
+export const metadata: Metadata = {
+  title: "Friends",
+  description:
+    "Social media app that helps you connect and share with the people in your life.",
+};
 
 const page = async ({ params }: { params: { id: string } }) => {
   const friends: FriendResponse = await getAllFriends(params.id);

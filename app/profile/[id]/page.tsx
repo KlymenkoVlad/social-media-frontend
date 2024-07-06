@@ -2,7 +2,7 @@ import { getPostsByUserId } from "@/app/_actions";
 import { IPost } from "@/interfaces/post";
 import { User } from "@/interfaces/user";
 import React from "react";
-import { getDataAuth } from "./actions";
+import { getDataAuth, isCommunityExist } from "./actions";
 import Profile from "./_components/Profile";
 
 interface UserResponse {

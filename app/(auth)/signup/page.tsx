@@ -69,8 +69,6 @@ const Page = () => {
     );
   };
 
-  const router = useRouter();
-
   const {
     register,
     reset,

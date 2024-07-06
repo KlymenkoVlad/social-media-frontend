@@ -15,7 +15,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IFriend } from "@/interfaces/friend";
-import { getFriendsList, updateColor } from "../actions";
+import { getFriendsList, isCommunityExist, updateColor } from "../actions";
 import PersonProfile from "./Person";
 import PersonSkeleton from "./PersonSkeleton";
 import PostSubmitForm from "@/components/PostSubmitForm";
@@ -167,9 +167,23 @@ const Profile = ({
   const [loading, setLoading] = useState(true);
   const [friends, setFriends] = useState<IFriend[]>();
   const [friendsLoading, setFriendsLoading] = useState(true);
+  const [showCreateCommunity, setShowCreateCommunity] = useState(true);
 
   const [editColor, setEditColor] = useState(false);
   const [currentColor, setCurrentColor] = useState<Colors>(user.profileColor);
+
+  useEffect(() => {
+    const getIsCommunityExist = async () => {
+      const userId = localStorage.getItem("userId");
+      if (userId === user.id.toString()) {
+        const data = await isCommunityExist();
+
+        setShowCreateCommunity(data);
+      }
+    };
+
+    getIsCommunityExist();
+  }, []);
 
   useEffect(() => {
     const getFriends = async () => {
@@ -272,38 +286,38 @@ const Profile = ({
           <div
             className={`${editColor ? "flex" : "hidden"} space-x-3 transition-opacity duration-300`}
           >
-            <div
+            <button
               className="h-6 w-6 cursor-pointer rounded-full bg-red-500 shadow-md"
               onClick={() => setCurrentColor(Colors.RED)}
-            ></div>
-            <div
+            ></button>
+            <button
               className="h-6 w-6 cursor-pointer rounded-full bg-blue-500 shadow-md"
               onClick={() => setCurrentColor(Colors.BLUE)}
-            ></div>
-            <div
+            ></button>
+            <button
               className="h-6 w-6 cursor-pointer rounded-full bg-green-500 shadow-md"
               onClick={() => setCurrentColor(Colors.GREEN)}
-            ></div>
-            <div
+            ></button>
+            <button
               className="h-6 w-6 cursor-pointer rounded-full bg-yellow-500 shadow-md"
               onClick={() => setCurrentColor(Colors.YELLOW)}
-            ></div>
-            <div
+            ></button>
+            <button
               className="h-6 w-6 cursor-pointer rounded-full bg-orange-500 shadow-md"
               onClick={() => setCurrentColor(Colors.ORANGE)}
-            ></div>
-            <div
+            ></button>
+            <button
               className="h-6 w-6 cursor-pointer rounded-full bg-purple-500 shadow-md"
               onClick={() => setCurrentColor(Colors.PURPLE)}
-            ></div>
-            <div
+            ></button>
+            <button
               className="h-6 w-6 cursor-pointer rounded-full bg-pink-500 shadow-md"
               onClick={() => setCurrentColor(Colors.PINK)}
-            ></div>
-            <div
+            ></button>
+            <button
               className="h-6 w-6 cursor-pointer rounded-full bg-gray-500 shadow-md"
               onClick={() => setCurrentColor(Colors.GRAY)}
-            ></div>
+            ></button>
           </div>
         </div>
 
@@ -403,9 +417,19 @@ const Profile = ({
         )}
       </section>
 
-      <section className="w-full overflow-hidden rounded-md">
-        <PostSubmitForm setPosts={setRenderPosts} posts={renderPosts} />
-      </section>
+      {userId && +userId === user?.id && (
+        <section className="w-full overflow-hidden rounded-md">
+          <PostSubmitForm setPosts={setRenderPosts} posts={renderPosts} />
+        </section>
+      )}
+
+      {!showCreateCommunity && (
+        <section className="grid h-16 w-full items-center rounded-md bg-white px-24">
+          <Link className={btnStyle} href={`/communities/edit`}>
+            Do you want to create your own community? Create it!
+          </Link>
+        </section>
+      )}
 
       {/* Sorting by */}
 

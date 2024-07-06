@@ -294,7 +294,9 @@ const Modals = ({ user }: { user: User }) => {
           <BlankAvatar imageSrc={user.image_url} />
           <div className="ml-3">
             <p className="">{user.name}</p>
-            <p className="text-xs text-gray-400">@{user.username}</p>
+            <p className="text-xs font-medium text-gray-400">
+              @{user.username}
+            </p>
           </div>
         </Link>
 
@@ -303,7 +305,7 @@ const Modals = ({ user }: { user: User }) => {
           onClick={() => setShowUserModal(!showUserModal)}
           href={"/"}
         >
-          <MdFeed className="ml-2" />
+          <MdFeed className="ml-2 text-2xl" />
           <p className="ml-2">Main Page</p>
         </Link>
 
@@ -316,14 +318,14 @@ const Modals = ({ user }: { user: User }) => {
           onClick={() => setShowUserModal(!showUserModal)}
           href={"/settings"}
         >
-          <MdSettings className="ml-2" />
+          <MdSettings className="ml-2 text-2xl" />
           <p className="ml-2">Settings</p>
         </Link>
         <Link
           className="flex h-12 w-full cursor-pointer items-center justify-start rounded-md transition-colors ease-in-out hover:bg-gray-200"
           href={"/help"}
         >
-          <MdHelpOutline className="ml-2" />
+          <MdHelpOutline className="ml-2 text-2xl" />
           <p className="ml-2">Help</p>
         </Link>
         <button
@@ -333,7 +335,7 @@ const Modals = ({ user }: { user: User }) => {
           }}
           className="flex h-12 w-full cursor-pointer items-center justify-start rounded-md transition-colors ease-in-out hover:bg-gray-200"
         >
-          <MdLogout className="ml-2" />
+          <MdLogout className="ml-2 text-2xl" />
           <p className="ml-2">Sign out</p>
         </button>
       </div>

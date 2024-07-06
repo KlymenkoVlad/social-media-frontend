@@ -31,4 +31,9 @@ export interface IPost {
     username: string;
     image_url: string;
   };
+  community: {
+    name: string;
+    image_url: string;
+    id: number;
+  } | null;
 }

@@ -52,3 +52,17 @@ export const updateColor = async (color: Colors) => {
 
   return res.status;
 };
+
+export const isCommunityExist = async (): Promise<boolean> => {
+  const token = cookies().get("token")?.value;
+
+  const res = await fetch(`${baseUrl}/community/exist`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+
+  return res.status;
+};
