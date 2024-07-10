@@ -7,7 +7,7 @@ import { dateFormat } from "@/utils/dateFormat";
 import { ILike, IComment } from "@/interfaces/post";
 import PostInteractions from "./PostInteractions";
 import { MdMoreHoriz } from "react-icons/md";
-import { ICommunity } from "@/interfaces/community";
+import { ICommunity, ISubscription } from "@/interfaces/community";
 import Link from "next/link";
 
 interface PostProps {
@@ -21,11 +21,7 @@ interface PostProps {
   username: string;
   postId: number;
   userImage: string | null;
-  community: {
-    name: string;
-    image_url: string;
-    id: number;
-  } | null;
+  community: ICommunity;
 }
 
 const Post = ({
@@ -42,15 +38,26 @@ const Post = ({
   userId,
 }: PostProps) => {
   const [formattedDate, setFormattedDate] = useState<string>();
+  const [isSubscribed, setIsSubscribed] = useState<boolean>();
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     setFormattedDate(dateFormat(date));
   }, []);
 
+  useEffect(() => {
+    if (community?.subscribed?.length > 0) {
+      const id = localStorage.getItem("userId");
+      if (!id) return;
+      setIsSubscribed(community.subscribed.some((sub) => sub.userId === +id));
+    }
+  }, []);
+
   return (
     <div
       key={postId}
-      className="mb-5 w-full justify-between space-y-4 overflow-auto rounded-md bg-white p-5"
+      className={`mb-5 w-full justify-between space-y-4 overflow-auto rounded-md ${isSubscribed ? "border-2" : "border-0"} border-blue-400 bg-white p-5`}
     >
       <div>
         <div className="flex">
@@ -60,7 +67,7 @@ const Post = ({
               community ? `/communities/${community.id}` : `/profile/${userId}`
             }
           >
-            <BlankAvatar imageSrc={community?.image_url || userImage} />
+            <BlankAvatar imageSrc={community?.imageUrl || userImage} />
             <div className="ml-3">
               {community ? (
                 <span>

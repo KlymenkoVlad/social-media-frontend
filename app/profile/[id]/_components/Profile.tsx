@@ -325,12 +325,12 @@ const Profile = ({
           <div className="absolute bottom-[60px] flex w-full justify-between px-1.5 ms:px-4 sm:px-2 md:px-6">
             <div className="flex w-full space-x-1 sm:space-x-4">
               <div className="flex h-28 w-28 items-start justify-center overflow-hidden rounded-full border-4 border-white bg-gray-200 ms:h-36 ms:w-36">
-                {user?.image_url ? (
+                {user?.imageUrl ? (
                   <Image
                     width={100}
                     height={100}
                     alt="Profile Photo"
-                    src={user?.image_url}
+                    src={user?.imageUrl}
                     className="h-full w-full rounded-full"
                   />
                 ) : (
@@ -397,7 +397,7 @@ const Profile = ({
                 <PersonProfile
                   username={friend.friend.username}
                   name={friend.friend.name}
-                  imageSrc={friend.friend.image_url}
+                  imageSrc={friend.friend.imageUrl}
                   friendId={friend.friendId}
                   key={friend.id}
                 />

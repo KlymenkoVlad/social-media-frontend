@@ -39,7 +39,7 @@ const Community = ({
     <main className="w-full space-y-4 px-1 md:px-5">
       <CommunityProfile community={community} />
 
-      {userId && +userId === community.user_id && (
+      {userId && +userId === community.userId && (
         <section className="w-full overflow-hidden rounded-md">
           <PostSubmitForm
             setPosts={setRenderPosts}

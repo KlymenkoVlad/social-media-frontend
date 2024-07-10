@@ -1,18 +1,32 @@
 import { IPost } from "./post";
 import { Colors } from "./user";
 
+export interface ISubscription {
+  id: number;
+  communityId: number;
+  userId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  user: {
+    imageUrl: null | string;
+    id: number;
+    username: string;
+  };
+}
+
 export interface ICommunity {
   id: number;
   name: string;
-  image_url: string;
+  imageUrl: string;
   description: null | string;
-  user_id: number;
+  userId: number;
   profileColor: Colors;
   createdAt: Date;
   updatedAt: Date;
   posts: IPost[];
   user: {
     username: string;
-    image_url?: string | null;
+    imageUrl?: string | null;
   };
+  subscribed: ISubscription[];
 }

@@ -7,7 +7,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { MdClose, MdDone, MdEdit, MdPerson } from "react-icons/md";
-import { updateColor } from "../actions";
+import { subscribe, unsubscribe, updateCommunityColor } from "../actions";
 
 const CommunityProfile = ({ community }: { community: ICommunity }) => {
   const [editColor, setEditColor] = useState(false);
@@ -15,13 +15,14 @@ const CommunityProfile = ({ community }: { community: ICommunity }) => {
     community.profileColor,
   );
   const [userId, setUserId] = useState<string | null>(null);
+  const [isFollowing, setIsFollowing] = useState<boolean>();
 
   useEffect(() => {
-    setUserId(localStorage.getItem("userId"));
+    const id = localStorage.getItem("userId");
+    setUserId(id);
+    if (id)
+      setIsFollowing(community.subscribed.some((sub) => sub.userId === +id));
   }, []);
-
-  const btnStyle =
-    "border-text mb-3 flex h-fit min-w-32 cursor-pointer items-center justify-center self-end rounded-sm border-2 border-blue-300 bg-blue-100 px-1 py-2 ms:p-2 text-sm font-bold capitalize leading-6 transition-colors hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-10";
 
   const bgColor = () => {
     switch (currentColor) {
@@ -46,7 +47,7 @@ const CommunityProfile = ({ community }: { community: ICommunity }) => {
 
   const handleColorChange = async (color: Colors) => {
     toast.loading("Changing color...");
-    const status = await updateColor(color);
+    const status = await updateCommunityColor(color);
     toast.remove();
     if (status === 200) {
       setCurrentColor(color);
@@ -57,12 +58,38 @@ const CommunityProfile = ({ community }: { community: ICommunity }) => {
     setEditColor(false);
   };
 
+  const handleSubscribe = async () => {
+    if (isFollowing) {
+      toast.loading("Unsubscribing...");
+      const res = await unsubscribe(community.id);
+      toast.remove();
+
+      if (res.error || res.message) {
+        toast.error("Something went wrong");
+      } else {
+        toast.success("Unsubscribed");
+        setIsFollowing(false);
+      }
+    } else {
+      toast.loading("Subscribing...");
+      const res = await subscribe(community.id);
+      toast.remove();
+
+      if (res.error || res.message) {
+        toast.error("Something went wrong");
+      } else {
+        toast.success("Subscribed");
+        setIsFollowing(true);
+      }
+    }
+  };
+
   return (
     <section
       className={`relative z-0 flex h-[300px] w-full items-center justify-between overflow-hidden rounded-md ${community && bgColor()}`}
     >
       <div
-        className={`absolute right-0 top-4 mr-3 w-[280px] space-y-2 text-right ${userId && +userId === community.user_id ? "block" : "hidden"}`}
+        className={`absolute right-0 top-4 mr-3 w-[280px] space-y-2 text-right ${userId && +userId === community.userId ? "block" : "hidden"}`}
       >
         <div className="flex h-10 justify-end opacity-70">
           <button
@@ -129,12 +156,12 @@ const CommunityProfile = ({ community }: { community: ICommunity }) => {
         <div className="absolute bottom-[60px] flex w-full justify-between px-1.5 ms:px-4 sm:px-2 md:px-6">
           <div className="flex w-full space-x-1 sm:space-x-4">
             <div className="flex h-28 w-28 items-start justify-center overflow-hidden rounded-md border-4 border-white bg-gray-200 ms:h-36 ms:w-36">
-              {community?.image_url ? (
+              {community?.imageUrl ? (
                 <Image
                   width={100}
                   height={100}
                   alt="Profile Photo"
-                  src={community.image_url}
+                  src={community.imageUrl}
                   className="h-full w-full rounded-md"
                 />
               ) : (
@@ -153,17 +180,17 @@ const CommunityProfile = ({ community }: { community: ICommunity }) => {
           </div>
 
           {userId ? (
-            +userId === community.user_id ? (
-              <Link type="button" href={`edit`} className="btn border-t">
+            +userId === community.userId ? (
+              <Link type="button" href={`edit`} className="btn-blue">
                 Edit Profile
               </Link>
             ) : (
-              // <ButtonLogic
-              //   requestInfo={requestInfo}
-              //   user={user}
-              //   setRequestInfo={setRequestInfo}
-              // />
-              <div className="btn">In Development...</div>
+              <button
+                className={`${isFollowing ? "btn-red" : "btn-blue"}`}
+                onClick={() => handleSubscribe()}
+              >
+                {isFollowing ? "Unsubscribe" : "Subscribe"}
+              </button>
             )
           ) : (
             <button

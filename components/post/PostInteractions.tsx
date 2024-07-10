@@ -73,7 +73,7 @@ const PostInteractions = ({
       const userId = localStorage.getItem("userId") || "";
 
       const isLiked =
-        likes.length > 0 && likes.some((like) => like.user_id === +userId);
+        likes.length > 0 && likes.some((like) => like.userId === +userId);
 
       setIsLiked(isLiked);
     }

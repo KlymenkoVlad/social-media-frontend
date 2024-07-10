@@ -1,7 +1,7 @@
 export interface IFriend {
   friend: {
     id: number;
-    image_url: string | null;
+    imageUrl: string | null;
     name: string;
     username: string;
   };

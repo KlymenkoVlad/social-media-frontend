@@ -11,14 +11,10 @@ import { z } from "zod";
 import { baseUrl } from "@/utils/baseUrl";
 import ImageUploadingPreview from "@/components/ImageUploadingPreview";
 import { MdBadge, MdCake, MdContactEmergency, MdEmail } from "react-icons/md";
-
-const MAX_FILE_SIZE = 1024 * 1024 * 5;
-const ACCEPTED_IMAGE_MIME_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
+import {
+  ACCEPTED_IMAGE_MIME_TYPES,
+  MAX_FILE_SIZE,
+} from "@/constants/constsants";
 
 //TODO: Image updating, validate case when data are the same as before
 const FormDataSchema = z.object({
@@ -53,7 +49,7 @@ const FormDataSchema = z.object({
       .optional(),
   ),
 
-  image_url: z.preprocess(
+  imageUrl: z.preprocess(
     (value) => (value === "" ? undefined : value),
     z
       .any()
@@ -136,17 +132,17 @@ const ProfileForm = () => {
 
   const processForm = async (data: ProfileFormInputs) => {
     toast.loading("Updating your profile...");
-    if (data.image_url && data.image_url.length > 0) {
+    if (data.imageUrl && data.imageUrl.length > 0) {
       const formData = new FormData();
-      formData.append("file", data.image_url[0]);
+      formData.append("file", data.imageUrl[0]);
       const res = await fetch(`${baseUrl}/post/upload`, {
         method: "POST",
         body: formData,
       }).then((res) => res.json());
 
-      data.image_url = res.url;
+      data.imageUrl = res.url;
     } else {
-      delete data.image_url;
+      delete data.imageUrl;
     }
 
     const res = await updateUserProfile(data);
@@ -167,7 +163,7 @@ const ProfileForm = () => {
     reset();
   };
 
-  const imageUrl = watch("image_url");
+  const imageUrl = watch("imageUrl");
 
   return (
     <form
@@ -229,10 +225,10 @@ const ProfileForm = () => {
       <div className="col-span-2 w-full items-center justify-between px-3 py-2">
         <input
           type="file"
-          {...register("image_url")}
+          {...register("imageUrl")}
           className="mb-3 w-full border-2 border-blue-300 text-sm text-black transition-colors file:m-1 file:mr-3 file:cursor-pointer file:border-2 file:border-blue-300 file:bg-stone-50 file:px-3 file:py-1 file:text-xs file:font-medium file:text-black file:transition-colors hover:cursor-pointer hover:border-blue-700 hover:file:border-blue-700 hover:file:bg-blue-50"
         />
-        <p className="text-red-500">{errors.image_url?.message?.toString()}</p>
+        <p className="text-red-500">{errors.imageUrl?.message?.toString()}</p>
       </div>
 
       {imageUrl?.[0] && (

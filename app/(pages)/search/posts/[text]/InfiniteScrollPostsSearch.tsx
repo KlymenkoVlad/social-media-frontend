@@ -56,15 +56,15 @@ const InfiniteScrollPostsSearch = ({
         renderPosts.map((post) => (
           <Post
             key={post.id}
-            userId={post.user_id}
+            userId={post.userId}
             postId={post.id}
             likes={post.likes}
-            userImage={post.user.image_url}
+            userImage={post.user.imageUrl}
             comments={post.comments}
             text={post.text}
             title={post.title}
-            date={post.created_at}
-            imageSrc={post.image_url}
+            date={post.createdAt}
+            imageSrc={post.imageUrl}
             username={post.user.username}
             community={post.community}
           />

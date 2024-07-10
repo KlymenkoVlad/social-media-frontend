@@ -4,7 +4,7 @@ import Person from "./Person";
 
 interface Recommendation {
   id: number;
-  image_url: string | null;
+  imageUrl: string | null;
   username: string;
   name: string;
 }
@@ -25,11 +25,11 @@ const RightSidebar = async ({ inLeftSideBar }: { inLeftSideBar: boolean }) => {
         ) : recommendations?.length > 0 ? (
           recommendations
             ?.slice(0, 6)
-            ?.map(({ username, name, image_url, id }) => (
+            ?.map(({ username, name, imageUrl, id }) => (
               <Person
                 username={username}
                 name={name}
-                imageSrc={image_url}
+                imageSrc={imageUrl}
                 friendId={id}
                 key={id}
               />

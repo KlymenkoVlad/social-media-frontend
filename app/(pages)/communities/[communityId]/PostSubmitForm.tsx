@@ -10,16 +10,12 @@ import { IPost } from "@/interfaces/post";
 import { baseUrl } from "@/utils/baseUrl";
 import { useRouter } from "next/router";
 import ImageUploadingPreview from "@/components/ImageUploadingPreview";
+import {
+  ACCEPTED_IMAGE_MIME_TYPES,
+  MAX_FILE_SIZE,
+} from "@/constants/constsants";
 //TODO capability to add image
 //TODO delete any from type
-
-const MAX_FILE_SIZE = 1024 * 1024 * 5;
-const ACCEPTED_IMAGE_MIME_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
 
 const PostSubmitForm = ({
   setPosts,

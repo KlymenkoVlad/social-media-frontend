@@ -39,7 +39,7 @@ interface RequestsProps {
     username: string;
     name: string;
     id: number;
-    image_url: string | null;
+    imageUrl: string | null;
   };
 }
 
@@ -272,7 +272,7 @@ const Modals = ({ user }: { user: User }) => {
           ref={wrapperRefUserBtn}
           className={`flex h-full w-24 cursor-pointer ${showUserModal && "bg-gray-300"} items-center justify-center transition-colors hover:bg-gray-200`}
         >
-          <BlankAvatar imageSrc={user.image_url} />
+          <BlankAvatar imageSrc={user.imageUrl} />
           <MdKeyboardArrowDown
             className={` ${
               showUserModal ? "rotate-180 text-gray-500" : "text-gray-400"
@@ -291,7 +291,7 @@ const Modals = ({ user }: { user: User }) => {
           href={`/profile/${user.id}`}
           className="flex w-full items-center rounded-md bg-gray-100 p-3 transition-colors hover:bg-gray-200"
         >
-          <BlankAvatar imageSrc={user.image_url} />
+          <BlankAvatar imageSrc={user.imageUrl} />
           <div className="ml-3">
             <p className="">{user.name}</p>
             <p className="text-xs font-medium text-gray-400">
@@ -356,7 +356,7 @@ const Modals = ({ user }: { user: User }) => {
                 <Person
                   key={request.sender.id}
                   id={request.sender.id}
-                  imageSrc={request.sender.image_url}
+                  imageSrc={request.sender.imageUrl}
                   name={request.sender.name}
                   username={request.sender.username}
                   setRequests={setRequests}

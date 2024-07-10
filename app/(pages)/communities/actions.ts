@@ -54,7 +54,7 @@ export const getMyCommunity = async () => {
   return res;
 };
 
-export const updateColor = async (color: Colors) => {
+export const updateCommunityColor = async (color: Colors) => {
   const token = cookies().get("token")?.value;
 
   const res = await fetch(`${baseUrl}/community/color`, {
@@ -65,6 +65,8 @@ export const updateColor = async (color: Colors) => {
     },
     body: JSON.stringify({ color }),
   });
+
+  console.log(res);
 
   return res.status;
 };
@@ -119,4 +121,32 @@ export const isCommunityExist = async (): Promise<boolean> => {
   }).then((res) => res.json());
 
   return res.status;
+};
+
+export const subscribe = async (id: number) => {
+  const token = cookies().get("token")?.value;
+
+  const res = await fetch(`${baseUrl}/subscription/${id}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+
+  return res;
+};
+
+export const unsubscribe = async (id: number) => {
+  const token = cookies().get("token")?.value;
+
+  const res = await fetch(`${baseUrl}/subscription/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+
+  return res;
 };

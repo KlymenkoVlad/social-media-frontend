@@ -12,11 +12,11 @@ const CommunityItem = ({ community }: { community: ICommunity }) => {
       className="mb-3 flex w-full items-center rounded-md border p-3 shadow-md transition-colors hover:bg-gray-200"
     >
       <div className="relative mr-3 flex h-24 min-h-24 w-24 min-w-24 items-start justify-center overflow-hidden rounded-full bg-gray-100">
-        {community.image_url && (
+        {community.imageUrl && (
           <Image
             width={100}
             height={100}
-            src={community.image_url}
+            src={community.imageUrl}
             alt="Profile Photo"
           />
         )}

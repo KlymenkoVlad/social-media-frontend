@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import PostSubmitForm from "../../../components/PostSubmitForm";
 import InfiniteScrollPosts from "./InfiniteScrollPosts";
 import { IPost } from "@/interfaces/post";
 import { useForm } from "react-hook-form";
+import PostSubmitForm from "@/components/PostSubmitForm";
 
 interface PostResponse {
   posts: IPost[];
