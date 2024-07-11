@@ -56,7 +56,7 @@ const InfiniteScrollCommunities = ({
       {renderCommunities &&
         renderCommunities?.length > 0 &&
         renderCommunities.map((community) => (
-          <CommunityItem community={community} />
+          <CommunityItem key={community.id} community={community} />
         ))}
 
       <div ref={ref} className={`${end ? "hidden" : "block"}`}>
