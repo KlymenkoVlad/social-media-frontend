@@ -57,7 +57,7 @@ const Post = ({
   return (
     <div
       key={postId}
-      className={`mb-5 w-full justify-between space-y-4 overflow-auto rounded-md ${isSubscribed ? "border-2" : "border-0"} border-blue-400 bg-white p-5`}
+      className={`mb-5 w-full justify-between space-y-4 overflow-auto rounded-md ${isSubscribed ? "border" : "border-0"} border-blue-400 bg-white p-5`}
     >
       <div>
         <div className="flex">
@@ -106,7 +106,7 @@ const Post = ({
       {imageSrc && (
         <Image
           src={imageSrc}
-          className="h-full min-w-full max-w-full rounded-sm"
+          className="h-full max-h-[500px] rounded-sm"
           width={500000}
           height={500000}
           alt="image"
@@ -118,6 +118,7 @@ const Post = ({
         comments={comments}
         postId={postId}
         userImage={userImage}
+        isSubscribed={isSubscribed}
       />
     </div>
   );

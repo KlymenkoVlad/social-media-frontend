@@ -52,7 +52,7 @@ export type FormCommunityInputs = z.infer<typeof FormDataSchema>;
 const FormCommunityEdit = () => {
   const [community, setCommunity] = useState<ICommunity>();
 
-  const [showForm, setShowForm] = useState<boolean>(false);
+  const [showForm, setShowForm] = useState<number | undefined>();
 
   useEffect(() => {
     const getCommunityStatus = async () => {

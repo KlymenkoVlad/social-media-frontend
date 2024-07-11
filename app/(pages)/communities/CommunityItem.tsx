@@ -17,6 +17,7 @@ const CommunityItem = ({ community }: { community: ICommunity }) => {
             width={100}
             height={100}
             src={community.imageUrl}
+            className="h-full w-full"
             alt="Profile Photo"
           />
         )}

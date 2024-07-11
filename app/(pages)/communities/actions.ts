@@ -109,7 +109,7 @@ export const createCommunity = async (data: FormCommunityInputs) => {
   return res;
 };
 
-export const isCommunityExist = async (): Promise<boolean> => {
+export const isCommunityExist = async (): Promise<number> => {
   const token = cookies().get("token")?.value;
 
   const res = await fetch(`${baseUrl}/community/exist`, {
@@ -120,7 +120,7 @@ export const isCommunityExist = async (): Promise<boolean> => {
     },
   }).then((res) => res.json());
 
-  return res.status;
+  return res.id;
 };
 
 export const subscribe = async (id: number) => {

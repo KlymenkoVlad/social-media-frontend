@@ -5,7 +5,6 @@ import { baseUrl } from "@/utils/baseUrl";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import BlankAvatar from "../BlankAvatar";
-import { dateFormat } from "@/utils/dateFormat";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,25 +17,28 @@ import {
   MdSend,
 } from "react-icons/md";
 import Comment from "./Comment";
+import { COMMENTS_SKIP_AMOUNT } from "@/constants/constsants";
 
 interface LikeProps {
   postId: number;
   likes: ILike[] | [];
   comments: IComment[] | [];
   userImage: string | null;
+  isSubscribed: boolean | undefined;
 }
 
 const PostInteractions = ({
   likes,
   postId,
   comments,
-  userImage,
+  isSubscribed,
 }: LikeProps) => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [likesAmount, setLikesAmount] = useState<number>(likes.length);
   const [renderComments, setRenderComments] = useState(comments);
-  const [commentsAmount, setCommentsAmount] = useState(3);
+  const [commentsAmount, setCommentsAmount] = useState(COMMENTS_SKIP_AMOUNT);
   const [showComments, setShowComments] = useState(comments.length > 0);
+  const [isCommentSending, setIsCommentSending] = useState(false);
 
   const token = Cookies.get("token");
 
@@ -56,6 +58,7 @@ const PostInteractions = ({
   });
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
+    setIsCommentSending(true);
     toast.loading("Posting your comment...");
     const result = await sendComment(data.text, postId);
     toast.remove();
@@ -66,6 +69,7 @@ const PostInteractions = ({
       toast.success("Comment posted");
       reset();
     }
+    setIsCommentSending(false);
   };
 
   useEffect(() => {
@@ -97,28 +101,36 @@ const PostInteractions = ({
 
   return (
     <div>
-      <div className="flex">
-        <button
-          onClick={() => {
-            setIsLiked(!isLiked);
-            likePost(postId);
-          }}
-          className="flex h-8 w-20 cursor-pointer items-center justify-center rounded-2xl bg-gray-100 transition-colors hover:bg-gray-300"
-        >
-          {isLiked ? <MdFavorite /> : <MdOutlineFavoriteBorder />}
-          <p className="ml-1 text-sm font-medium text-gray-700">
-            {likesAmount}
-          </p>
-        </button>
-        <button
-          onClick={() => setShowComments(!showComments)}
-          className="ml-3 flex h-8 w-20 cursor-pointer items-center justify-center rounded-2xl bg-gray-100 transition-colors hover:bg-gray-300"
-        >
-          <MdOutlineChatBubbleOutline />
-          <p className="ml-1 text-sm font-medium text-gray-700">
-            {comments.length}
-          </p>
-        </button>
+      <div className="flex justify-between">
+        <div className="flex">
+          <button
+            onClick={() => {
+              setIsLiked(!isLiked);
+              likePost(postId);
+            }}
+            className="flex h-8 w-20 cursor-pointer items-center justify-center rounded-2xl bg-gray-100 transition-colors hover:bg-gray-300"
+          >
+            {isLiked ? <MdFavorite /> : <MdOutlineFavoriteBorder />}
+            <p className="ml-1 text-sm font-medium text-gray-700">
+              {likesAmount}
+            </p>
+          </button>
+          <button
+            onClick={() => setShowComments(!showComments)}
+            className="ml-3 flex h-8 w-20 cursor-pointer items-center justify-center rounded-2xl bg-gray-100 transition-colors hover:bg-gray-300"
+          >
+            <MdOutlineChatBubbleOutline />
+            <p className="ml-1 text-sm font-medium text-gray-700">
+              {comments.length}
+            </p>
+          </button>
+        </div>
+
+        {isSubscribed && (
+          <span className="text-sm font-medium text-gray-400">
+            From your subscriptions
+          </span>
+        )}
       </div>
 
       <div className={`mt-3 ${showComments ? "block" : "hidden"}`}>
@@ -132,7 +144,9 @@ const PostInteractions = ({
 
           {comments.length > commentsAmount && (
             <button
-              onClick={() => setCommentsAmount((prev) => prev + 3)}
+              onClick={() =>
+                setCommentsAmount((prev) => prev + COMMENTS_SKIP_AMOUNT)
+              }
               className="h-7 w-full rounded-full text-center align-middle text-sm font-semibold text-blue-600 transition-colors hover:text-blue-700"
             >
               Show more comments
@@ -154,6 +168,7 @@ const PostInteractions = ({
           />
           <button
             type="submit"
+            disabled={isCommentSending}
             className="font-semibold text-gray-500 hover:text-gray-700"
           >
             <MdSend />

@@ -54,20 +54,6 @@ export const updateColor = async (color: Colors) => {
   return res.status;
 };
 
-export const isCommunityExist = async (): Promise<boolean> => {
-  const token = cookies().get("token")?.value;
-
-  const res = await fetch(`${baseUrl}/community/exist`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  }).then((res) => res.json());
-
-  return res.status;
-};
-
 export const updateCommunity = async (data: FormCommunityInputs) => {
   (Object.keys(data) as (keyof typeof data)[]).forEach((key) => {
     if (data[key] === undefined) {
@@ -81,8 +67,6 @@ export const updateCommunity = async (data: FormCommunityInputs) => {
       message: "No changes were made",
     };
   }
-
-  console.log(data);
 
   const token = cookies().get("token")?.value;
   const res = await fetch(`${baseUrl}/community`, {
