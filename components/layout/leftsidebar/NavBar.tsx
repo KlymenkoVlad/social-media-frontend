@@ -20,15 +20,15 @@ const NavBar = () => {
   return (
     <nav className="min-w-48 space-y-6">
       <Link href={`/profile/${id}`} className={navLinkStyle}>
-        <MdOutlineAccountCircle className="ml-2" />
+        <MdOutlineAccountCircle className="ml-2 text-2xl" />
         <span className="ml-2">My Profile</span>
       </Link>
       <Link href={`/friends/${id}`} className={navLinkStyle}>
-        <MdOutlinePeopleAlt className="ml-2" />
+        <MdOutlinePeopleAlt className="ml-2 text-2xl" />
         <span className="ml-2">Friends</span>
       </Link>
       <Link href="/communities" className={navLinkStyle}>
-        <MdOutlineGroups className="ml-2" />
+        <MdOutlineGroups className="ml-2 text-2xl" />
         <span className="ml-2">Communities</span>
       </Link>
     </nav>

@@ -9,14 +9,14 @@ const Comment = ({ comment }: { comment: IComment }) => {
   const [formattedDate, setFormattedDate] = useState<string>();
 
   useEffect(() => {
-    setFormattedDate(dateFormat(comment.created_at));
+    setFormattedDate(dateFormat(comment.createdAt));
   }, []);
 
   return (
     <div key={comment.id}>
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center space-x-5">
-          <BlankAvatar imageSrc={comment.user.image_url} />
+          <BlankAvatar imageSrc={comment.user.imageUrl} />
           <div>
             <p className="font-semibold">{comment.user.username}</p>
             <p>{comment.text}</p>

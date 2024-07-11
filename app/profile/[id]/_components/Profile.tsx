@@ -20,6 +20,7 @@ import PersonProfile from "./Person";
 import PersonSkeleton from "./PersonSkeleton";
 import PostSubmitForm from "@/components/PostSubmitForm";
 import { MdClose, MdDone, MdEdit, MdPerson } from "react-icons/md";
+import { isCommunityExist } from "@/app/(pages)/communities/actions";
 
 const btnStyle =
   "border-text mb-3 flex h-fit min-w-32 cursor-pointer items-center justify-center self-end rounded-sm border-2 border-blue-300 bg-blue-100 px-1 py-2 ms:p-2 text-sm font-bold capitalize leading-6 transition-colors hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-10";
@@ -171,6 +172,26 @@ const Profile = ({
   const [editColor, setEditColor] = useState(false);
   const [currentColor, setCurrentColor] = useState<Colors>(user.profileColor);
 
+  const [showCommunityId, setShowCommunityId] = useState<number | undefined>();
+  const [communityStatusLoading, setCommunityStatusLoading] = useState(true);
+
+  useEffect(() => {
+    const getIsCommunityExist = async () => {
+      setCommunityStatusLoading(true);
+      const userId = localStorage.getItem("userId");
+      if (userId === user.id.toString()) {
+        const data = await isCommunityExist();
+        console.log(data);
+
+        setShowCommunityId(data);
+      }
+
+      setCommunityStatusLoading(false);
+    };
+
+    getIsCommunityExist();
+  }, []);
+
   useEffect(() => {
     const getFriends = async () => {
       const userId = localStorage.getItem("userId");
@@ -272,38 +293,38 @@ const Profile = ({
           <div
             className={`${editColor ? "flex" : "hidden"} space-x-3 transition-opacity duration-300`}
           >
-            <div
+            <button
               className="h-6 w-6 cursor-pointer rounded-full bg-red-500 shadow-md"
               onClick={() => setCurrentColor(Colors.RED)}
-            ></div>
-            <div
+            ></button>
+            <button
               className="h-6 w-6 cursor-pointer rounded-full bg-blue-500 shadow-md"
               onClick={() => setCurrentColor(Colors.BLUE)}
-            ></div>
-            <div
+            ></button>
+            <button
               className="h-6 w-6 cursor-pointer rounded-full bg-green-500 shadow-md"
               onClick={() => setCurrentColor(Colors.GREEN)}
-            ></div>
-            <div
+            ></button>
+            <button
               className="h-6 w-6 cursor-pointer rounded-full bg-yellow-500 shadow-md"
               onClick={() => setCurrentColor(Colors.YELLOW)}
-            ></div>
-            <div
+            ></button>
+            <button
               className="h-6 w-6 cursor-pointer rounded-full bg-orange-500 shadow-md"
               onClick={() => setCurrentColor(Colors.ORANGE)}
-            ></div>
-            <div
+            ></button>
+            <button
               className="h-6 w-6 cursor-pointer rounded-full bg-purple-500 shadow-md"
               onClick={() => setCurrentColor(Colors.PURPLE)}
-            ></div>
-            <div
+            ></button>
+            <button
               className="h-6 w-6 cursor-pointer rounded-full bg-pink-500 shadow-md"
               onClick={() => setCurrentColor(Colors.PINK)}
-            ></div>
-            <div
+            ></button>
+            <button
               className="h-6 w-6 cursor-pointer rounded-full bg-gray-500 shadow-md"
               onClick={() => setCurrentColor(Colors.GRAY)}
-            ></div>
+            ></button>
           </div>
         </div>
 
@@ -311,12 +332,12 @@ const Profile = ({
           <div className="absolute bottom-[60px] flex w-full justify-between px-1.5 ms:px-4 sm:px-2 md:px-6">
             <div className="flex w-full space-x-1 sm:space-x-4">
               <div className="flex h-28 w-28 items-start justify-center overflow-hidden rounded-full border-4 border-white bg-gray-200 ms:h-36 ms:w-36">
-                {user?.image_url ? (
+                {user?.imageUrl ? (
                   <Image
                     width={100}
                     height={100}
                     alt="Profile Photo"
-                    src={user?.image_url}
+                    src={user?.imageUrl}
                     className="h-full w-full rounded-full"
                   />
                 ) : (
@@ -383,7 +404,7 @@ const Profile = ({
                 <PersonProfile
                   username={friend.friend.username}
                   name={friend.friend.name}
-                  imageSrc={friend.friend.image_url}
+                  imageSrc={friend.friend.imageUrl}
                   friendId={friend.friendId}
                   key={friend.id}
                 />
@@ -403,9 +424,31 @@ const Profile = ({
         )}
       </section>
 
-      <section className="w-full overflow-hidden rounded-md">
-        <PostSubmitForm setPosts={setRenderPosts} posts={renderPosts} />
-      </section>
+      {userId && +userId === user?.id && (
+        <section className="w-full overflow-hidden rounded-md">
+          <PostSubmitForm setPosts={setRenderPosts} posts={renderPosts} />
+        </section>
+      )}
+
+      {!communityStatusLoading ? (
+        showCommunityId ? (
+          <section className="grid h-16 w-full items-center rounded-md bg-white px-24">
+            <Link className="btn-blue" href={`/communities/${showCommunityId}`}>
+              Go to my community
+            </Link>
+          </section>
+        ) : (
+          <section className="grid h-16 w-full items-center rounded-md bg-white px-24">
+            <Link className="btn-blue" href={`/communities/edit`}>
+              Do you want to create your own community? Create it!
+            </Link>
+          </section>
+        )
+      ) : (
+        <section className="grid h-16 w-full items-center rounded-md bg-white px-24">
+          <p className="btn-blue">Loading...</p>
+        </section>
+      )}
 
       {/* Sorting by */}
 

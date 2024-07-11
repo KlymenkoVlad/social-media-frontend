@@ -3,11 +3,11 @@ import Link from "next/link";
 
 const Help = () => {
   return (
-    <>
+    <main className="w-full px-1 md:px-5">
       <Head>
         <title>Help - Newmedia</title>
       </Head>
-      <div className="flex min-h-screen flex-col items-center bg-gray-50 p-6">
+      <div className="flex min-h-screen flex-col items-center p-6">
         <header className="mb-10 text-center">
           <h1 className="mb-2 text-4xl font-bold">Newmedia Help Center</h1>
           <p className="text-lg text-gray-600">Your guide to using Newmedia</p>
@@ -50,7 +50,7 @@ const Help = () => {
           <p>&copy; 2024 Newmedia. All rights reserved.</p>
         </footer>
       </div>
-    </>
+    </main>
   );
 };
 

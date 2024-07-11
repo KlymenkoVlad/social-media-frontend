@@ -63,7 +63,7 @@ const InfiniteScrollUsers = ({
             key={user.id}
           >
             <div className="flex items-center space-x-3">
-              <BlankAvatar imageSrc={user?.image_url} />
+              <BlankAvatar imageSrc={user?.imageUrl} />
 
               <div>
                 <p className="font-semibold">

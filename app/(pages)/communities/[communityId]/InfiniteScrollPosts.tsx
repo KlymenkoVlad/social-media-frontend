@@ -3,19 +3,19 @@
 import { IPost } from "@/interfaces/post";
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { getPostsByUserId } from "@/app/_actions";
 import PostSkeleton from "@/components/post/PostSkeleton";
 import Post from "@/components/post/Post";
 import { MdSelfImprovement } from "react-icons/md";
+import { getCommunityPosts } from "../actions";
 
 interface PostResponse {
   posts: IPost[];
-  nextCursor: number;
+  nextCursor: number | null;
   hasNextPage: boolean;
   postsLength: number;
   setRenderPosts: React.Dispatch<React.SetStateAction<IPost[]>>;
   sortBy: string;
-  userId: number;
+  communityId: number;
 }
 
 const InfiniteScrollPosts = ({
@@ -24,7 +24,7 @@ const InfiniteScrollPosts = ({
   hasNextPage,
   setRenderPosts,
   sortBy,
-  userId,
+  communityId,
 }: PostResponse) => {
   const [cursor, setCursor] = useState<number | null>(nextCursor);
   const [end, setEnd] = useState(!hasNextPage);
@@ -37,8 +37,8 @@ const InfiniteScrollPosts = ({
         setEnd(false);
         setCursor(null);
         setRenderPosts([]);
-        const data: PostResponse = await getPostsByUserId(
-          userId,
+        const data: PostResponse = await getCommunityPosts(
+          communityId,
           sortBy,
           undefined,
         );
@@ -62,8 +62,8 @@ const InfiniteScrollPosts = ({
       return;
     }
 
-    const data: PostResponse = await getPostsByUserId(
-      userId,
+    const data: PostResponse = await getCommunityPosts(
+      communityId,
       currentSort,
       cursor,
     );
@@ -90,8 +90,8 @@ const InfiniteScrollPosts = ({
         posts.map((post) => (
           <Post
             key={post.id}
-            userId={post.userId}
             postId={post.id}
+            userId={post.userId}
             likes={post.likes}
             userImage={post.user.imageUrl}
             comments={post.comments}

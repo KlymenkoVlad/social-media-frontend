@@ -21,7 +21,7 @@ const FriendsList = async ({ id }: { id: string }) => {
                 <Person
                   username={friend.friend.username}
                   name={friend.friend.name}
-                  imageSrc={friend.friend.image_url}
+                  imageSrc={friend.friend.imageUrl}
                   friendId={friend.friendId}
                   key={friend.id}
                 />

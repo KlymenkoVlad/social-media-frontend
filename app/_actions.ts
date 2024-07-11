@@ -21,14 +21,6 @@ const FormDataSchemaSignup = z.object({
     .min(3, "Username must be at least 3 characters")
     .toLowerCase(),
   password: z.string().min(5, "Password must be at least 5 characters"),
-
-  // surname: z.string().nullable(),
-
-  // age: z.number().nullable(),
-
-  // imageUrl: z.string().nullable(),
-
-  // description: z.string().nullable(),
 });
 
 type InputsLogin = z.infer<typeof FormDataSchemaLogin>;
@@ -166,6 +158,7 @@ export const sendPost = async (
   text: string,
   title?: string,
   imageUrl?: string,
+  communityId?: number,
 ) => {
   const cookiesStore = cookies();
   const token = cookiesStore.get("token")?.value;
@@ -176,7 +169,7 @@ export const sendPost = async (
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ text, title, imageUrl }),
+    body: JSON.stringify({ text, title, imageUrl, communityId }),
   }).then((res) => res.json());
 
   if (!response.error) {

@@ -1,7 +1,6 @@
 "use client";
 
-import { getUser, updateUserProfile } from "@/app/_actions";
-import { User } from "@/interfaces/user";
+import { updateUserProfile } from "@/app/_actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -10,7 +9,10 @@ import toast from "react-hot-toast";
 import { z } from "zod";
 import { baseUrl } from "@/utils/baseUrl";
 import ImageUploadingPreview from "@/components/ImageUploadingPreview";
-import { MdBadge, MdCake, MdContactEmergency, MdEmail } from "react-icons/md";
+import { MdBadge } from "react-icons/md";
+import { getMyCommunity, isCommunityExist } from "../actions";
+import { ICommunity } from "@/interfaces/community";
+import { updateCommunity } from "@/app/profile/[id]/actions";
 import {
   ACCEPTED_IMAGE_MIME_TYPES,
   MAX_FILE_SIZE,
@@ -18,35 +20,9 @@ import {
 
 //TODO: Image updating, validate case when data are the same as before
 const FormDataSchema = z.object({
-  email: z.preprocess(
-    (value) => (value === "" ? undefined : value),
-    z.string().email("Invalid email").optional(),
-  ),
-
   name: z.preprocess(
     (value) => (value === "" ? undefined : value),
     z.string().min(1, "Name is required").optional(),
-  ),
-
-  username: z.preprocess(
-    (value) => (value === "" ? undefined : value),
-    z.string().min(3, "Username must be at least 3 characters").optional(),
-  ),
-
-  surname: z.preprocess(
-    (value) => (value === "" ? undefined : value),
-    z.string().optional(),
-  ),
-
-  age: z.preprocess(
-    (value) => (value === "" ? undefined : value),
-    z
-      .string()
-      .refine(
-        (value) => typeof +value === "number" && +value >= 18,
-        "You must be at least 18 years old",
-      )
-      .optional(),
   ),
 
   imageUrl: z.preprocess(
@@ -67,24 +43,34 @@ const FormDataSchema = z.object({
 
   description: z.preprocess(
     (value) => (value === "" ? undefined : value),
-    z.string().max(40, "Description must be below 40 characters").optional(),
+    z.string().max(50, "Description must be below 50 characters").optional(),
   ),
 });
 
-export type ProfileFormInputs = z.infer<typeof FormDataSchema>;
+export type FormCommunityInputs = z.infer<typeof FormDataSchema>;
 
-const ProfileForm = () => {
-  const [user, setUser] = useState<User>();
+const FormCommunityEdit = () => {
+  const [community, setCommunity] = useState<ICommunity>();
+
+  const [showForm, setShowForm] = useState<number | undefined>();
+
+  useEffect(() => {
+    const getCommunityStatus = async () => {
+      const res = await isCommunityExist();
+      setShowForm(res);
+    };
+
+    getCommunityStatus();
+  }, []);
 
   const router = useRouter();
 
   useEffect(() => {
     const userFetching = async () => {
-      const userId = localStorage.getItem("userId");
-      if (!userId) return;
-      const user = await getUser(+userId);
+      const data: { community: ICommunity; status: string } =
+        await getMyCommunity();
 
-      setUser(user);
+      setCommunity(data.community);
     };
 
     userFetching();
@@ -98,7 +84,7 @@ const ProfileForm = () => {
   }: {
     type: string;
     placeholder: string;
-    name: keyof ProfileFormInputs;
+    name: keyof FormCommunityInputs;
     logo: React.ReactNode;
   }) => {
     return (
@@ -126,11 +112,11 @@ const ProfileForm = () => {
     reset,
     handleSubmit,
     watch,
-  } = useForm<ProfileFormInputs>({
+  } = useForm<FormCommunityInputs>({
     resolver: zodResolver(FormDataSchema),
   });
 
-  const processForm = async (data: ProfileFormInputs) => {
+  const processForm = async (data: FormCommunityInputs) => {
     toast.loading("Updating your profile...");
     if (data.imageUrl && data.imageUrl.length > 0) {
       const formData = new FormData();
@@ -145,14 +131,14 @@ const ProfileForm = () => {
       delete data.imageUrl;
     }
 
-    const res = await updateUserProfile(data);
+    const res = await updateCommunity(data);
 
     toast.remove();
 
     if (res.statusCode === 304) {
       toast.error("No changes were made");
     } else if (res.statusCode === 200) {
-      toast.success("Profile updated successfully");
+      toast.success("Community updated successfully");
       router.refresh();
     } else if (res.statusCode === 409) {
       toast.error(res.message);
@@ -165,53 +151,22 @@ const ProfileForm = () => {
 
   const imageUrl = watch("imageUrl");
 
-  return (
-    <form
-      onSubmit={handleSubmit(processForm)}
-      className="grid grid-cols-2 items-center gap-2 md:gap-6"
-    >
+  return showForm ? (
+    <form onSubmit={handleSubmit(processForm)} className="space-y-3">
       <h1 className="col-span-2 mb-5 text-center text-3xl font-bold">
-        Change Your Profile Settings
+        Change Your Community
       </h1>
 
-      <InputComponent
-        type="email"
-        name="email"
-        logo={<MdEmail className="absolute left-3 top-3 h-6 w-6" />}
-        placeholder={user?.email || "Your email(not defined)"}
-      />
-      <InputComponent
-        type="number"
-        name="age"
-        logo={<MdCake className="absolute left-3 top-3 h-6 w-6" />}
-        placeholder={user?.age?.toString() || "Your age(not defined)"}
-      />
       <InputComponent
         type="text"
         name="name"
         logo={<MdBadge className="absolute left-3 top-3 h-6 w-6" />}
-        placeholder={user?.name || "Your first name(not defined)"}
+        placeholder={community?.name || "Your community name(not defined)"}
       />
-      <InputComponent
-        type="text"
-        name="surname"
-        logo={<MdBadge className="absolute left-3 top-3 h-6 w-6" />}
-        placeholder={user?.surname || "Your last name(not defined)"}
-      />
-      <div className="col-span-2">
-        <InputComponent
-          type="text"
-          name="username"
-          logo={
-            <MdContactEmergency className="absolute left-3 top-3 h-6 w-6" />
-          }
-          placeholder={user?.username || "Your username(not defined)"}
-        />
-      </div>
 
       <textarea
         className="col-span-2 h-24 w-full rounded-md bg-gray-300 p-2 focus:outline-none"
-        placeholder={user?.description || "Tell us about yourself"}
+        placeholder={community?.description || "Tell us about your community"}
         {...register("description")}
       />
       {errors?.description && (
@@ -245,7 +200,11 @@ const ProfileForm = () => {
         Save
       </button>
     </form>
+  ) : (
+    <div className="animate-pulse text-center text-3xl font-semibold">
+      Loading...
+    </div>
   );
 };
 
-export default ProfileForm;
+export default FormCommunityEdit;

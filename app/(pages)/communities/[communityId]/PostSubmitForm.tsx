@@ -4,11 +4,12 @@ import React, { useState } from "react";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { sendPost } from "@/app/_actions";
+import { revalidatePostsByUserId, sendPost } from "@/app/_actions";
 import toast from "react-hot-toast";
 import { IPost } from "@/interfaces/post";
-import ImageUploadingPreview from "./ImageUploadingPreview";
 import { baseUrl } from "@/utils/baseUrl";
+import { useRouter } from "next/router";
+import ImageUploadingPreview from "@/components/ImageUploadingPreview";
 import {
   ACCEPTED_IMAGE_MIME_TYPES,
   MAX_FILE_SIZE,
@@ -19,12 +20,13 @@ import {
 const PostSubmitForm = ({
   setPosts,
   posts,
+  communityId,
 }: {
-  setPosts: React.Dispatch<React.SetStateAction<IPost[]>>;
+  setPosts: any;
   posts: IPost[];
+  communityId: number;
 }) => {
   const [showTitleForm, setShowTitleForm] = useState<boolean>(false);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const FormSchema = z.object({
     text: z.string().min(1, "Text is required").max(3000, "Text is too long"),
@@ -60,7 +62,6 @@ const PostSubmitForm = ({
   });
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
-    setIsSubmitting(true);
     toast.loading("Create your post...");
 
     let img: string | undefined;
@@ -76,7 +77,7 @@ const PostSubmitForm = ({
       img = res.url;
     }
 
-    const result = await sendPost(data.text, data.title, img);
+    const result = await sendPost(data.text, data.title, img, communityId);
 
     toast.remove();
     if (result.error) {
@@ -88,7 +89,6 @@ const PostSubmitForm = ({
     }
 
     reset();
-    setIsSubmitting(false);
   };
 
   const imageUrl = watch("imageUrl");
@@ -114,13 +114,11 @@ const PostSubmitForm = ({
           <input
             type="file"
             {...register("imageUrl")}
-            disabled={isSubmitting}
             className="mb-3 w-full border-2 border-blue-300 text-sm text-black transition-colors file:m-1 file:mr-3 file:cursor-pointer file:border-2 file:border-blue-300 file:bg-stone-50 file:px-3 file:py-1 file:text-xs file:font-medium file:text-black file:transition-colors hover:cursor-pointer hover:border-blue-700 hover:file:border-blue-700 hover:file:bg-blue-50"
           />
           <button
             type="submit"
-            disabled={isSubmitting}
-            className={`border-text flex w-16 cursor-pointer items-center justify-center rounded-sm border-2 border-blue-300 p-1 text-sm font-bold capitalize leading-6 transition-colors ${!isSubmitting && "focus:ring-opacity-10s hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500"}`}
+            className="border-text flex w-16 cursor-pointer items-center justify-center rounded-sm border-2 border-blue-300 p-1 text-sm font-bold capitalize leading-6 transition-colors hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-10"
           >
             Post
           </button>

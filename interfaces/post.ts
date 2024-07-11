@@ -1,19 +1,21 @@
+import { ICommunity } from "./community";
+
 export interface ILike {
   id: number;
-  user_id: number;
-  post_id: number;
+  userId: number;
+  postId: number;
 }
 
 export interface IComment {
   id: number;
   text: string;
-  user_id: number;
-  post_id: number;
-  created_at: Date;
-  updated_at: Date;
+  userId: number;
+  postId: number;
+  createdAt: Date;
+  updatedAt: Date;
   user: {
     username: string;
-    image_url: string;
+    imageUrl: string;
   };
 }
 
@@ -21,14 +23,15 @@ export interface IPost {
   id: number;
   title?: string;
   text: string;
-  image_url?: string;
-  user_id: number;
-  created_at: Date;
-  updated_at: Date;
+  imageUrl?: string;
+  userId: number;
+  createdAt: Date;
+  updatedAt: Date;
   likes: ILike[];
   comments: IComment[];
   user: {
     username: string;
-    image_url: string;
+    imageUrl: string;
   };
+  community: ICommunity;
 }

@@ -17,7 +17,7 @@ export interface User {
   surname?: string;
   age?: number;
   profileColor: Colors;
-  image_url?: string;
+  imageUrl?: string;
   description?: string;
   password: string;
 }

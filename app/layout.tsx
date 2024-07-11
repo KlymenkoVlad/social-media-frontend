@@ -18,6 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <link rel="icon" href="/logo_gray.svg" sizes="16*16" type="image/svg" />
       <body className={inter.className}>
         {children} <Toaster />
       </body>

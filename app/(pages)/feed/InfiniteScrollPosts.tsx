@@ -80,15 +80,17 @@ const InfiniteScrollPosts = ({
         posts.map((post) => (
           <Post
             key={post.id}
+            userId={post.userId}
             postId={post.id}
             likes={post.likes}
             comments={post.comments}
             text={post.text}
             title={post.title}
-            date={post.created_at}
-            imageSrc={post.image_url}
-            userImage={post.user.image_url}
+            date={post.createdAt}
+            imageSrc={post.imageUrl}
+            userImage={post.user.imageUrl}
             username={post.user.username}
+            community={post.community}
           />
           // <p key={post.id}>{post.text}</p>
         ))}

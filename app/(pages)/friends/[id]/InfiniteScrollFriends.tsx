@@ -71,11 +71,11 @@ const InfiniteScrollFriends = ({
                 className="flex w-full items-center rounded-md p-3 transition-colors hover:bg-gray-200"
               >
                 <div className="relative flex h-24 w-24 items-start justify-center overflow-hidden rounded-full bg-gray-100">
-                  {friend.friend.image_url ? (
+                  {friend.friend.imageUrl ? (
                     <Image
                       width={100}
                       height={100}
-                      src={friend.friend.image_url}
+                      src={friend.friend.imageUrl}
                       alt="Profile Photo"
                     />
                   ) : (

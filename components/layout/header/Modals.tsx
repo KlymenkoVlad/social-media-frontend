@@ -39,7 +39,7 @@ interface RequestsProps {
     username: string;
     name: string;
     id: number;
-    image_url: string | null;
+    imageUrl: string | null;
   };
 }
 
@@ -272,7 +272,7 @@ const Modals = ({ user }: { user: User }) => {
           ref={wrapperRefUserBtn}
           className={`flex h-full w-24 cursor-pointer ${showUserModal && "bg-gray-300"} items-center justify-center transition-colors hover:bg-gray-200`}
         >
-          <BlankAvatar imageSrc={user.image_url} />
+          <BlankAvatar imageSrc={user.imageUrl} />
           <MdKeyboardArrowDown
             className={` ${
               showUserModal ? "rotate-180 text-gray-500" : "text-gray-400"
@@ -291,10 +291,12 @@ const Modals = ({ user }: { user: User }) => {
           href={`/profile/${user.id}`}
           className="flex w-full items-center rounded-md bg-gray-100 p-3 transition-colors hover:bg-gray-200"
         >
-          <BlankAvatar imageSrc={user.image_url} />
+          <BlankAvatar imageSrc={user.imageUrl} />
           <div className="ml-3">
             <p className="">{user.name}</p>
-            <p className="text-xs text-gray-400">@{user.username}</p>
+            <p className="text-xs font-medium text-gray-400">
+              @{user.username}
+            </p>
           </div>
         </Link>
 
@@ -303,7 +305,7 @@ const Modals = ({ user }: { user: User }) => {
           onClick={() => setShowUserModal(!showUserModal)}
           href={"/"}
         >
-          <MdFeed className="ml-2" />
+          <MdFeed className="ml-2 text-2xl" />
           <p className="ml-2">Main Page</p>
         </Link>
 
@@ -316,14 +318,14 @@ const Modals = ({ user }: { user: User }) => {
           onClick={() => setShowUserModal(!showUserModal)}
           href={"/settings"}
         >
-          <MdSettings className="ml-2" />
+          <MdSettings className="ml-2 text-2xl" />
           <p className="ml-2">Settings</p>
         </Link>
         <Link
           className="flex h-12 w-full cursor-pointer items-center justify-start rounded-md transition-colors ease-in-out hover:bg-gray-200"
           href={"/help"}
         >
-          <MdHelpOutline className="ml-2" />
+          <MdHelpOutline className="ml-2 text-2xl" />
           <p className="ml-2">Help</p>
         </Link>
         <button
@@ -333,7 +335,7 @@ const Modals = ({ user }: { user: User }) => {
           }}
           className="flex h-12 w-full cursor-pointer items-center justify-start rounded-md transition-colors ease-in-out hover:bg-gray-200"
         >
-          <MdLogout className="ml-2" />
+          <MdLogout className="ml-2 text-2xl" />
           <p className="ml-2">Sign out</p>
         </button>
       </div>
@@ -354,7 +356,7 @@ const Modals = ({ user }: { user: User }) => {
                 <Person
                   key={request.sender.id}
                   id={request.sender.id}
-                  imageSrc={request.sender.image_url}
+                  imageSrc={request.sender.imageUrl}
                   name={request.sender.name}
                   username={request.sender.username}
                   setRequests={setRequests}

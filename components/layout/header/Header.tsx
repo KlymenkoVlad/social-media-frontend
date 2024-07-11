@@ -6,6 +6,7 @@ import Modals from "./Modals";
 import SearchForm from "./SearchForm";
 import { getMe } from "@/app/_actions";
 
+
 const Header = async () => {
   const user = await getMe();
 
