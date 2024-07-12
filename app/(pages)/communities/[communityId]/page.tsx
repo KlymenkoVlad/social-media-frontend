@@ -1,8 +1,8 @@
 import React from "react";
-import { getCommunity, getCommunityPosts } from "../actions";
 import Community from "./Community";
 import { ICommunity } from "@/interfaces/community";
 import { IPost } from "@/interfaces/post";
+import { getCommunity, getCommunityPosts } from "@/actions/community";
 
 interface CommunityPosts {
   status: string;

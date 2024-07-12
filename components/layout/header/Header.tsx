@@ -4,8 +4,7 @@ import Link from "next/link";
 
 import Modals from "./Modals";
 import SearchForm from "./SearchForm";
-import { getMe } from "@/app/_actions";
-
+import { getMe } from "@/actions/user";
 
 const Header = async () => {
   const user = await getMe();

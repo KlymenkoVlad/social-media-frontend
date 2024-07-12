@@ -1,6 +1,5 @@
 "use client";
 
-import { updateUserProfile } from "@/app/_actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -10,13 +9,16 @@ import { z } from "zod";
 import { baseUrl } from "@/utils/baseUrl";
 import ImageUploadingPreview from "@/components/ImageUploadingPreview";
 import { MdBadge } from "react-icons/md";
-import { getMyCommunity, isCommunityExist } from "../actions";
 import { ICommunity } from "@/interfaces/community";
-import { updateCommunity } from "@/app/profile/[id]/actions";
 import {
   ACCEPTED_IMAGE_MIME_TYPES,
   MAX_FILE_SIZE,
-} from "@/constants/constsants";
+} from "@/constants/constants";
+import {
+  getMyCommunity,
+  isCommunityExist,
+  updateCommunity,
+} from "@/actions/community";
 
 //TODO: Image updating, validate case when data are the same as before
 const FormDataSchema = z.object({
@@ -47,7 +49,7 @@ const FormDataSchema = z.object({
   ),
 });
 
-export type FormCommunityInputs = z.infer<typeof FormDataSchema>;
+export type FormEditCommunityInputs = z.infer<typeof FormDataSchema>;
 
 const FormCommunityEdit = () => {
   const [community, setCommunity] = useState<ICommunity>();
@@ -84,7 +86,7 @@ const FormCommunityEdit = () => {
   }: {
     type: string;
     placeholder: string;
-    name: keyof FormCommunityInputs;
+    name: keyof FormEditCommunityInputs;
     logo: React.ReactNode;
   }) => {
     return (
@@ -112,11 +114,11 @@ const FormCommunityEdit = () => {
     reset,
     handleSubmit,
     watch,
-  } = useForm<FormCommunityInputs>({
+  } = useForm<FormEditCommunityInputs>({
     resolver: zodResolver(FormDataSchema),
   });
 
-  const processForm = async (data: FormCommunityInputs) => {
+  const processForm = async (data: FormEditCommunityInputs) => {
     toast.loading("Updating your profile...");
     if (data.imageUrl && data.imageUrl.length > 0) {
       const formData = new FormData();
@@ -151,59 +153,57 @@ const FormCommunityEdit = () => {
 
   const imageUrl = watch("imageUrl");
 
-  return showForm ? (
-    <form onSubmit={handleSubmit(processForm)} className="space-y-3">
-      <h1 className="col-span-2 mb-5 text-center text-3xl font-bold">
-        Change Your Community
-      </h1>
+  return (
+    showForm && (
+      <form onSubmit={handleSubmit(processForm)} className="space-y-3">
+        <h1 className="col-span-2 mb-5 text-center text-3xl font-bold">
+          Change Your Community
+        </h1>
 
-      <InputComponent
-        type="text"
-        name="name"
-        logo={<MdBadge className="absolute left-3 top-3 h-6 w-6" />}
-        placeholder={community?.name || "Your community name(not defined)"}
-      />
-
-      <textarea
-        className="col-span-2 h-24 w-full rounded-md bg-gray-300 p-2 focus:outline-none"
-        placeholder={community?.description || "Tell us about your community"}
-        {...register("description")}
-      />
-      {errors?.description && (
-        <div>
-          <p className="col-span-2 block text-sm text-red-400">
-            {errors.description?.message}
-          </p>
-        </div>
-      )}
-
-      <div className="col-span-2 w-full items-center justify-between px-3 py-2">
-        <input
-          type="file"
-          {...register("imageUrl")}
-          className="mb-3 w-full border-2 border-blue-300 text-sm text-black transition-colors file:m-1 file:mr-3 file:cursor-pointer file:border-2 file:border-blue-300 file:bg-stone-50 file:px-3 file:py-1 file:text-xs file:font-medium file:text-black file:transition-colors hover:cursor-pointer hover:border-blue-700 hover:file:border-blue-700 hover:file:bg-blue-50"
+        <InputComponent
+          type="text"
+          name="name"
+          logo={<MdBadge className="absolute left-3 top-3 h-6 w-6" />}
+          placeholder={community?.name || "Your community name(not defined)"}
         />
-        <p className="text-red-500">{errors.imageUrl?.message?.toString()}</p>
-      </div>
 
-      {imageUrl?.[0] && (
-        <div className="col-span-2 rounded-md bg-white p-2 text-center font-semibold">
-          <h3>Image preview:</h3>
-          <ImageUploadingPreview file={imageUrl[0]} />
+        <textarea
+          className="col-span-2 h-24 w-full rounded-md bg-gray-300 p-2 focus:outline-none"
+          placeholder={community?.description || "Tell us about your community"}
+          {...register("description")}
+        />
+        {errors?.description && (
+          <div>
+            <p className="col-span-2 block text-sm text-red-400">
+              {errors.description?.message}
+            </p>
+          </div>
+        )}
+
+        <div className="col-span-2 w-full items-center justify-between px-3 py-2">
+          <input
+            type="file"
+            {...register("imageUrl")}
+            className="mb-3 w-full border-2 border-blue-300 text-sm text-black transition-colors file:m-1 file:mr-3 file:cursor-pointer file:border-2 file:border-blue-300 file:bg-stone-50 file:px-3 file:py-1 file:text-xs file:font-medium file:text-black file:transition-colors hover:cursor-pointer hover:border-blue-700 hover:file:border-blue-700 hover:file:bg-blue-50"
+          />
+          <p className="text-red-500">{errors.imageUrl?.message?.toString()}</p>
         </div>
-      )}
 
-      <button
-        className="col-span-2 mb-12 mt-3 h-12 w-full rounded-md bg-indigo-600 text-white"
-        type="submit"
-      >
-        Save
-      </button>
-    </form>
-  ) : (
-    <div className="animate-pulse text-center text-3xl font-semibold">
-      Loading...
-    </div>
+        {imageUrl?.[0] && (
+          <div className="col-span-2 rounded-md bg-white p-2 text-center font-semibold">
+            <h3>Image preview:</h3>
+            <ImageUploadingPreview file={imageUrl[0]} />
+          </div>
+        )}
+
+        <button
+          className="col-span-2 mb-12 mt-3 h-12 w-full rounded-md bg-indigo-600 text-white"
+          type="submit"
+        >
+          Save
+        </button>
+      </form>
+    )
   );
 };
 

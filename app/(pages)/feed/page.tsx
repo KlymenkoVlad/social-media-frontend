@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Metadata } from "next";
 import { IPost } from "@/interfaces/post";
-import { getAllPosts } from "@/app/_actions";
 import Feed from "@/app/(pages)/feed/Feed";
+import { getAllPosts } from "@/actions/post";
 
 export const metadata: Metadata = {
   title: "Feed",

@@ -14,7 +14,7 @@ const PersonSkeleton = () => {
       </div>
 
       <div className="flex h-8 w-10 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-200">
-        <MdPersonRemove className="text-gray-500" />
+        <MdPersonRemove className="inline-block text-2xl text-gray-500" />
       </div>
     </div>
   );

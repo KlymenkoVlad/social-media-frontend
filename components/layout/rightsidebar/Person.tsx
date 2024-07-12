@@ -3,7 +3,7 @@
 import {
   addFriendRequest,
   revalidateFriendsRecommendations,
-} from "@/app/_actions";
+} from "@/actions/friend";
 import BlankAvatar from "@/components/BlankAvatar";
 import { stringCut } from "@/utils/stringCut";
 import Link from "next/link";
@@ -47,7 +47,7 @@ const Person = ({
             }
             toast.error(res.message);
           }}
-          className="text-gray-500"
+          className="inline-block text-2xl text-gray-500"
         />
       </div>
     </li>

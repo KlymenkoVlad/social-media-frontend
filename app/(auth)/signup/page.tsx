@@ -3,7 +3,6 @@
 //* TODO
 //* Add image upload
 
-import { sendData } from "@/app/_actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,6 +13,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { redirectToFeed } from "../redirectToFeed";
 import { MdBadge, MdContactEmergency, MdEmail, MdLock } from "react-icons/md";
+import { signup } from "@/actions/auth";
 
 const FormDataSchemaSignup = z.object({
   email: z.string().email("Invalid email"),
@@ -37,7 +37,7 @@ const FormDataSchemaSignup = z.object({
   // description: z.string().nullable(),
 });
 
-type Inputs = z.infer<typeof FormDataSchemaSignup>;
+export type SignupInputs = z.infer<typeof FormDataSchemaSignup>;
 
 const Page = () => {
   const InputComponent = ({
@@ -48,7 +48,7 @@ const Page = () => {
   }: {
     type: string;
     placeholder: string;
-    name: keyof Inputs;
+    name: keyof SignupInputs;
     logo: React.ReactNode;
   }) => {
     return (
@@ -74,23 +74,23 @@ const Page = () => {
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<SignupInputs>({
     resolver: zodResolver(FormDataSchemaSignup),
   });
 
-  const processForm: SubmitHandler<Inputs> = async (data) => {
+  const processForm: SubmitHandler<SignupInputs> = async (data) => {
     toast.loading("Creating your account...");
-    const { response, user } = await sendData(data, "signup");
+    const { res, user } = await signup(data);
 
     toast.remove();
-    if (response.error) {
-      if (response.statusCode === 409) {
+    if (res.error) {
+      if (res.statusCode === 409) {
         toast.error("User already exists");
         return;
       }
 
-      if (response.statusCode === 400 && response.message[0]) {
-        toast.error(response.message[0]);
+      if (res.statusCode === 400 && res.message[0]) {
+        toast.error(res.message[0]);
         return;
       }
 
@@ -99,11 +99,11 @@ const Page = () => {
     }
 
     if (user) {
-      localStorage.setItem("userId", user.id);
+      localStorage.setItem("userId", user.id.toString());
       localStorage.setItem("username", user.username);
     }
 
-    toast.success("Your account has been successful created");
+    toast.success("Your account has been created");
     redirectToFeed();
     reset();
   };

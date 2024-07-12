@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { findUserByUsername } from "@/app/_actions";
 import { User } from "@/interfaces/user";
 import BlankAvatar from "@/components/BlankAvatar";
 import Link from "next/link";
 import { MdSelfImprovement } from "react-icons/md";
+import { findUserByUsername } from "@/actions/user";
 
 interface UsersParams {
   users: User[];

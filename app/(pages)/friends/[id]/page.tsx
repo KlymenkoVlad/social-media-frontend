@@ -1,8 +1,8 @@
 import { IFriend } from "@/interfaces/friend";
 import React from "react";
-import { getAllFriends } from "./actions";
 import InfiniteScrollFriends from "./InfiniteScrollFriends";
 import { Metadata } from "next";
+import { getAllFriends } from "@/actions/friend";
 
 interface FriendResponse {
   status: string;

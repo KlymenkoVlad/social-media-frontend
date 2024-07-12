@@ -8,7 +8,6 @@ import BlankAvatar from "../BlankAvatar";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { sendComment } from "@/app/_actions";
 import toast from "react-hot-toast";
 import {
   MdFavorite,
@@ -17,7 +16,8 @@ import {
   MdSend,
 } from "react-icons/md";
 import Comment from "./Comment";
-import { COMMENTS_SKIP_AMOUNT } from "@/constants/constsants";
+import { COMMENTS_SKIP_AMOUNT } from "@/constants/constants";
+import { sendComment, likePost } from "@/actions/postInteractions";
 
 interface LikeProps {
   postId: number;
@@ -90,12 +90,7 @@ const PostInteractions = ({
       setLikesAmount(likesAmount + 1);
     }
     if (token) {
-      await fetch(`${baseUrl}/post/like/${postId}`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await likePost(postId);
     }
   };
 

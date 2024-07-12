@@ -3,12 +3,11 @@
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { IFriend } from "@/interfaces/friend";
-import { getAllFriends } from "./actions";
 import Image from "next/image";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { deleteFriend } from "@/app/_actions";
 import { MdPerson, MdSelfImprovement } from "react-icons/md";
+import { deleteFriend, getAllFriends } from "@/actions/friend";
 
 interface FriendResponse {
   status: string;

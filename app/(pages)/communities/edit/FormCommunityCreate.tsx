@@ -9,11 +9,11 @@ import { z } from "zod";
 import { baseUrl } from "@/utils/baseUrl";
 import ImageUploadingPreview from "@/components/ImageUploadingPreview";
 import { MdBadge } from "react-icons/md";
-import { createCommunity, isCommunityExist } from "../actions";
 import {
   ACCEPTED_IMAGE_MIME_TYPES,
   MAX_FILE_SIZE,
-} from "@/constants/constsants";
+} from "@/constants/constants";
+import { createCommunity, isCommunityExist } from "@/actions/community";
 
 const FormDataSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -27,12 +27,10 @@ const FormDataSchema = z.object({
         return true;
       }, "Image is required")
       .refine((files) => {
-        console.log(files, files.length === 0);
         if (!files || files.length === 0) return false;
         return files[0].size <= MAX_FILE_SIZE;
       }, `Max image size is 5MB.`)
       .refine((files) => {
-        console.log(!files || files.length === 0);
         if (!files || files.length === 0) return false;
         return ACCEPTED_IMAGE_MIME_TYPES.includes(files[0].type);
       }, "Only .jpg, .jpeg, .png and .webp formats are supported."),
@@ -44,7 +42,7 @@ const FormDataSchema = z.object({
     .optional(),
 });
 
-export type FormCommunityInputs = z.infer<typeof FormDataSchema>;
+export type FormCreateCommunityInputs = z.infer<typeof FormDataSchema>;
 
 const FormCommunityCreate = () => {
   const [showForm, setShowForm] = useState<boolean>(false);
@@ -66,7 +64,7 @@ const FormCommunityCreate = () => {
   }: {
     type: string;
     placeholder: string;
-    name: keyof FormCommunityInputs;
+    name: keyof FormCreateCommunityInputs;
     logo: React.ReactNode;
   }) => {
     return (
@@ -94,11 +92,11 @@ const FormCommunityCreate = () => {
     reset,
     handleSubmit,
     watch,
-  } = useForm<FormCommunityInputs>({
+  } = useForm<FormCreateCommunityInputs>({
     resolver: zodResolver(FormDataSchema),
   });
 
-  const processForm = async (data: FormCommunityInputs) => {
+  const processForm = async (data: FormCreateCommunityInputs) => {
     toast.loading("Creating your community...");
     if (data.imageUrl && data.imageUrl.length > 0) {
       const formData = new FormData();

@@ -1,9 +1,10 @@
 "use server";
 
+import { FormCreateCommunityInputs } from "@/app/(pages)/communities/edit/FormCommunityCreate";
+import { FormEditCommunityInputs } from "@/app/(pages)/communities/edit/FormCommunityEdit";
 import { Colors } from "@/interfaces/user";
 import { baseUrl } from "@/utils/baseUrl";
 import { cookies } from "next/headers";
-import { FormCommunityInputs } from "./edit/FormCommunityCreate";
 
 export const getCommunities = async (
   cursor?: number | null,
@@ -66,8 +67,6 @@ export const updateCommunityColor = async (color: Colors) => {
     body: JSON.stringify({ color }),
   });
 
-  console.log(res);
-
   return res.status;
 };
 
@@ -92,10 +91,8 @@ export const getCommunityPosts = async (
   return res;
 };
 
-export const createCommunity = async (data: FormCommunityInputs) => {
+export const createCommunity = async (data: FormCreateCommunityInputs) => {
   const token = cookies().get("token")?.value;
-
-  console.log(data);
 
   const res = await fetch(`${baseUrl}/community`, {
     method: "POST",
@@ -123,30 +120,41 @@ export const isCommunityExist = async (): Promise<number> => {
   return res.id;
 };
 
-export const subscribe = async (id: number) => {
+export const updateCommunity = async (data: FormEditCommunityInputs) => {
   const token = cookies().get("token")?.value;
 
-  const res = await fetch(`${baseUrl}/subscription/${id}`, {
-    method: "POST",
+  (Object.keys(data) as (keyof typeof data)[]).forEach((key) => {
+    if (data[key] === undefined) {
+      delete data[key];
+    }
+  });
+
+  if (Object.keys(data).length === 0 && data.constructor === Object) {
+    return {
+      statusCode: 304,
+      message: "No changes were made",
+    };
+  }
+
+  const res = await fetch(`${baseUrl}/community`, {
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-  }).then((res) => res.json());
+    body: JSON.stringify(data),
+  });
 
-  return res;
-};
-
-export const unsubscribe = async (id: number) => {
-  const token = cookies().get("token")?.value;
-
-  const res = await fetch(`${baseUrl}/subscription/${id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  }).then((res) => res.json());
-
-  return res;
+  if (res.status === 409) {
+    const data: {
+      message: string;
+      error: string;
+      statusCode: 409;
+    } = await res.json();
+    return data;
+  }
+  return {
+    statusCode: res.status,
+    message: "Profile updated successfully",
+  };
 };

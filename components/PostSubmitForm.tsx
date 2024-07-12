@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { sendPost } from "@/app/_actions";
 import toast from "react-hot-toast";
 import { IPost } from "@/interfaces/post";
 import ImageUploadingPreview from "./ImageUploadingPreview";
@@ -12,7 +11,8 @@ import { baseUrl } from "@/utils/baseUrl";
 import {
   ACCEPTED_IMAGE_MIME_TYPES,
   MAX_FILE_SIZE,
-} from "@/constants/constsants";
+} from "@/constants/constants";
+import { sendPost } from "@/actions/post";
 //TODO capability to add image
 //TODO delete any from type
 

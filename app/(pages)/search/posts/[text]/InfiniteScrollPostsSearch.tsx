@@ -2,11 +2,11 @@
 
 import { IPost } from "@/interfaces/post";
 import React, { useEffect, useState } from "react";
-import Post from "../../../../../components/post/Post";
 import { useInView } from "react-intersection-observer";
-import { findPosts, getPostsByUserId } from "@/app/_actions";
-import PostSkeleton from "../../../../../components/post/PostSkeleton";
 import { MdSelfImprovement } from "react-icons/md";
+import { findPosts } from "@/actions/post";
+import Post from "@/components/post/Post";
+import PostSkeleton from "@/components/post/PostSkeleton";
 
 interface PostResponse {
   posts: IPost[];

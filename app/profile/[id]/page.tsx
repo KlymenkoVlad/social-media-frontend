@@ -1,9 +1,9 @@
-import { getPostsByUserId } from "@/app/_actions";
 import { IPost } from "@/interfaces/post";
 import { User } from "@/interfaces/user";
 import React from "react";
-import { getDataAuth } from "./actions";
 import Profile from "./_components/Profile";
+import { getPostsByUserId } from "@/actions/post";
+import { getUser } from "@/actions/user";
 
 interface UserResponse {
   status: string;
@@ -24,7 +24,7 @@ interface PageProps {
 }
 
 const page = async ({ params }: PageProps) => {
-  const { user }: UserResponse = await getDataAuth(`user/${params.id}`);
+  const { user }: UserResponse = await getUser(+params.id);
   const { posts, nextCursor, hasNextPage, postsLength }: PostResponse =
     await getPostsByUserId(+params.id);
 

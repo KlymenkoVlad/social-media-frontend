@@ -1,6 +1,5 @@
 "use client";
 
-import { getUser, updateUserProfile } from "@/app/_actions";
 import { User } from "@/interfaces/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -14,7 +13,8 @@ import { MdBadge, MdCake, MdContactEmergency, MdEmail } from "react-icons/md";
 import {
   ACCEPTED_IMAGE_MIME_TYPES,
   MAX_FILE_SIZE,
-} from "@/constants/constsants";
+} from "@/constants/constants";
+import { getUser, updateUserProfile } from "@/actions/user";
 
 //TODO: Image updating, validate case when data are the same as before
 const FormDataSchema = z.object({
@@ -82,7 +82,7 @@ const ProfileForm = () => {
     const userFetching = async () => {
       const userId = localStorage.getItem("userId");
       if (!userId) return;
-      const user = await getUser(+userId);
+      const { user } = await getUser(+userId);
 
       setUser(user);
     };

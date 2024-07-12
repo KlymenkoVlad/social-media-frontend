@@ -4,12 +4,6 @@ import BlankAvatar from "@/components/BlankAvatar";
 
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  changeRequestStatus,
-  deleteFriend,
-  getAllRequestsToMe,
-  getMe,
-} from "@/app/_actions";
 import toast from "react-hot-toast";
 import { FriendRequestStatus } from "@/app/profile/[id]/_components/Profile";
 import { User } from "@/interfaces/user";
@@ -27,6 +21,12 @@ import {
   MdPersonRemove,
   MdSettings,
 } from "react-icons/md";
+import { getMe } from "@/actions/user";
+import {
+  changeRequestStatus,
+  deleteFriend,
+  getAllRequestsToMe,
+} from "@/actions/friend";
 
 interface RequestsProps {
   id: number;
@@ -92,7 +92,7 @@ const Person = ({
           }}
           className="flex h-8 w-10 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-300"
         >
-          <MdPersonAdd className="text-black" />
+          <MdPersonAdd className="inline-block text-2xl text-black" />
         </button>
         <button
           onClick={async () => {
@@ -111,7 +111,7 @@ const Person = ({
           }}
           className="flex h-8 w-10 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-300"
         >
-          <MdPersonRemove className="text-black" />
+          <MdPersonRemove className="inline-block text-2xl text-black" />
         </button>
         <button
           onClick={async () => {
@@ -133,7 +133,7 @@ const Person = ({
           }}
           className="flex h-8 w-10 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-300"
         >
-          <MdBlock className="text-red-500" />
+          <MdBlock className="inline-block text-2xl text-red-500" />
         </button>
       </div>
     </li>

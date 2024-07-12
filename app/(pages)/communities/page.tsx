@@ -1,8 +1,8 @@
 import React from "react";
-import { getCommunities } from "./actions";
 import { ICommunity } from "@/interfaces/community";
 import CommunityProfile from "./CommunityItem";
 import InfiniteScrollCommunities from "./InfiniteScrollCommunities";
+import { getCommunities } from "@/actions/community";
 
 interface CommunitiesResponse {
   communities: ICommunity[];

@@ -1,46 +1,43 @@
 "use client";
 
-import { sendData } from "@/app/_actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { z } from "zod";
 import { redirectToFeed } from "../redirectToFeed";
 import { MdEmail, MdLock } from "react-icons/md";
+import { login } from "@/actions/auth";
+
+const FormDataSchema = z.object({
+  email: z.string().email("Invalid email"),
+  password: z.string().min(5, "Password must be at least 5 characters"),
+});
+
+export type SignInInputs = z.infer<typeof FormDataSchema>;
 
 const Page = () => {
-  const router = useRouter();
-
-  const FormDataSchema = z.object({
-    email: z.string().email("Invalid email"),
-    password: z.string().min(5, "Password must be at least 5 characters"),
-  });
-
-  type Inputs = z.infer<typeof FormDataSchema>;
-
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<SignInInputs>({
     resolver: zodResolver(FormDataSchema),
   });
 
-  const processForm: SubmitHandler<Inputs> = async (data) => {
+  const processForm: SubmitHandler<SignInInputs> = async (data) => {
     toast.loading("Looking for your account...");
-    const { response, user } = await sendData(data, "login");
+    const { res, user } = await login(data);
 
     toast.remove();
-    if (response.error) {
+    if (res.error) {
       toast.error("Wrong credentials");
     } else {
       if (user) {
-        localStorage.setItem("userId", user.id);
+        localStorage.setItem("userId", user.id.toString());
         localStorage.setItem("username", user.username);
       }
 

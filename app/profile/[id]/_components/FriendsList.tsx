@@ -1,8 +1,8 @@
 import React from "react";
 import Link from "next/link";
-import { getFriendsList } from "../actions";
 import Person from "./Person";
 import { IFriend } from "@/interfaces/friend";
+import { getFriendsList } from "@/actions/friend";
 
 const FriendsList = async ({ id }: { id: string }) => {
   const friends: IFriend[] = await getFriendsList(id);

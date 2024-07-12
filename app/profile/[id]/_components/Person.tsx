@@ -1,11 +1,10 @@
 "use client";
 
-import { deleteFriend } from "@/app/_actions";
 import BlankAvatar from "@/components/BlankAvatar";
 import toast from "react-hot-toast";
-import { revalidateFriendsList } from "../actions";
 import Link from "next/link";
 import { MdPersonRemove } from "react-icons/md";
+import { deleteFriend, revalidateFriendsList } from "@/actions/friend";
 
 const Person = ({
   username,
@@ -45,7 +44,7 @@ const Person = ({
 
             toast.error("Something went wrong");
           }}
-          className="text-gray-500"
+          className="inline-block text-2xl text-gray-500"
         />
       </div>
     </li>

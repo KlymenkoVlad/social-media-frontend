@@ -1,6 +1,6 @@
 import React from "react";
-import { getFriendsRecommendations } from "@/app/_actions";
 import Person from "./Person";
+import { getFriendsRecommendations } from "@/actions/friend";
 
 interface Recommendation {
   id: number;

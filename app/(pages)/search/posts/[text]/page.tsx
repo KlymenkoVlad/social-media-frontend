@@ -1,4 +1,4 @@
-import { findPosts } from "@/app/_actions";
+import { findPosts } from "@/actions/post";
 import InfiniteScrollPosts from "@/app/(pages)/feed/InfiniteScrollPosts";
 import InfiniteScrollPostsSearch from "@/app/(pages)/search/posts/[text]/InfiniteScrollPostsSearch";
 import { IPost } from "@/interfaces/post";

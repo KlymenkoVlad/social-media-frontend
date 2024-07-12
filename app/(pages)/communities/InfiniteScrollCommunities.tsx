@@ -2,14 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { getCommunities } from "./actions";
 import Image from "next/image";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { deleteFriend } from "@/app/_actions";
 import { MdPerson, MdSelfImprovement } from "react-icons/md";
 import { ICommunity } from "@/interfaces/community";
 import CommunityItem from "./CommunityItem";
+import { getCommunities } from "@/actions/community";
 
 interface CommunityResponse {
   communities: ICommunity[];

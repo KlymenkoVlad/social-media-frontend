@@ -1,5 +1,7 @@
 "use client";
 
+import { updateCommunityColor } from "@/actions/community";
+import { subscribe, unsubscribe } from "@/actions/subscription";
 import { ICommunity } from "@/interfaces/community";
 import { Colors } from "@/interfaces/user";
 import Image from "next/image";
@@ -7,7 +9,6 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { MdClose, MdDone, MdEdit, MdPerson } from "react-icons/md";
-import { subscribe, unsubscribe, updateCommunityColor } from "../actions";
 
 const CommunityProfile = ({ community }: { community: ICommunity }) => {
   const [editColor, setEditColor] = useState(false);

@@ -6,7 +6,7 @@ import { useInView } from "react-intersection-observer";
 import PostSkeleton from "@/components/post/PostSkeleton";
 import Post from "@/components/post/Post";
 import { MdSelfImprovement } from "react-icons/md";
-import { getCommunityPosts } from "../actions";
+import { getCommunityPosts } from "@/actions/community";
 
 interface PostResponse {
   posts: IPost[];

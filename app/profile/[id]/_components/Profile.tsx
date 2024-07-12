@@ -1,11 +1,5 @@
 "use client";
 
-import {
-  addFriendRequest,
-  changeRequestStatus,
-  deleteFriend,
-  getRequestInfo,
-} from "@/app/_actions";
 import InfiniteScrollPostsProfile from "./InfiniteScrollPostsProfile";
 import { IPost } from "@/interfaces/post";
 import { Colors, User } from "@/interfaces/user";
@@ -15,12 +9,19 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IFriend } from "@/interfaces/friend";
-import { getFriendsList, updateColor } from "../actions";
 import PersonProfile from "./Person";
 import PersonSkeleton from "./PersonSkeleton";
 import PostSubmitForm from "@/components/PostSubmitForm";
 import { MdClose, MdDone, MdEdit, MdPerson } from "react-icons/md";
-import { isCommunityExist } from "@/app/(pages)/communities/actions";
+import { isCommunityExist } from "@/actions/community";
+import {
+  addFriendRequest,
+  changeRequestStatus,
+  deleteFriend,
+  getFriendsList,
+  getRequestInfo,
+} from "@/actions/friend";
+import { updateProfileColor } from "@/actions/user";
 
 const btnStyle =
   "border-text mb-3 flex h-fit min-w-32 cursor-pointer items-center justify-center self-end rounded-sm border-2 border-blue-300 bg-blue-100 px-1 py-2 ms:p-2 text-sm font-bold capitalize leading-6 transition-colors hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-10";
@@ -175,13 +176,14 @@ const Profile = ({
   const [showCommunityId, setShowCommunityId] = useState<number | undefined>();
   const [communityStatusLoading, setCommunityStatusLoading] = useState(true);
 
+  // console.log(userId && +userId === +user.id, +userId, +user.id);
+
   useEffect(() => {
     const getIsCommunityExist = async () => {
       setCommunityStatusLoading(true);
       const userId = localStorage.getItem("userId");
       if (userId === user.id.toString()) {
         const data = await isCommunityExist();
-        console.log(data);
 
         setShowCommunityId(data);
       }
@@ -247,7 +249,7 @@ const Profile = ({
 
   const handleColorChange = async (color: Colors) => {
     toast.loading("Changing color...");
-    const status = await updateColor(color);
+    const status = await updateProfileColor(color);
 
     toast.remove();
     if (status === 200) {
@@ -272,7 +274,8 @@ const Profile = ({
               onClick={() => setEditColor(true)}
               className={`${editColor ? "hidden" : "flex items-center justify-center"} h-10 rounded-full border-2 bg-gray-600 p-2 text-white opacity-70 shadow-md transition-colors hover:bg-gray-500`}
             >
-              <MdEdit /> <span className="ml-1">Change Color</span>
+              <MdEdit className="inline-block text-2xl" />
+              <span className="ml-1">Change Color</span>
             </button>
             <button
               onClick={() => {
@@ -280,13 +283,15 @@ const Profile = ({
               }}
               className={`${editColor ? "flex items-center justify-center" : "hidden"} h-10 rounded-full border-2 bg-green-600 p-2 text-white opacity-70 shadow-md transition-colors hover:bg-green-700`}
             >
-              <MdDone /> <span className="ml-1">Accept</span>
+              <MdDone className="inline-block text-2xl" />{" "}
+              <span className="ml-1">Accept</span>
             </button>
             <button
               onClick={() => setEditColor(false)}
               className={`${editColor ? "flex items-center justify-center" : "hidden"} h-10 rounded-full border-2 bg-red-600 p-2 text-white opacity-70 shadow-md transition-colors hover:bg-red-700`}
             >
-              <MdClose /> <span className="ml-1">Back</span>
+              <MdClose className="inline-block text-2xl" />
+              <span className="ml-1">Back</span>
             </button>
           </div>
 
@@ -351,7 +356,7 @@ const Profile = ({
               <div className="mb-3 flex items-center justify-between self-end">
                 <div>
                   <h1 className="font-semibold">
-                    {user?.name} {user?.surname}{" "}
+                    {user?.name} {user?.surname}
                     {user?.age && `| ${user?.age} years`}
                   </h1>
                   <h2 className="text-gray-500">@{user?.username}</h2>
@@ -430,24 +435,32 @@ const Profile = ({
         </section>
       )}
 
-      {!communityStatusLoading ? (
-        showCommunityId ? (
-          <section className="grid h-16 w-full items-center rounded-md bg-white px-24">
-            <Link className="btn-blue" href={`/communities/${showCommunityId}`}>
-              Go to my community
-            </Link>
-          </section>
+      {/* showCommunityId ? (
+          <Link className="btn-blue" href={`/communities/${showCommunityId}`}>
+            Go to my community
+          </Link>
         ) : (
-          <section className="grid h-16 w-full items-center rounded-md bg-white px-24">
-            <Link className="btn-blue" href={`/communities/edit`}>
-              Do you want to create your own community? Create it!
-            </Link>
-          </section>
-        )
+          <Link className="btn-blue p-1 text-center" href={`/communities/edit`}>
+            Do you want to create your own community? Create it!
+          </Link>
+        ) */}
+
+      {!communityStatusLoading ? (
+        userId &&
+        +userId === user?.id &&
+        (showCommunityId ? (
+          <Link className="btn-blue" href={`/communities/${showCommunityId}`}>
+            Go to my community
+          </Link>
+        ) : (
+          <Link className="btn-blue p-1 text-center" href={`/communities/edit`}>
+            Do you want to create your own community? Create it!
+          </Link>
+        ))
       ) : (
-        <section className="grid h-16 w-full items-center rounded-md bg-white px-24">
-          <p className="btn-blue">Loading...</p>
-        </section>
+        <button disabled className="btn-blue w-full">
+          Loading...
+        </button>
       )}
 
       {/* Sorting by */}
