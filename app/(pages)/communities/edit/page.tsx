@@ -5,7 +5,7 @@ import FormCommunityCreate from "./FormCommunityCreate";
 import FormCommunityEdit from "./FormCommunityEdit";
 import { isCommunityExist } from "@/actions/community";
 
-const page = () => {
+const Page = () => {
   const [showForm, setShowForm] = useState<boolean>(false);
 
   useEffect(() => {
@@ -29,4 +29,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
