@@ -1,4 +1,4 @@
-import BlankAvatar from "@/components/BlankAvatar";
+import BlankAvatar from "@/components/ui/BlankAvatar";
 import { ICommunity } from "@/interfaces/community";
 import { Colors } from "@/interfaces/user";
 import Image from "next/image";

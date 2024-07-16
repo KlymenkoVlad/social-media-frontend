@@ -1,7 +1,6 @@
-import React, { useState } from "react";
 import { Metadata } from "next";
 import { IPost } from "@/interfaces/post";
-import Feed from "@/app/(pages)/feed/Feed";
+import Feed from "@/app/(pages)/feed/_components/Feed";
 import { getAllPosts } from "@/actions/post";
 
 export const metadata: Metadata = {
@@ -10,7 +9,7 @@ export const metadata: Metadata = {
     "Social media app that helps you connect and share with the people in your life.",
 };
 
-interface PostResponse {
+export interface PostResponse {
   posts: IPost[];
   nextCursor: number;
   hasNextPage: boolean;

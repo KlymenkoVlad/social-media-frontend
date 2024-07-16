@@ -1,6 +1,6 @@
 "use client";
 
-import BlankAvatar from "@/components/BlankAvatar";
+import BlankAvatar from "@/components/ui/BlankAvatar";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { MdPersonRemove } from "react-icons/md";

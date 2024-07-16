@@ -1,8 +1,7 @@
 import { findPosts } from "@/actions/post";
-import InfiniteScrollPosts from "@/app/(pages)/feed/InfiniteScrollPosts";
-import InfiniteScrollPostsSearch from "@/app/(pages)/search/posts/[text]/InfiniteScrollPostsSearch";
 import { IPost } from "@/interfaces/post";
 import React from "react";
+import InfiniteScrollPostsSearch from "./_components/InfiniteScrollPostsSearch";
 
 interface PostsResponse {
   posts: IPost[];

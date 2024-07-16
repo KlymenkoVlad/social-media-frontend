@@ -182,23 +182,19 @@ const CommunityProfile = ({ community }: { community: ICommunity }) => {
 
           {userId ? (
             +userId === community.userId ? (
-              <Link type="button" href={`edit`} className="btn-blue">
+              <Link type="button" href={`edit`} className="btn-blue ml-3">
                 Edit Profile
               </Link>
             ) : (
               <button
-                className={`${isFollowing ? "btn-red" : "btn-blue"}`}
+                className={`${isFollowing ? "btn-red ml-3" : "btn-blue ml-3"}`}
                 onClick={() => handleSubscribe()}
               >
                 {isFollowing ? "Unsubscribe" : "Subscribe"}
               </button>
             )
           ) : (
-            <button
-              type="button"
-              disabled
-              className="border-text mb-3 flex h-fit min-w-32 animate-pulse cursor-pointer items-center justify-center self-end rounded-sm border-2 border-blue-300 bg-gray-100 px-1 py-2 text-sm font-bold capitalize leading-6 transition-colors ms:p-2"
-            >
+            <button type="button" disabled className="btn-blue ml-3">
               Loading...
             </button>
           )}

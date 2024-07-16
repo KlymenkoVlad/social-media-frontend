@@ -1,7 +1,7 @@
 "use server";
 
-import { PasswordFormInputs } from "@/app/(pages)/settings/PasswordForm";
-import { ProfileFormInputs } from "@/app/(pages)/settings/ProfileForm";
+import { PasswordFormInputs } from "@/app/(pages)/settings/_components/PasswordForm";
+import { ProfileFormInputs } from "@/app/(pages)/settings/_components/ProfileForm";
 import { Colors, User } from "@/interfaces/user";
 import { baseUrl } from "@/utils/baseUrl";
 import { cookies } from "next/headers";

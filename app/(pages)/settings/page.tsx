@@ -1,7 +1,6 @@
-import PasswordForm from "@/app/(pages)/settings/PasswordForm";
-import ProfileForm from "@/app/(pages)/settings/ProfileForm";
-
 import React from "react";
+import PasswordForm from "./_components/PasswordForm";
+import ProfileForm from "./_components/ProfileForm";
 
 const Page = () => {
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../../Logo";
+import Logo from "../../ui/Logo";
 import Link from "next/link";
 
 import Modals from "./Modals";

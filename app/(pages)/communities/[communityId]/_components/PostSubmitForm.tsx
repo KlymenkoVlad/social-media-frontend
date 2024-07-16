@@ -7,15 +7,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { IPost } from "@/interfaces/post";
 import { baseUrl } from "@/utils/baseUrl";
-import { useRouter } from "next/router";
 import ImageUploadingPreview from "@/components/ImageUploadingPreview";
 import {
   ACCEPTED_IMAGE_MIME_TYPES,
   MAX_FILE_SIZE,
 } from "@/constants/constants";
 import { sendPost } from "@/actions/post";
-//TODO capability to add image
-//TODO delete any from type
 
 const PostSubmitForm = ({
   setPosts,
@@ -27,6 +24,7 @@ const PostSubmitForm = ({
   communityId: number;
 }) => {
   const [showTitleForm, setShowTitleForm] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const FormSchema = z.object({
     text: z.string().min(1, "Text is required").max(3000, "Text is too long"),
@@ -62,6 +60,8 @@ const PostSubmitForm = ({
   });
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
+    setIsSubmitting(true);
+
     toast.loading("Create your post...");
 
     let img: string | undefined;
@@ -89,6 +89,7 @@ const PostSubmitForm = ({
     }
 
     reset();
+    setIsSubmitting(false);
   };
 
   const imageUrl = watch("imageUrl");
@@ -116,10 +117,7 @@ const PostSubmitForm = ({
             {...register("imageUrl")}
             className="mb-3 w-full border-2 border-blue-300 text-sm text-black transition-colors file:m-1 file:mr-3 file:cursor-pointer file:border-2 file:border-blue-300 file:bg-stone-50 file:px-3 file:py-1 file:text-xs file:font-medium file:text-black file:transition-colors hover:cursor-pointer hover:border-blue-700 hover:file:border-blue-700 hover:file:bg-blue-50"
           />
-          <button
-            type="submit"
-            className="border-text flex w-16 cursor-pointer items-center justify-center rounded-sm border-2 border-blue-300 p-1 text-sm font-bold capitalize leading-6 transition-colors hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-10"
-          >
+          <button type="submit" className="btn-blue" disabled={isSubmitting}>
             Post
           </button>
         </div>
@@ -137,6 +135,7 @@ const PostSubmitForm = ({
         </label>
         <input
           id="title"
+          disabled={isSubmitting}
           className="inline-flex w-full items-center rounded-md px-4 py-2.5 font-medium text-black focus:outline-none"
           placeholder="Title for your post"
           {...register("title")}

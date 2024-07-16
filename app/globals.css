@@ -2,12 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-.btn-blue {
+/* .btn-blue {
   @apply mb-3 flex h-fit min-w-32 cursor-pointer items-center justify-center self-end rounded-sm border-2 border-blue-300 bg-blue-100 px-1 py-2 text-sm font-bold capitalize leading-6 transition-colors hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-10 ms:p-2;
+} */
+
+.btn-blue {
+  @apply mb-3 mt-5 block h-fit w-full self-end rounded-md bg-indigo-600 px-1 py-2 text-center text-white transition-colors hover:bg-indigo-700;
 }
 
 .btn-red {
-  @apply mb-3 flex h-fit min-w-32 cursor-pointer items-center justify-center self-end rounded-sm border-2 border-red-300 bg-red-100 px-1 py-2 text-sm font-bold capitalize leading-6 transition-colors hover:border-red-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-opacity-10 ms:p-2;
+  @apply mb-3 mt-5 block h-fit w-full self-end rounded-md bg-red-600 px-1 py-2 text-center text-white transition-colors hover:bg-red-700;
 }
 
 html {

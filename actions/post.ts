@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 export const getAllPosts = async (
   cursor?: number,
   sortBy = "new",
-  take = 4,
+  take = 8,
 ) => {
   const token = cookies().get("token")?.value;
 
@@ -32,7 +32,7 @@ export const getPostsByUserId = async (
   id: number,
   sortBy = "new",
   cursor?: number | null,
-  take = 4,
+  take = 8,
 ) => {
   const token = cookies().get("token")?.value;
 
@@ -53,7 +53,7 @@ export const getPostsByUserId = async (
   return data;
 };
 
-export const findPosts = async (text: string, cursor?: number, take = 4) => {
+export const findPosts = async (text: string, cursor?: number, take = 8) => {
   const token = cookies().get("token")?.value;
 
   const res = await fetch(

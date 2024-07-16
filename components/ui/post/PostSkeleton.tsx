@@ -1,16 +1,9 @@
-import BlankAvatar from "@/components/BlankAvatar";
-
 import React, { Ref, forwardRef } from "react";
-import PostInteractions from "./PostInteractions";
 import {
   MdMoreHoriz,
   MdOutlineChatBubbleOutline,
   MdOutlineFavoriteBorder,
 } from "react-icons/md";
-
-type typeRef = Element | null | undefined;
-
-//TODO remove any type
 
 const PostSkeleton = forwardRef(
   (props: { end: boolean }, ref: Ref<HTMLUListElement>) => {

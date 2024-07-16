@@ -1,6 +1,6 @@
 import { IFriend } from "@/interfaces/friend";
 import React from "react";
-import InfiniteScrollFriends from "./InfiniteScrollFriends";
+import InfiniteScrollFriends from "./_components/InfiniteScrollFriends";
 import { Metadata } from "next";
 import { getAllFriends } from "@/actions/friend";
 

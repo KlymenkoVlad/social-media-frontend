@@ -13,8 +13,48 @@ import {
   MAX_FILE_SIZE,
 } from "@/constants/constants";
 import { sendPost } from "@/actions/post";
-//TODO capability to add image
-//TODO delete any from type
+
+const FormSchema = z.object({
+  text: z.string().min(1, "Text is required").max(3000, "Text is too long"),
+  title: z
+    .string()
+    .max(50, "Title is too long(above 50 characters)")
+    .optional(),
+  imageUrl: z
+    .any()
+    .refine((files) => {
+      if (!files || files.length === 0) return true;
+      return files[0].size <= MAX_FILE_SIZE;
+    }, `Max image size is 5MB.`)
+    .refine((files) => {
+      if (!files || files.length === 0) return true;
+      return ACCEPTED_IMAGE_MIME_TYPES.includes(files[0].type);
+    }, "Only .jpg, .jpeg, .png and .webp formats are supported.")
+    .optional()
+    .nullable(),
+});
+
+const arePostsEqual = (
+  prevProps: {
+    setPosts: React.Dispatch<React.SetStateAction<IPost[]>>;
+    posts: IPost[];
+  },
+  nextProps: {
+    setPosts: React.Dispatch<React.SetStateAction<IPost[]>>;
+    posts: IPost[];
+  },
+): boolean => {
+  const { posts: postsA } = prevProps;
+  const { posts: postsB } = nextProps;
+
+  if (postsA.length !== postsB.length) return false;
+
+  for (let i = 0; i < postsA.length; i++) {
+    if (postsA[i].id !== postsB[i].id) return false;
+  }
+
+  return true;
+};
 
 const PostSubmitForm = ({
   setPosts,
@@ -25,26 +65,6 @@ const PostSubmitForm = ({
 }) => {
   const [showTitleForm, setShowTitleForm] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  const FormSchema = z.object({
-    text: z.string().min(1, "Text is required").max(3000, "Text is too long"),
-    title: z
-      .string()
-      .max(50, "Title is too long(above 50 characters)")
-      .optional(),
-    imageUrl: z
-      .any()
-      .refine((files) => {
-        if (!files || files.length === 0) return true;
-        return files[0].size <= MAX_FILE_SIZE;
-      }, `Max image size is 5MB.`)
-      .refine((files) => {
-        if (!files || files.length === 0) return true;
-        return ACCEPTED_IMAGE_MIME_TYPES.includes(files[0].type);
-      }, "Only .jpg, .jpeg, .png and .webp formats are supported.")
-      .optional()
-      .nullable(),
-  });
 
   type Inputs = z.infer<typeof FormSchema>;
 
@@ -117,11 +137,7 @@ const PostSubmitForm = ({
             disabled={isSubmitting}
             className="mb-3 w-full border-2 border-blue-300 text-sm text-black transition-colors file:m-1 file:mr-3 file:cursor-pointer file:border-2 file:border-blue-300 file:bg-stone-50 file:px-3 file:py-1 file:text-xs file:font-medium file:text-black file:transition-colors hover:cursor-pointer hover:border-blue-700 hover:file:border-blue-700 hover:file:bg-blue-50"
           />
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`border-text flex w-16 cursor-pointer items-center justify-center rounded-sm border-2 border-blue-300 p-1 text-sm font-bold capitalize leading-6 transition-colors ${!isSubmitting && "focus:ring-opacity-10s hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500"}`}
-          >
+          <button type="submit" disabled={isSubmitting} className="btn-blue">
             Post
           </button>
         </div>
@@ -156,4 +172,4 @@ const PostSubmitForm = ({
   );
 };
 
-export default PostSubmitForm;
+export default React.memo(PostSubmitForm, arePostsEqual);

@@ -20,7 +20,6 @@ import {
   updateCommunity,
 } from "@/actions/community";
 
-//TODO: Image updating, validate case when data are the same as before
 const FormDataSchema = z.object({
   name: z.preprocess(
     (value) => (value === "" ? undefined : value),

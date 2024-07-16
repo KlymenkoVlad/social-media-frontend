@@ -16,7 +16,6 @@ import {
 } from "@/constants/constants";
 import { getUser, updateUserProfile } from "@/actions/user";
 
-//TODO: Image updating, validate case when data are the same as before
 const FormDataSchema = z.object({
   email: z.preprocess(
     (value) => (value === "" ? undefined : value),
@@ -238,10 +237,7 @@ const ProfileForm = () => {
         </div>
       )}
 
-      <button
-        className="col-span-2 mb-12 mt-3 h-12 w-full rounded-md bg-indigo-600 text-white"
-        type="submit"
-      >
+      <button className="btn-blue col-span-2" type="submit">
         Save
       </button>
     </form>

@@ -4,7 +4,7 @@ import {
   addFriendRequest,
   revalidateFriendsRecommendations,
 } from "@/actions/friend";
-import BlankAvatar from "@/components/BlankAvatar";
+import BlankAvatar from "@/components/ui/BlankAvatar";
 import { stringCut } from "@/utils/stringCut";
 import Link from "next/link";
 import toast from "react-hot-toast";
