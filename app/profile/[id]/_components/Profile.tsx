@@ -23,9 +23,6 @@ import {
 } from "@/actions/friend";
 import { updateProfileColor } from "@/actions/user";
 
-const btnStyle =
-  "border-text mb-3 flex h-fit min-w-32 cursor-pointer items-center justify-center self-end rounded-sm border-2 border-blue-300 bg-blue-100 px-1 py-2 ms:p-2 text-sm font-bold capitalize leading-6 transition-colors hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-10";
-
 interface ProfileProps {
   user: User;
   posts: IPost[];
@@ -49,7 +46,7 @@ const Button = ({
   handleSubmit: () => void;
   text: string;
 }) => (
-  <button onClick={handleSubmit} className={btnStyle}>
+  <button onClick={handleSubmit} className="btn-blue ml-3">
     <span>{text}</span>
   </button>
 );
@@ -175,8 +172,6 @@ const Profile = ({
 
   const [showCommunityId, setShowCommunityId] = useState<number | undefined>();
   const [communityStatusLoading, setCommunityStatusLoading] = useState(true);
-
-  // console.log(userId && +userId === +user.id, +userId, +user.id);
 
   useEffect(() => {
     const getIsCommunityExist = async () => {
@@ -366,7 +361,11 @@ const Profile = ({
 
             {userId && !loading ? (
               +userId === user?.id ? (
-                <Link type="button" href={`/settings`} className={btnStyle}>
+                <Link
+                  type="button"
+                  href={`/settings`}
+                  className="btn-blue ml-3"
+                >
                   Edit Profile
                 </Link>
               ) : (
@@ -377,11 +376,7 @@ const Profile = ({
                 />
               )
             ) : (
-              <button
-                type="button"
-                disabled
-                className="border-text mb-3 flex h-fit min-w-32 animate-pulse cursor-pointer items-center justify-center self-end rounded-sm border-2 border-blue-300 bg-gray-100 px-1 py-2 text-sm font-bold capitalize leading-6 transition-colors ms:p-2"
-              >
+              <button type="button" disabled className="btn-blue ml-2">
                 Loading...
               </button>
             )}
@@ -434,16 +429,6 @@ const Profile = ({
           <PostSubmitForm setPosts={setRenderPosts} posts={renderPosts} />
         </section>
       )}
-
-      {/* showCommunityId ? (
-          <Link className="btn-blue" href={`/communities/${showCommunityId}`}>
-            Go to my community
-          </Link>
-        ) : (
-          <Link className="btn-blue p-1 text-center" href={`/communities/edit`}>
-            Do you want to create your own community? Create it!
-          </Link>
-        ) */}
 
       {!communityStatusLoading ? (
         userId &&

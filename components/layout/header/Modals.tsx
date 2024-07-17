@@ -1,6 +1,6 @@
 "use client";
 
-import BlankAvatar from "@/components/BlankAvatar";
+import BlankAvatar from "@/components/ui/BlankAvatar";
 
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";

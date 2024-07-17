@@ -2,13 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import Image from "next/image";
-import Link from "next/link";
-import toast from "react-hot-toast";
-import { MdPerson, MdSelfImprovement } from "react-icons/md";
 import { ICommunity } from "@/interfaces/community";
 import CommunityItem from "./CommunityItem";
 import { getCommunities } from "@/actions/community";
+import InfiniteScrollEndIcon from "@/components/ui/InfiniteScrollEndIcon";
 
 interface CommunityResponse {
   communities: ICommunity[];
@@ -23,10 +20,9 @@ const InfiniteScrollCommunities = ({
   hasNextPage,
 }: CommunityResponse) => {
   const [cursor, setCursor] = useState<number | null>(nextCursor);
-  const [end, setEnd] = useState(!hasNextPage);
+  const [end, setEnd] = useState<boolean>(!hasNextPage);
   const [ref, inView] = useInView({ rootMargin: "0px 0px 700px 0px" });
   const [renderCommunities, setRenderCommunities] = useState(communities);
-  const [isCurrentUser, setIsCurrentUser] = useState<undefined | boolean>();
 
   const fetchPosts = async () => {
     if (end) {
@@ -61,17 +57,8 @@ const InfiniteScrollCommunities = ({
       <div ref={ref} className={`${end ? "hidden" : "block"}`}>
         Loading...
       </div>
-      <div
-        className={`${
-          end ? "block" : "hidden"
-        } mb-32 w-full text-center text-2xl font-semibold`}
-      >
-        <MdSelfImprovement
-          style={{ width: "8rem", height: "8rem" }}
-          className="inline"
-        />
-        <p>Hmmmm... I think there are no more communities</p>
-      </div>
+
+      <InfiniteScrollEndIcon end={end} text="communities" />
     </div>
   );
 };

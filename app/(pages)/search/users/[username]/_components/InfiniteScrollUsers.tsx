@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { User } from "@/interfaces/user";
-import BlankAvatar from "@/components/BlankAvatar";
+import BlankAvatar from "@/components/ui/BlankAvatar";
 import Link from "next/link";
-import { MdSelfImprovement } from "react-icons/md";
 import { findUserByUsername } from "@/actions/user";
+import InfiniteScrollEndIcon from "@/components/ui/InfiniteScrollEndIcon";
 
 interface UsersParams {
   users: User[];
@@ -105,14 +105,7 @@ const InfiniteScrollUsers = ({
         </button>
       </div>
 
-      <div
-        className={`${
-          end ? "block" : "hidden"
-        } col-span-full mb-32 w-full text-center text-2xl font-semibold`}
-      >
-        <MdSelfImprovement className="inline h-32 w-32" />
-        <p>Hmmmm... I think there are no users that match your search</p>
-      </div>
+      <InfiniteScrollEndIcon end={end} text="users" />
     </div>
   );
 };

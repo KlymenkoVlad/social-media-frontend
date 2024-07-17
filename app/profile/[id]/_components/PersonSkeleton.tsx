@@ -1,4 +1,4 @@
-import BlankAvatar from "@/components/BlankAvatar";
+import BlankAvatar from "@/components/ui/BlankAvatar";
 import React from "react";
 import { MdPersonRemove } from "react-icons/md";
 

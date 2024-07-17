@@ -1,6 +1,6 @@
 "use client";
 
-import { updatePassword } from "@/actions/user";
+// import { updatePassword } from "@/actions/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -12,6 +12,8 @@ const FormDataSchema = z.object({
   oldPassword: z.string().min(5, "Password must be at least 5 characters"),
   newPassword: z.string().min(5, "Password must be at least 5 characters"),
 });
+
+import { updatePassword } from "@/actions/user";
 
 export type PasswordFormInputs = z.infer<typeof FormDataSchema>;
 
@@ -93,10 +95,7 @@ const PasswordForm = () => {
           placeholder="Your new password"
         />
 
-        <button
-          className="col-span-2 mb-12 mt-3 h-12 w-full rounded-md bg-indigo-600 text-white"
-          type="submit"
-        >
+        <button className="btn-blue col-span-2" type="submit">
           Save
         </button>
       </form>

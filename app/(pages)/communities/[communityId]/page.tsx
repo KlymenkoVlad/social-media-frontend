@@ -1,5 +1,5 @@
 import React from "react";
-import Community from "./Community";
+import Community from "./_components/Community";
 import { ICommunity } from "@/interfaces/community";
 import { IPost } from "@/interfaces/post";
 import { getCommunity, getCommunityPosts } from "@/actions/community";

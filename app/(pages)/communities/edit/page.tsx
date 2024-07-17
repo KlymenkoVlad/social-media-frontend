@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import FormCommunityCreate from "./FormCommunityCreate";
-import FormCommunityEdit from "./FormCommunityEdit";
+import FormCommunityCreate from "./_components/FormCommunityCreate";
+import FormCommunityEdit from "./_components/FormCommunityEdit";
 import { isCommunityExist } from "@/actions/community";
 
 const Page = () => {

@@ -1,15 +1,11 @@
 "use client";
 
-//* TODO
-//* Add image upload
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { redirectToFeed } from "../redirectToFeed";
 import { MdBadge, MdContactEmergency, MdEmail, MdLock } from "react-icons/md";

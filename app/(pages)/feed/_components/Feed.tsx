@@ -1,17 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import InfiniteScrollPosts from "./InfiniteScrollPosts";
-import { IPost } from "@/interfaces/post";
 import { useForm } from "react-hook-form";
 import PostSubmitForm from "@/components/PostSubmitForm";
-
-interface PostResponse {
-  posts: IPost[];
-  nextCursor: number;
-  hasNextPage: boolean;
-  postsLength: number;
-}
+import { PostResponse } from "../page";
 
 const Feed = ({ data }: { data: PostResponse }) => {
   const [posts, setPosts] = useState(data.posts);

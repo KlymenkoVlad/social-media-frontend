@@ -1,7 +1,7 @@
 "use server";
 
-import { FormCreateCommunityInputs } from "@/app/(pages)/communities/edit/FormCommunityCreate";
-import { FormEditCommunityInputs } from "@/app/(pages)/communities/edit/FormCommunityEdit";
+import { FormCreateCommunityInputs } from "@/app/(pages)/communities/edit/_components/FormCommunityCreate";
+import { FormEditCommunityInputs } from "@/app/(pages)/communities/edit/_components/FormCommunityEdit";
 import { Colors } from "@/interfaces/user";
 import { baseUrl } from "@/utils/baseUrl";
 import { cookies } from "next/headers";

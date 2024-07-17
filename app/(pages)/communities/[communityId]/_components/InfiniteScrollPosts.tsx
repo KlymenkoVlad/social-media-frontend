@@ -3,10 +3,10 @@
 import { IPost } from "@/interfaces/post";
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import PostSkeleton from "@/components/post/PostSkeleton";
-import Post from "@/components/post/Post";
-import { MdSelfImprovement } from "react-icons/md";
+import PostSkeleton from "@/components/ui/post/PostSkeleton";
+import Post from "@/components/ui/post/Post";
 import { getCommunityPosts } from "@/actions/community";
+import InfiniteScrollEndIcon from "@/components/ui/InfiniteScrollEndIcon";
 
 interface PostResponse {
   posts: IPost[];
@@ -87,32 +87,10 @@ const InfiniteScrollPosts = ({
     <div>
       {posts &&
         posts?.length > 0 &&
-        posts.map((post) => (
-          <Post
-            key={post.id}
-            postId={post.id}
-            userId={post.userId}
-            likes={post.likes}
-            userImage={post.user.imageUrl}
-            comments={post.comments}
-            text={post.text}
-            title={post.title}
-            date={post.createdAt}
-            imageSrc={post.imageUrl}
-            username={post.user.username}
-            community={post.community}
-          />
-        ))}
+        posts.map((post) => <Post key={post.id} {...post} />)}
 
       <PostSkeleton ref={ref} end={end} />
-      <div
-        className={`${
-          end ? "block" : "hidden"
-        } mb-32 w-full text-center text-2xl font-semibold`}
-      >
-        <MdSelfImprovement className="inline h-32 w-32" />
-        <p>Hmmmm... I think there are no more posts</p>
-      </div>
+      <InfiniteScrollEndIcon end={end} text="posts" />
     </div>
   );
 };

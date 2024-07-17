@@ -6,8 +6,9 @@ import { IFriend } from "@/interfaces/friend";
 import Image from "next/image";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { MdPerson, MdSelfImprovement } from "react-icons/md";
+import { MdPerson } from "react-icons/md";
 import { deleteFriend, getAllFriends } from "@/actions/friend";
+import InfiniteScrollEndIcon from "@/components/ui/InfiniteScrollEndIcon";
 
 interface FriendResponse {
   status: string;
@@ -122,17 +123,7 @@ const InfiniteScrollFriends = ({
       <div ref={ref} className={`${end ? "hidden" : "block"}`}>
         Loading...
       </div>
-      <div
-        className={`${
-          end ? "block" : "hidden"
-        } mb-32 w-full text-center text-2xl font-semibold`}
-      >
-        <MdSelfImprovement
-          style={{ width: "8rem", height: "8rem" }}
-          className="inline"
-        />
-        <p>Hmmmm... I think there are no more friends</p>
-      </div>
+      <InfiniteScrollEndIcon end={end} text="friends" />
     </div>
   );
 };

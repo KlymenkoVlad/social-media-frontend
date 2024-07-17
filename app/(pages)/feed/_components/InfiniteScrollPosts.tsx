@@ -1,21 +1,13 @@
 "use client";
 
 import { IPost } from "@/interfaces/post";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { MdSelfImprovement } from "react-icons/md";
-import PostSkeleton from "@/components/post/PostSkeleton";
-import Post from "@/components/post/Post";
+import PostSkeleton from "@/components/ui/post/PostSkeleton";
+import Post from "@/components/ui/post/Post";
 import { getAllPosts } from "@/actions/post";
-
-interface PostResponse {
-  posts: IPost[];
-  nextCursor: number;
-  hasNextPage: boolean;
-  postsLength: number;
-  setPosts: React.Dispatch<React.SetStateAction<IPost[]>>;
-  sortBy: string;
-}
+import InfiniteScrollEndIcon from "@/components/ui/InfiniteScrollEndIcon";
+import { PostResponse } from "../page";
 
 const InfiniteScrollPosts = ({
   posts,
@@ -23,7 +15,10 @@ const InfiniteScrollPosts = ({
   hasNextPage,
   setPosts,
   sortBy,
-}: PostResponse) => {
+}: PostResponse & {
+  setPosts: React.Dispatch<React.SetStateAction<IPost[]>>;
+  sortBy: string;
+}) => {
   const [cursor, setCursor] = useState<number | undefined>(nextCursor);
   const [end, setEnd] = useState(!hasNextPage);
   const [ref, inView] = useInView({ rootMargin: "0px 0px 700px 0px" });
@@ -41,7 +36,7 @@ const InfiniteScrollPosts = ({
           setEnd(true);
         }
 
-        await setPosts([...data.posts]);
+        setPosts([...data.posts]);
 
         setCursor(data.nextCursor);
         setCurrentSort(sortBy);
@@ -51,7 +46,7 @@ const InfiniteScrollPosts = ({
     sortUpdating();
   }, [sortBy]);
 
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     if (end) {
       return;
     }
@@ -65,7 +60,7 @@ const InfiniteScrollPosts = ({
     setPosts([...posts, ...data.posts]);
 
     setCursor(data.nextCursor);
-  };
+  }, [cursor, end, setPosts]);
 
   useEffect(() => {
     if (inView && sortBy === currentSort && !end) {
@@ -77,34 +72,10 @@ const InfiniteScrollPosts = ({
     <div>
       {posts &&
         posts?.length > 0 &&
-        posts.map((post) => (
-          <Post
-            key={post.id}
-            userId={post.userId}
-            postId={post.id}
-            likes={post.likes}
-            comments={post.comments}
-            text={post.text}
-            title={post.title}
-            date={post.createdAt}
-            imageSrc={post.imageUrl}
-            userImage={post.user.imageUrl}
-            username={post.user.username}
-            community={post.community}
-          />
-          // <p key={post.id}>{post.text}</p>
-        ))}
+        posts.map((post) => <Post key={post.id} {...post} />)}
 
       <PostSkeleton ref={ref} end={end} />
-      {/* <p ref={ref}>loading</p> */}
-      <div
-        className={`${
-          end ? "block" : "hidden"
-        } mb-32 w-full text-center text-2xl font-semibold`}
-      >
-        <MdSelfImprovement className="inline h-32 w-32" />
-        <p>Hmmmm... I think there are no more posts</p>
-      </div>
+      <InfiniteScrollEndIcon end={end} text="posts" />
     </div>
   );
 };
